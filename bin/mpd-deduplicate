@@ -1,0 +1,25 @@
+#!/usr/bin/perl
+
+use warnings;
+use strict;
+
+my %positions;
+my $i = 0;
+
+for my $song (split(/\n/, `mpc playlist`)) {
+    if (exists $positions{$song}) {
+        # Update position hash
+        foreach my $key ( keys %positions ) {
+            if ($positions{$key} > $positions{$song}) {
+                $positions{$key}--;
+            }
+        }
+
+        print "mpc del $positions{$song} ($song)\n";
+        `mpc del $positions{$song}`;
+    }
+    else {
+        $i++;
+    }
+    $positions{$song} = $i;
+}
