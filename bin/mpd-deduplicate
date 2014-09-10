@@ -1,4 +1,5 @@
 #!/usr/bin/perl
+# Remove duplicate entries from a mpd playlist
 
 use warnings;
 use strict;
@@ -15,7 +16,7 @@ for my $song (split(/\n/, `mpc playlist`)) {
             }
         }
 
-        print "mpc del $positions{$song} ($song)\n";
+        #print "mpc del $positions{$song} ($song)\n";
         `mpc del $positions{$song}`;
     }
     else {
