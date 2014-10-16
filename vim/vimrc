@@ -1,0 +1,826 @@
+set modeline
+
+set lcs=tab:^\ ,trail:'
+
+set mouse=a
+set showcmd
+set ruler
+set hidden
+set title
+
+set incsearch
+set foldmethod=indent
+set foldlevel=2
+set foldnestmax=2
+set scrolloff=4
+
+set formatoptions-=r,o
+set nohlsearch
+set wildmenu
+
+set ignorecase
+set smartcase
+set smartindent
+set backupdir=~/.vim/swap,/var/tmp,/tmp
+set directory=~/.vim/swap,/var/tmp,/tmp
+set fillchars=vert:│,fold:\ 
+
+set foldmethod=indent
+
+fun! PagerMode()
+"  map n <C-d>
+"  map p <C-u>
+  noremap j 3gj
+  noremap k 3gk
+  noremap <space> <C-D>
+  set scrolloff=9999
+  if &term == "linux"
+    let &t_ve = "\033[?25c"
+  endif
+endfun
+
+if has("autocmd")
+	autocmd FileType python set complete+=k~/.vim/complete-dict "isk+=.,(
+endif " has("autocmd"
+
+fun! EnableFolding(n)
+	set foldmethod=indent
+	exe "set foldnestmax=".a:n
+endfun
+
+fun! DisableFolding()
+	set foldmethod=marker
+endfun
+
+noremap z<F1> :call EnableFolding(1)<CR>
+noremap z<F2> :call EnableFolding(2)<CR>
+noremap z<F3> :call EnableFolding(3)<CR>
+noremap z<F4> :call DisableFolding()<CR>
+
+" Tabs / Spaces {{{
+fun! UseTabs()
+	set shiftwidth=4
+	set tabstop=4
+	set softtabstop=4
+	set noexpandtab
+endfun
+
+fun! UseSpaces()
+	set shiftwidth=4
+	set tabstop=4
+	set softtabstop=4
+	set expandtab
+endfun
+
+call UseSpaces()
+
+fun! ToggleTabsSpaces()
+  if &expandtab
+    call UseTabs()
+    echo "using tabs!"
+  else
+    call UseSpaces()
+    echo "using spaces!"
+  endif
+endfun
+
+fun! DecideIfShouldUseTab()
+	let lnum = 1
+	while lnum <= 200
+		let lnum = lnum + 1
+		let line = getline(lnum)
+    let got_spaces = 0
+		if line =~ "^\t\t"
+			call UseTabs()
+			return
+		endif
+		if line =~ "^    "
+      let got_spaces = 1
+		endif
+	endwhile
+  if got_spaces
+    call UseSpaces()
+  endif
+endfun
+au Filetype * call DecideIfShouldUseTab()
+au BufRead *.texx setf tex
+
+"fun! Ranger()
+""	silent !/home/hut/ranger/ranger.py --choosefile=/tmp/rangerchoose `[ -z '%' ] && echo -n . || dirname %`
+"	exec "silent !/home/hut/ranger/ranger.py --choosefile=/tmp/chosenfile " . expand("%:p:h")
+"  if filereadable('/tmp/rangerchoose')
+"    exec 'edit ' . system('cat /tmp/rangerchoose')
+"    call system('rm /tmp/rangerchoose')
+"  endif
+"	redraw!
+"endfun
+
+"fun! RangerChooser()
+"    exec "silent !ranger --choosefile=/tmp/chosenfile " . expand("%:p:h")
+"    if filereadable('/tmp/chosenfile')
+"        exec 'edit ' . system('cat /tmp/chosenfile')
+"        call system('rm /tmp/chosenfile')
+"    endif
+"    redraw!
+"endfun
+
+map ,T :call UseTabs()<CR>
+map ,s :call UseSpaces()<CR>
+"map ,r :call RangerChooser()<CR>
+map <F2> :call ToggleTabsSpaces()<CR>
+imap <F2> <ESC>:call ToggleTabsSpaces()<CR>
+ino <tab> <C-r>=TriggerSnippet()<CR>
+snor <tab> <ESC>i<right><C-r>=TriggerSnippet()<CR>
+" }}}
+
+" Mappings {{{
+
+" Tabs
+noremap <tab> gt
+noremap <S-tab> gT
+map <C-n> :tabnew<cr>
+
+" bla
+map ,m :set list!<CR>
+map ,p :set paste!<CR>:set ruler<CR>:echo "paste =" &paste<CR>
+map ,b :source ~/.vimrc<cr>
+map ,B :e ~/.vimrc<cr>
+map ,w :e <C-r>=substitute(@%, '^\(.*/\).*$', '\1', '')<cr><cr>
+map ,e :e.<cr>
+map ,S :set spell spelllang=en_us<CR>
+map ,P :call PagerMode()<CR>
+map ,H :silent !echo -ne "\033]12;black\007"<CR>:autocmd VimLeave * silent !echo -ne "\033]12;white\007"<CR>:set noruler<CR>
+
+noremap <C-p> <tab>
+
+" avoid typos
+map Q <ESC>
+map ; :
+map <F1> <ESC>
+imap <F1> <ESC>
+vmap <F1> <ESC>
+command! W w
+command! Q q
+command! Wq wq
+command! WQ wq
+map U <C-R>
+
+" Shortcuts
+vnoremap < <gv
+vnoremap > >gv
+map gV ggVG
+map s :s/
+map S :%s/
+map b :b 
+vmap S :s/
+inoremap <F9>  <C-R>=strftime("%Y/%m/%d %H:%M ")<CR>
+inoremap <F10> <C-R>=strftime("%s ")<CR>
+inoremap <F11> <C-R>=printf("0x%X", strftime("%s"))<CR>
+
+" Movement
+imap <C-h> <LEFT>
+imap <C-l> <RIGHT>
+noremap H 10h
+noremap J 20j
+noremap K 20k
+noremap L 10l
+noremap <C-j> J
+imap <C-j> <DOWN>
+imap <C-k> <UP>
+
+" }}}
+
+" modify external scripts {{{
+let loaded_matchparen = 1
+let g:netrw_list_hide="\\.py[co]$,^\\."
+let python_highlight_numbers = 1
+let python_highlight_builtins = 1
+let python_highlight_builtins = 1
+" }}}
+
+"source ~/.vim/plugin/speeddating.vim
+au Filetype *.org source ~/.vim/syntax/vorg.vim
+au BufRead *.pen setf python
+"colorscheme elflord
+colorscheme jungle
+syntax on
+filetype indent plugin on
+
+au Filetype * call SetOverLengthHighlight()
+fun! SetOverLengthHighlight()
+"	highlight OverLength ctermbg=darkred ctermfg=white
+"	syntax match OverLength /\%80v.\+/
+	highlight BlankLine ctermbg=darkgrey ctermfg=white
+	syntax match BlankLine /^\s\+$/
+endfun
+call SetOverLengthHighlight()
+au BufReadPost * call CheckForMaxima()
+fun! CheckForMaxima()
+	if substitute(getreg('%'), '^.*\.', '', '') == 'maxima'
+		set ft=maxima
+	endif
+endfun
+
+inoremap # x#
+" Automatic compilation {{{
+
+" Compile + Run Project
+imap <F3> <ESC>:call Compilef5(2)<CR>
+map  <F3> :call Compilef5(2)<CR>
+
+" Run Project
+"imap <F4> <ESC>:call Compilef5(3)<CR>
+"map  <F4> :call Compilef5(3)<CR>
+map <F4> :e %:p:s,.h$,.X123X,:s,.cpp$,.h,:s,.X123X$,.cpp,<CR>
+imap <F4> <ESC>:e %:p:s,.h$,.X123X,:s,.cpp$,.h,:s,.X123X$,.cpp,<CR>
+
+" Compile + Run File
+imap <F5> <ESC>:call Compilef5(0)<CR>
+map  <F5> :call Compilef5(0)<CR>
+
+" Run File
+imap <F6> <ESC>:call Compilef5(1)<CR>
+map  <F6> :call Compilef5(1)<CR>
+
+"map gR :silent w<CR>:call system("/home/hut/code/pendulum/pendulum.py " . @%)<cr>
+"map g<c-r> :w<CR>:silent !/home/hut/code/pendulum/pendulum.py % &<cr><c-l>
+"map gr :silent call Compilef5(2)<CR><c-l>
+"map gr :!cd ~/pull/atmega/stuff; make; sudo make flash<CR>
+"map gr :call Compilef5(0)<CR>
+"map gR :w<CR>:silent !./% &<cr><c-l>
+"map gr :w<CR>:silent call system("ps a \| grep [p]ython.*pendulum \| sed 's/^[^0-9]*\\([0-9]\\+\\).*$/\\1/;' \| xargs kill -SIGUSR1 &")<cr>:echo ""<cr>
+
+" The function
+function! Compilef5(mode)
+	silent w
+	if a:mode == 0
+		!rifle -p compile %
+	elseif a:mode == 1
+		!pile -r %
+	elseif a:mode == 2
+		if &ft == 'actionscript'
+			call system("pile -m ". @%)
+		else
+			!pile -m %
+		endif
+	elseif a:mode == 3
+		if &ft == 'actionscript'
+			call system("pile -r -m ". @%)
+		else
+			!pile -r -m %
+		endif
+	endif
+endfunction
+" }}}
+
+" Command "DiffWithSaved" {{{
+function! s:DiffWithSaved()
+  let filetype=&ft
+  diffthis
+  vnew | r # | normal! 1Gdd
+  diffthis
+  exe "setlocal bt=nofile bh=wipe nobl noswf ro ft=" . filetype
+endfunction
+com! DiffSaved call s:DiffWithSaved()
+" }}}
+" nice fold text {{{
+set foldtext=GetFoldText()
+fun! GetFoldText()
+	return substitute(
+		\substitute(
+			\getline(v:foldstart),
+			\"	",
+			\repeat(' ', &ts),
+			\"g"),
+		\'\('.b:cmchr.'\)*{{'.'{\d*',
+		\'- '.(v:foldend-v:foldstart).'l',
+		\'')
+endfun
+" }}}
+" comments {{{
+
+if(!exists('b:cmchr')) | let b:cmchr = '#' | endif
+
+map ,f :call ToggleComment(0,2)<CR>
+vmap ,f :call ToggleComment(1,2)<CR>gv
+
+au Filetype * call GetCommentCharacter()
+
+fun! ToggleComment(range, mode)
+"	Range Values:
+"	0: Normal Mode (1 line), 1: Visual Mode (range)
+"	Mode Vaules:
+"	0: uncomment, 1: comment, 2: toggle
+
+	if a:range
+		if line('.') != line("'<") | return | endif
+		if a:mode==0 || (a:mode==2 &&
+					\getline("'<") =~ '^\s*'.b:cmchr.'\s*[^{]')
+			silent execute "'<,'>s".'/^\(\s*\)'.b:cmchr.'/\1/'
+		else
+			silent execute "'<,'>s/^/".b:cmchr.'/'
+		endif
+	else
+		let l = getline('.')
+		if a:mode==0 || (a:mode==2 &&
+					\(l =~ '{'.'{{') ?
+					\(l =~ '^\s*'.b:cmchr.'\{3,999}') :
+					\(l =~ '^\s*'.b:cmchr))
+			silent execute 's/^\(\s*\)'.b:cmchr.'/\1/'
+			echo 'Uncommented.'
+		else
+			silent execute 's/^/'.b:cmchr.'/'
+			echo 'Inserted Comment.'
+		endif
+	endif
+endfun
+
+fun! GetCommentCharacter()
+	let b:cmchr = '#'
+	if &filetype == "asm"
+		let b:cmchr = ";"
+	elseif &filetype == "php"
+		let b:cmchr = '\/\/'
+	elseif &filetype == "java"
+		let b:cmchr = '\/\/'
+	else
+		let test = substitute(&comments, '^.*:\([^:]*\)$', '\1', '')
+		if test != &comments && test != '-'
+			let b:cmchr = escape(test, '/')
+		endif
+	end
+endfunction
+
+" }}}
+" ruby end token {{{
+function! RubyEndToken ()
+    let current_line = getline( '.' )
+    let braces_at_end = '{\s*\(|\(,\|\s\|\w\)*|\s*\)\?$'
+    let stuff_without_do = '^\s*\(class\|if\|unless\|begin\|case\|for\|module\|while\|until\|def\)\s'
+    let with_do = 'do\s*\(|\(,\|\s\|\w\)*|\s*\)\?$'
+
+    if match(current_line, braces_at_end) >= 0
+        return "\<CR>}\<C-O>O"
+    elseif current_line =~ stuff_without_do
+				 \&& current_line !~ 'end\s*$'
+		return "\<CR>end\<C-O>O"
+    elseif match(current_line, with_do) >= 0
+		return "\<CR>end\<C-O>O"
+    else
+        return "\<CR>"
+    endif
+endfunction
+autocmd FileType ruby,eruby imap <buffer> <CR> <C-R>=RubyEndToken()<CR>
+" }}}
+" latex {{{
+map ,L :call LaTeX()<CR>
+fun! LaTeX()
+	imap <buffer> \N ℕ
+	imap <buffer> \Z ℤ
+	imap <buffer> \R ℝ
+	imap <buffer> \Q ℚ
+	imap <buffer> \C ℂ
+	imap <buffer> \deg °
+
+	imap <buffer> \alpha α
+	imap <buffer> \beta β
+	imap <buffer> \gamma γ
+	imap <buffer> \delta δ
+	imap <buffer> \epsilon ∊
+	imap <buffer> \varepsilon ε
+	imap <buffer> \e ε
+	imap <buffer> \zeta ζ
+	imap <buffer> \eta η
+	imap <buffer> \theta θ
+	imap <buffer> \vartheta ϑ
+	imap <buffer> \iota ι
+	imap <buffer> \kappa κ
+	imap <buffer> \lambda λ
+	imap <buffer> \mu μ
+	imap <buffer> \nu ν
+	imap <buffer> \xi ξ
+	imap <buffer> \pi π
+	imap <buffer> \varpi ϖ
+	imap <buffer> \rho ρ
+	imap <buffer> \varrho ϱ
+	imap <buffer> \sigma σ
+	imap <buffer> \varsigma ς
+	imap <buffer> \tau τ
+	imap <buffer> \upsilon υ
+	imap <buffer> \phi φ
+	imap <buffer> \varphi ϕ
+	imap <buffer> \chi χ
+	imap <buffer> \psi ψ
+	imap <buffer> \omega ω
+	imap <buffer> \Gamma Γ
+	imap <buffer> \Delta Δ
+	imap <buffer> \Theta Θ
+	imap <buffer> \Lambda Λ
+	imap <buffer> \Xi Ξ
+	imap <buffer> \Pi Π
+	imap <buffer> \Upsilon Υ
+	imap <buffer> \Phi Φ
+	imap <buffer> \Psi Ψ
+	imap <buffer> \Omega Ω
+	imap <buffer> \leq ≤
+	imap <buffer> \ll ≪
+	imap <buffer> \prec ≺
+	imap <buffer> \preceq ≼
+	imap <buffer> \subset ⊂
+	imap <buffer> \subseteq ⊆
+	imap <buffer> \sqsubset ⊏
+	imap <buffer> \sqsubseteq ⊑
+	imap <buffer> \in ∈
+	imap <buffer> \vdash ⊢
+	imap <buffer> \mid ∣
+	imap <buffer> \smile ⌣
+	imap <buffer> \geq ≥
+	imap <buffer> \gg ≫
+	imap <buffer> \succ ≻
+	imap <buffer> \succeq ≽
+	imap <buffer> \supset ⊃
+	imap <buffer> \supseteq ⊇
+	imap <buffer> \sqsupset ⊐
+	imap <buffer> \sqsupseteq ⊒
+	imap <buffer> \ni ∋
+	imap <buffer> \dashv ⊣
+	imap <buffer> \parallel ∥
+	imap <buffer> \frown ⌢
+	imap <buffer> \notin ∉
+	imap <buffer> \equiv ≡
+	imap <buffer> \doteq ≐
+	imap <buffer> \sim ∼
+	imap <buffer> \simeq ≃
+	imap <buffer> \approx ≈
+	imap <buffer> \cong ≅
+	imap <buffer> \Join ⋈
+	imap <buffer> \bowtie ⋈
+	imap <buffer> \propto ∝
+	imap <buffer> \models ⊨
+	imap <buffer> \perp ⊥
+	imap <buffer> \asymp ≍
+	imap <buffer> \neq ≠
+	imap <buffer> \pm ±
+	imap <buffer> \cdot ⋅
+	imap <buffer> \. ⋅
+	imap <buffer> \times ×
+	imap <buffer> \cup ∪
+	imap <buffer> \sqcup ⊔
+	imap <buffer> \vee ∨
+	imap <buffer> \oplus ⊕
+	imap <buffer> \odot ⊙
+	imap <buffer> \otimes ⊗
+	imap <buffer> \bigtriangleup △
+	imap <buffer> \lhd ⊲
+	imap <buffer> \unlhd ⊴
+	imap <buffer> \mp ∓
+	imap <buffer> \div ÷
+	imap <buffer> \setminus ∖
+	imap <buffer> \cap ∩
+	imap <buffer> \sqcap ⊓
+	imap <buffer> \wedge ∧
+	imap <buffer> \ominus ⊖
+	imap <buffer> \oslash ⊘
+	imap <buffer> \bigcirc ○
+	imap <buffer> \bigtriangledown ▽
+	imap <buffer> \rhd ⊳
+	imap <buffer> \unrhd ⊵
+	imap <buffer> \triangleleft ◁
+	imap <buffer> \triangleright ▷
+	imap <buffer> \star ⋆
+	imap <buffer> \ast ∗
+	imap <buffer> \circ ∘
+	imap <buffer> \bullet ∙
+	imap <buffer> \diamond ⋄
+	imap <buffer> \uplus ⊎
+	imap <buffer> \dagger †
+	imap <buffer> \ddagger ‡
+	imap <buffer> \wr ≀
+	imap <buffer> \sum ∑
+	imap <buffer> \prod ∏
+	imap <buffer> \coprod ∐
+	imap <buffer> \int ∫
+	imap <buffer> \bigcup ⋃
+	imap <buffer> \bigcap ⋂
+	imap <buffer> \bigsqcup ⊔
+	imap <buffer> \oint ∮
+	imap <buffer> \bigvee ⋁
+	imap <buffer> \bigwedge ⋀
+	imap <buffer> \bigoplus ⊕
+	imap <buffer> \bigotimes ⊗
+	imap <buffer> \bigodot ⊙
+	imap <buffer> \biguplus ⊎
+	imap <buffer> \leftarrow ←
+	imap <buffer> \rightarrow →
+	imap <buffer> \leftrightarrow ↔
+	imap <buffer> \Leftarrow ⇐
+	imap <buffer> \Rightarrow ⇒
+	imap <buffer> \Leftrightarrow ⇔
+	imap <buffer> \mapsto ↦
+	imap <buffer> \hookleftarrow ↩
+	imap <buffer> \leftharpoonup ↼
+	imap <buffer> \leftharpoondown ↽
+	imap <buffer> \hookrightarrow ↪
+	imap <buffer> \rightharpoonup ⇀
+	imap <buffer> \rightharpoondown ⇁
+	imap <buffer> \longleftarrow ←
+	imap <buffer> \longrightarrow →
+	imap <buffer> \longleftrightarrow ↔
+	imap <buffer> \Longleftarrow ⇐
+	imap <buffer> \Longrightarrow ⇒
+	imap <buffer> \Longleftrightarrow ⇔
+	imap <buffer> \longmapsto ⇖
+	imap <buffer> \uparrow ↑
+	imap <buffer> \downarrow ↓
+	imap <buffer> \updownarrow ↕
+	imap <buffer> \Uparrow ⇑
+	imap <buffer> \Downarrow ⇓
+	imap <buffer> \Updownarrow ⇕
+	imap <buffer> \nearrow ↗
+	imap <buffer> \searrow ↘
+	imap <buffer> \swarrow ↙
+	imap <buffer> \nwarrow ↖
+	imap <buffer> \leadsto ↝
+	imap <buffer> \dots …
+	imap <buffer> \cdots ⋯
+	imap <buffer> \vdots ⋮
+	imap <buffer> \ddots ⋱
+	imap <buffer> \hbar ℏ
+	imap <buffer> \ell ℓ
+	imap <buffer> \Re ℜ
+	imap <buffer> \Im ℑ
+	imap <buffer> \aleph א
+	imap <buffer> \wp ℘
+	imap <buffer> \forall ∀
+	imap <buffer> \A ∀
+	imap <buffer> \exists ∃
+	imap <buffer> \E ∃
+	imap <buffer> \mho ℧
+	imap <buffer> \partial ∂
+	imap <buffer> \prime ′
+	imap <buffer> \emptyset ∅
+	imap <buffer> \infty ∞
+	imap <buffer> \nabla ∇
+	imap <buffer> \triangle △
+	imap <buffer> \Box □
+	imap <buffer> \Diamond ◇
+	imap <buffer> \bot ⊥
+	imap <buffer> \top ⊤
+	imap <buffer> \angle ∠
+	imap <buffer> \surd √
+	imap <buffer> \diamondsuit ♢
+	imap <buffer> \heartsuit ♡
+	imap <buffer> \clubsuit ♣
+	imap <buffer> \spadesuit ♠
+	imap <buffer> \neg ¬
+	imap <buffer> \flat ♭
+	imap <buffer> \natural ♮
+	imap <buffer> \sharp ♯
+	imap <buffer> \digamma Ϝ
+	imap <buffer> \varkappa ϰ
+	imap <buffer> \beth ב
+	imap <buffer> \daleth ד
+	imap <buffer> \gimel ג
+	imap <buffer> \lessdot ⋖
+	imap <buffer> \leqslant ≤
+	imap <buffer> \leqq ≦
+	imap <buffer> \lll ⋘
+	imap <buffer> \lesssim ≲
+	imap <buffer> \lessgtr ≶
+	imap <buffer> \lesseqgtr ⋚
+	imap <buffer> \preccurlyeq ≼
+	imap <buffer> \curlyeqprec ⋞
+	imap <buffer> \precsim ≾
+	imap <buffer> \Subset ⋐
+	imap <buffer> \sqsubset ⊏
+	imap <buffer> \therefore ∴
+	imap <buffer> \smallsmile ⌣
+	imap <buffer> \vartriangleleft ⊲
+	imap <buffer> \trianglelefteq ⊴
+	imap <buffer> \gtrdot ⋗
+	imap <buffer> \geqq ≧
+	imap <buffer> \ggg ⋙
+	imap <buffer> \gtrsim ≳
+	imap <buffer> \gtrless ≷
+	imap <buffer> \gtreqless ⋛
+	imap <buffer> \succcurlyeq ≽
+	imap <buffer> \curlyeqsucc ⋟
+	imap <buffer> \succsim ≿
+	imap <buffer> \Supset ⋑
+	imap <buffer> \sqsupset ⊐
+	imap <buffer> \because ∵
+	imap <buffer> \shortparallel ∥
+	imap <buffer> \smallfrown ⌢
+	imap <buffer> \vartriangleright ⊳
+	imap <buffer> \trianglerighteq ⊵
+	imap <buffer> \doteqdot ≑
+	imap <buffer> \risingdotseq ≓
+	imap <buffer> \fallingdotseq ≒
+	imap <buffer> \eqcirc ≖
+	imap <buffer> \circeq ≗
+	imap <buffer> \triangleq ≜
+	imap <buffer> \bumpeq ≏
+	imap <buffer> \Bumpeq ≎
+	imap <buffer> \thicksim ∼
+	imap <buffer> \thickapprox ≈
+	imap <buffer> \approxeq ≊
+	imap <buffer> \backsim ∽
+	imap <buffer> \vDash ⊨
+	imap <buffer> \Vdash ⊩
+	imap <buffer> \Vvdash ⊪
+	imap <buffer> \backepsilon ∍
+	imap <buffer> \varpropto ∝
+	imap <buffer> \between ≬
+	imap <buffer> \pitchfork ⋔
+	imap <buffer> \blacktriangleleft ◀
+	imap <buffer> \blacktriangleright ▷
+	imap <buffer> \dashleftarrow ⇠
+	imap <buffer> \leftleftarrows ⇇
+	imap <buffer> \leftrightarrows ⇆
+	imap <buffer> \Lleftarrow ⇚
+	imap <buffer> \twoheadleftarrow ↞
+	imap <buffer> \leftarrowtail ↢
+	imap <buffer> \leftrightharpoons ⇋
+	imap <buffer> \Lsh ↰
+	imap <buffer> \looparrowleft ↫
+	imap <buffer> \curvearrowleft ↶
+	imap <buffer> \circlearrowleft ↺
+	imap <buffer> \dashrightarrow ⇢
+	imap <buffer> \rightrightarrows ⇉
+	imap <buffer> \rightleftarrows ⇄
+	imap <buffer> \Rrightarrow ⇛
+	imap <buffer> \twoheadrightarrow ↠
+	imap <buffer> \rightarrowtail ↣
+	imap <buffer> \rightleftharpoons ⇌
+	imap <buffer> \Rsh ↱
+	imap <buffer> \looparrowright ↬
+	imap <buffer> \curvearrowright ↷
+	imap <buffer> \circlearrowright ↻
+	imap <buffer> \multimap ⊸
+	imap <buffer> \upuparrows ⇈
+	imap <buffer> \downdownarrows ⇊
+	imap <buffer> \upharpoonleft ↿
+	imap <buffer> \upharpoonright ↾
+	imap <buffer> \downharpoonleft ⇃
+	imap <buffer> \downharpoonright ⇂
+	imap <buffer> \rightsquigarrow ⇝
+	imap <buffer> \leftrightsquigarrow ↭
+	imap <buffer> \dotplus ∔
+	imap <buffer> \ltimes ⋉
+	imap <buffer> \Cup ⋓
+	imap <buffer> \veebar ⊻
+	imap <buffer> \boxplus ⊞
+	imap <buffer> \boxtimes ⊠
+	imap <buffer> \leftthreetimes ⋋
+	imap <buffer> \curlyvee ⋎
+	imap <buffer> \centerdot ⋅
+	imap <buffer> \rtimes ⋈
+	imap <buffer> \Cap ⋒
+	imap <buffer> \barwedge ⊼
+	imap <buffer> \boxminus ⊟
+	imap <buffer> \boxdot ⊡
+	imap <buffer> \rightthreetimes ⋌
+	imap <buffer> \curlywedge ⋏
+	imap <buffer> \intercal ⊺
+	imap <buffer> \divideontimes ⋇
+	imap <buffer> \smallsetminus ∖
+	imap <buffer> \circleddash ⊝
+	imap <buffer> \circledcirc ⊚
+	imap <buffer> \circledast ⊛
+	imap <buffer> \hbar ℏ
+	imap <buffer> \hslash ℏ
+	imap <buffer> \square □
+	imap <buffer> \blacksquare ■
+	imap <buffer> \circledS Ⓢ
+	imap <buffer> \vartriangle △
+	imap <buffer> \blacktriangle ▲
+	imap <buffer> \complement ∁
+	imap <buffer> \triangledown ▽
+	imap <buffer> \blacktriangledown ▼
+	imap <buffer> \lozenge ◊
+	imap <buffer> \blacklozenge ◆
+	imap <buffer> \bigstar ★
+	imap <buffer> \angle ∠
+	imap <buffer> \measuredangle ∡
+	imap <buffer> \sphericalangle ∢
+	imap <buffer> \backprime ‵
+	imap <buffer> \nexists ∄
+	imap <buffer> \Finv Ⅎ
+	imap <buffer> \varnothing ∅
+	imap <buffer> \eth ð
+	imap <buffer> \mho ℧
+endfun
+" }}}
+
+"
+"function! InstallPythonFold()
+"	" Only do this when not done yet for this buffer
+"	if exists("b:did_ftplugin")
+""	finish
+"	endif
+"	let b:did_ftplugin = 1
+"
+"	map <buffer> <S-e> :w<CR>:!/usr/bin/env python % <CR>
+"	map <buffer> gd /def <C-R><C-W><CR>
+"
+"	set foldmethod=expr
+"	set foldexpr=PythonFoldExpr(v:lnum)
+"	set foldtext=PythonFoldText()
+"
+"	map <buffer> f za
+"	map <buffer> F :call ToggleFold()<CR>
+"	let b:folded = 1
+"
+"	function! ToggleFold()
+"		if( b:folded == 0 )
+"			exec "normal! zM"
+"			let b:folded = 1
+"		else
+"			exec "normal! zR"
+"			let b:folded = 0
+"		endif
+"	endfunction
+"
+"	function! PythonFoldText()
+"		if match(getline(v:foldstart), '[a-zA-Z]') >= 0
+"			let line = v:foldstart
+"		else
+"			let line = v:foldstart + 1
+"		endif
+"		if match(getline(line), '"""') >= 0
+"			let text = substitute(getline(line), '"""', '', 'g' )
+"		elseif match(getline(line), "'''") >= 0
+"			let text = substitute(getline(line), "'''", '', 'g' )
+"		else
+"			let text = getline(line)
+"		endif
+"		
+"		return '  ' . text
+"	endfunction
+"
+"	function! PythonFoldExpr(lnum)
+"		if indent( nextnonblank(a:lnum) ) == 0
+"			return 0
+"		endif
+"		
+"		if getline(a:lnum-1) =~ '^\(class\|def\)\s'
+"			return 1
+"		endif
+"			
+"		if getline(a:lnum) =~ '^\s*$'
+"			return "="
+"		endif
+"		
+"		if indent(a:lnum) == 0
+"			return 0
+"		endif
+"
+"		return '='
+"	endfunction
+"
+"	" In case folding breaks down
+"	function! ReFold()
+"		set foldmethod=expr
+"		set foldexpr=0
+"		set foldnestmax=1
+"		set foldmethod=expr
+"		set foldexpr=PythonFoldExpr(v:lnum)
+"		set foldtext=PythonFoldText()
+"		echo
+"	endfunction 
+"endfunction
+"autocmd FileType python call InstallPythonFold()
+
+map <F1> $?^$<cr>jV/^$<cr>k!texin<cr>u
+imap ,m \vec{\mathbf{
+imap ,v \vec{
+
+map g/., :w ~/sync/more/ramblings/<C-R>=strftime("%Y-%m-%d_%H%M%S")<CR>_<C-r>=$USER<CR>_<C-r>=hostname()<CR>.txt<CR>ggVGd:w<CR>
+
+
+"  --- tmp ---
+function! RangeChooser()
+    let temp = tempname()
+    " The option "--choosefiles" was added in ranger 1.5.1. Use the next line
+    " with ranger 1.4.2 through 1.5.0 instead.
+    "exec 'silent !ranger --choosefile=' . shellescape(temp)
+    exec 'silent !ranger --choosefiles=' . shellescape(temp)
+    if !filereadable(temp)
+        " Nothing to read.
+        return
+    endif
+    let names = readfile(temp)
+    if empty(names)
+        " Nothing to open.
+        return
+    endif
+    " Edit the first item.
+    exec 'edit ' . fnameescape(names[0])
+    " Add any remaning items to the arg list/buffer list.
+    for name in names[1:]
+        exec 'argadd ' . fnameescape(name)
+    endfor
+endfunction
+command! -bar RangerChooser call RangeChooser()
+nnoremap <leader>r :<C-U>RangerChooser<CR>
+"  --- /tmp ---
