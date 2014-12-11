@@ -1,0 +1,44 @@
+#!/bin/sh
+
+basedir="/home/hut/repos"
+host="$1"
+reponame="$2"
+
+# Getting host
+if [ -z "$host" ]; then
+    echo "usage: git-link <hostname> [directory]"
+    exit
+fi
+
+# Getting repo
+if [ -z "$reponame" ]; then
+    echo "guessing repo name from current working directory..."
+    reponame="$(pwd)"
+else
+    reponame="$(realpath --strip "$reponame")"
+    cd $reponame
+fi
+
+# Verifying repo
+if [[ "$reponame" != "$basedir"/* ]]; then
+    echo "not in $basedir/*"
+    exit
+fi
+
+# Extracting repo name
+reponame="${reponame#$basedir/}"
+reponame="${reponame%%/*}"
+
+path="$basedir/$reponame"
+
+# set up git link locally
+echo git remote add "$host" "$host:$path"
+git remote add "$host" "$host:$path"
+#echo ssh "$host" 'mkdir -p '"'$path'"' && cd '"'$path'"' && git remote add '"'$HOST' '$"' '
+
+if [ -n "$HOSTNAME" ]; then
+    echo ssh "$host" "mkdir -p '$path' && cd '$path' && git remote add '$HOSTNAME' '$HOSTNAME:$path'"
+    ssh "$host" "mkdir -p '$path' && cd '$path' && git init && git remote add '$HOSTNAME' '$HOSTNAME:$path'"
+else
+    echo "Warning: \$HOSTNAME not set.  Failed to set up git link at remote site that refers to this hostname"
+fi
