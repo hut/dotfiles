@@ -1,0 +1,43 @@
+#!/bin/bash
+
+hosts="turban fez"
+basepath="/home/hut/repos"
+quiet=
+[ "$1" == "-q" ] && quiet=1
+me="$HOSTNAME"
+push=1
+
+host_is_up () {
+    ping -c 1 "$1" > /dev/null 2>&1
+}
+
+fetch_from () {
+    for path in "$basepath"/*; do
+        test \! -d "$path" && continue
+        cd "$path"
+        if [ -d .git ] && { git remote -v | grep -q "$host"; }; then
+            [ -z "$quiet" ] && echo "fetching ${path#$basepath/}"
+
+            git fetch "$host"
+
+            if [ -n "$push" ]; then
+                [ -z "$quiet" ] && echo "pushing ${path#$basepath/}"
+                for refname in $(git for-each-ref refs/heads/ --format="%(refname:short)"); do
+                    git push "$host" "$refname:refs/remotes/$me/$refname"
+                done
+            fi
+        fi
+    done
+}
+
+[ "$#" -gt 0 ] && hosts="$@"
+
+for host in $hosts; do
+    if test "$HOSTNAME" != "$host"; then
+        if host_is_up "$host"; then
+            echo syncing with "$host"...
+            fetch_from "$host"
+        fi
+    fi
+done
+
