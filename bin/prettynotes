@@ -1,0 +1,25 @@
+#!/bin/sh
+
+function color {
+    echo -e "\E[0;38;5;$1m"
+}
+
+red_words='TODO|XXX|NOTE|BROKEN'
+reset="$(echo -e "\E[00m")"
+pattern='"[^"]*?"|\<[0-9]+\>|\{.*?\}|#.*$|^\* .*:|\$[A-Za-z0-9]+|'"$red_words"
+
+sed -r "
+    # Separate matches with newlines so patterns can be
+    # applied individually and without interference
+    s/($pattern)/\n\1\n/g
+
+    s/^[0-9]+$/$(color 210)&$reset/mg               # Numbers
+    s/^\".*?\"$/$(color 171)&$reset/mg              # Strings
+    s/^\{.*?\}$/$(color 171)&$reset/mg              # Curly Braces
+    s/^#.*$/$(color 240)&$reset/m                   # Comments
+    s/^\* .*:$/$(color 119)&$reset/mg               # List items
+    s/^\\\$[A-Za-z0-9]+$/$(color 214\;1)&$reset/mg  # Variables
+    s/^($red_words)$/$(color 197\;1)&$reset/mg      # Variables
+
+    # Remove all the newlines
+    s/\n//g;"
