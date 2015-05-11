@@ -1,0 +1,30 @@
+:colorscheme hut
+:set noscrollbars
+:set gui=none
+
+:set editor=urxvt\ -e\ vim
+
+:noremap <C-f> :set invfs<CR>
+
+:map A <Nop>
+":noremap ; :
+:noremap j 5j
+:noremap k 5k
+:noremap d <C-d>
+:noremap u <C-u>
+:noremap J <C-d>
+:noremap K <C-u>
+:noremap U u
+:noremap b H
+:map v L
+:noremap ` :set gui=invtabs<CR>
+:noremap ~ :set gui=invnavigation<CR>
+:map <A-`> gt
+:map <A-~> gT
+:noremap \\v :source ~/.vimperatorrc<CR>
+
+:cnoremap <C-p> <UP>
+:cnoremap <C-n> <DOWN>
+:cnoremap <C-j> <enter>
+
+":set hintchars=asdfgqwert
