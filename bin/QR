@@ -1,0 +1,12 @@
+#!/bin/sh
+
+if [ "$1" == "--help" -o "$1" == "-h" ]; then
+    echo "usage: QR"
+    echo "creates and displays a QR-code image of the copy&paste buffer"
+fi
+
+f="$(mktemp)"
+xsel | qrencode --size=20 -t png -o "$f"
+sxiv "$f"
+sleep 1
+rm "$f"

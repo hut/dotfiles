@@ -1,0 +1,13 @@
+#!/bin/sh
+mpc find album "$(mpc -f '%album%' | head -n 1)" | mpc insert
+
+
+
+
+# Old Crap:
+#x="$(mpc find album "$(mpc -f '%album%' | head -n 1)" | wc -l)"
+#plsize="$(mpc playlist | wc -l)"
+#while test "$x" -gt 0; do
+#    mpc move -1 "$(mpc -f '%position%' | head -n 1)"
+#    x=$((x-1))
+#done

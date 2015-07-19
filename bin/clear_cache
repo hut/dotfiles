@@ -1,0 +1,3 @@
+#!/bin/bash
+# Clear the FS cache of the linux kernel
+echo 1 | sudo tee /proc/sys/vm/drop_caches > /dev/null

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# Removes one particular commit from the history
+
+commit=$1;
+revlist=`git rev-list $commit.. | tac`
+git reset --hard $commit~1
+for rev in $revlist
+do
+	git cherry-pick $rev
+done

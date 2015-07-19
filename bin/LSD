@@ -1,0 +1,4 @@
+#!/bin/sh
+# Displays 317070's twitch stream of the Large Scale Deep Neural Net
+# See https://317070.github.io/LSD/
+livestreamer -a '--volume=0 {filename}' http://www.twitch.tv/317070 best

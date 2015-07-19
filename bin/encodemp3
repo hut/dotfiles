@@ -1,0 +1,11 @@
+#!/usr/bin/python
+# Encodes the given files to mp3
+import os
+import subprocess
+import sys
+#for f in os.listdir("."):
+for f in sys.argv[1:]:
+  if f.endswith('.flv') or f.endswith('.mp4') or f.endswith('.webm') or f.endswith('.ogg'):
+    target = 'mp3/' + f[:-4] + '.mp3'
+    if not os.path.exists(target):
+      subprocess.call(['ffmpeg', '-i', f, '-acodec', 'libmp3lame', '-vn', '-y', target])

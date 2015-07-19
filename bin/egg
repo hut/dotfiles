@@ -1,0 +1,129 @@
+#!/usr/bin/python
+# Interactive egg timer
+# Controls:
+# p, space : pause
+# R        : reset
+# q        : quit
+# c, ^L    : clear screen
+import optparse
+import sys
+import termios
+import time
+
+class Getch(object): #{{{
+  def __init__(self, wait=1):
+    self.fd = sys.stdin.fileno()
+    self.old = termios.tcgetattr(self.fd)
+    self.new = termios.tcgetattr(self.fd)
+    self.new[3] &= ~termios.ECHO
+    self.new[3] &= ~termios.ICANON
+#    self.new[3] &= ~termios.IGNBRK
+#    self.new[3] &= ~termios.IEXTEN
+    self.new[6][termios.VTIME] = wait
+    self.new[6][termios.VMIN] = 0
+
+  def __call__(self):
+    try:
+      self.activate()
+      return self.getraw()
+    finally:
+      self.deactivate()
+
+  def getraw(self):
+    return sys.stdin.read(1)
+
+  def activate(self):
+    termios.tcsetattr(self.fd, termios.TCSADRAIN, self.new)
+
+  def deactivate(self):
+    termios.tcsetattr(self.fd, termios.TCSADRAIN, self.old) #}}}
+
+def timeoffset(string):
+	import re
+	match = re.match(r'^([0-9]+(?:\.[0-9]+)?)([hms]?)$', string)
+	if match:
+		n, unit = match.groups()
+		factor = 3600 if unit == 'h' else (60 if unit == 'm' else 1)
+		return float(n) * factor
+	match = re.match(r'([0-9]+)', string)
+	if match:
+		return float(match.groups()[0])
+	return 0
+class TimeOption(optparse.Option):
+	TYPES = optparse.Option.TYPES + ('reltime', 'abstime')
+	TYPE_CHECKER = dict(optparse.Option.TYPE_CHECKER, reltime=lambda _,__,v: timeoffset(v))
+
+optparser = optparse.OptionParser(usage="Usage: %prog [options] [time]\n\nExit code = 1 when 'q' was pressed to exit, 0 otherwise.\nUsage example: egg 4.5h && mpc play",
+    option_class=TimeOption)
+#optparser.add_option('-d', help="count down from D", action="store", type="reltime", default=False)
+optparser.add_option('-s', help="stop after countdown elapsed", action="store_true")
+optparser.add_option('-c', help="continue after countdown elapsed", action="store_true")
+optparser.add_option('-q', help="quit after countdown elapsed (default)", action="store_true")
+optparser.add_option('-u', help="count up until infinity (default)", action="store_true")
+optparser.add_option('-d', help="count down instead of up (default if time given)", action="store_true")
+optparser.add_option('-t', '--tick', help="how many 1/100s between clock ticks", action="store", type="int", default=10)
+args, positional = optparser.parse_args()
+
+timer_start = time.time()
+timer_last_tick = timer_start
+tick = args.tick / 100.0
+
+if positional:
+	sign = -1 if args.d else (1 if args.u else -1)
+	timer_current = count_down = timeoffset(positional[0])
+else:
+	sign = -1 if args.d else (1 if args.u else +1)
+	timer_current = count_down = 0
+pause = False
+
+getch = Getch(wait=0)
+
+def sec_to_str(n):
+  sign = ' ' if n >= 0 else '-'
+  n = abs(n)
+  h = int(n / 3600)
+  m = int((n / 60) % 60)
+  s = int(n % 60)
+  try:
+    ms = int(str(n % 1)[2:5])
+  except:
+    ms = 0
+  return "{0}{1:0>2}:{2:0>2}:{3:0>2}.{4:0<3}   \b\b\b".format(sign, h, m, s, ms)
+
+try:
+  getch.activate()
+  while True:
+    t = time.time()
+    if not pause:
+      timer_current += sign * (t - timer_last_tick)
+    sys.stdout.write("\033[2K\r")
+    sys.stdout.write(sec_to_str(timer_current))
+    sys.stdout.flush()
+    if not pause:
+      if count_down and timer_current <= 0:
+        if args.c:
+          pass
+        elif args.s:
+          args.s = False
+          timer_current = 0
+          pause = True
+        else:
+          raise SystemExit(0)
+    timer_last_tick = t
+
+    ch = getch.getraw()
+    if ch == 'q':
+      raise SystemExit(1)
+    elif ch == 'p' or ch == ' ':
+      pause ^= True
+    elif ch == 'R':
+      timer_current = 0 if count_down is False else count_down
+    elif ch == 'c' or ch == '\x0c':
+      sys.stdout.write("\033[2J\033[H")
+    else:
+      time.sleep(tick)
+except KeyboardInterrupt:
+  pass
+finally:
+  getch.deactivate()
+  sys.stdout.write("\n")

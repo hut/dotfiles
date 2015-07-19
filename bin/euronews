@@ -1,0 +1,2 @@
+#!/bin/sh
+mpv --softvol=yes 'rtsp://ewns-hls-b-stream.hexaglobe.net/rtpeuronewslive/en_vidan350_rtp.sdp?605bd19295fc4208306d54d0b52c9f9a#54dc196c'

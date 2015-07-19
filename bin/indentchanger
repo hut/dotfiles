@@ -1,0 +1,22 @@
+#!/usr/bin/python
+
+import sys
+import re
+
+filename = sys.argv[1]
+current_spacecount = int(sys.argv[2])
+desired_spacecount = int(sys.argv[3])
+
+content = open(filename).read()
+
+old = " " * current_spacecount
+new = " " * desired_spacecount
+
+for line in content.split("\n"):
+    match = re.match(r"^((?:%s)+)(.*?)$" % old, line)
+    if match:
+        spaces, restoftheline = match.groups(1)
+        count = len(spaces) / current_spacecount
+        if count == int(count):
+            line = (new * int(count)) + restoftheline
+    print(line)

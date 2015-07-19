@@ -1,0 +1,8 @@
+#!/bin/sh
+if [ "$#" -eq 0 ]; then
+    echo "usage: mkmailbox <directory>"
+    exit
+fi
+for d in "$@"; do
+    mkdir -p "$d"/{cur,new,tmp}
+done
