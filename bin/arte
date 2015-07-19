@@ -1,0 +1,26 @@
+#!/bin/sh
+# Plays the german stream of arte (https://www.arte.tv)
+
+timeformat='%Y-%m-%d_%H-%M'
+directory=~/dl/arte
+fname="$directory"/"$(date +"$timeformat")".avi
+
+getit () {
+    mkdir -p "$directory"
+#    rtmpdump -v -r 'rtmp://artestras.fc.llnwd.net/artestras/s_artestras_scst_geoFRDE_de?s=1320220800&h=878865258ebb8eaa437b99c3c7598998'  -W http://www.arte.tv/flash/mediaplayer/mediaplayer.swf
+    rtmpdump -v -r 'rtmp://artestras.fc.llnwd.net/artestras/s_artestras_scst_geoFRDE_de?s=1320220800&h=878865258ebb8eaa437b99c3c7598998' -W 'http://www.arte.tv/arte_vp/jwplayer6/jwplayer.flash.6.11.4923.swf' "$@"
+}
+
+case "$1" in
+    --help|-h|help)
+        echo 'usage: arte [-b]'
+        echo '  -b     only download the stream in the background without'
+        echo '         starting a media player'
+        ;;
+    -b)
+        getit -o "$fname"
+        ;;
+    "")
+        getit -o - 2> /dev/null | tee "$fname" | mpv --softvol=yes -
+        ;;
+esac
