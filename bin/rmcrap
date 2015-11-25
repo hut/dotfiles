@@ -2,7 +2,6 @@
 prefix="/home/hut"
 rm -rf $prefix/.{adobe,dbus,cache/dconf,elinks,gnuplot-wxt,gnuplit_history,gstreamer-0.10,lesshst,lftp,links,macromedia,matplotlib,octave_hist,pulse,pulse-cookie,recently-used,rox,stellarium,thumbnails,w3m,xsel.log}
 test -f $prefix/log && test "$(stat -c%s $prefix/log)" -eq 0 && rm -f $prefix/log
-rm -f $prefix/.config/Trolltech.conf
 rm -f $prefix/.local/share/{webkit,recently-used.xbel}
 rm -f /home/.root/.dbus
 rmdir $prefix/{Desktop,Downloads}
