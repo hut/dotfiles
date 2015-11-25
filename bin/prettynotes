@@ -1,26 +1,30 @@
 #!/bin/sh
 
-function color {
+color () {
     echo -e "\E[0;38;5;$1m"
 }
 
 red_words='TODO|XXX|NOTE|BROKEN'
+green_words='SIG[A-Z0-9]+|^OUTPUT'
 reset="$(echo -e "\E[00m")"
-pattern='"[^"]*?"|\<[0-9]+|\$?\{.*?\}|#.*$|^[\*-] .*:|\$[A-Za-z0-9]+|'"$red_words"
+pattern='"[^"]*"|`[^`]+`|\<[0-9]\.?[0-9]*|\$?\{.*?\}|#.*$'\
+'|^[\*-] .*:|\$[A-Za-z0-9]+|'"$red_words|$green_words"
 
 sed -r "
     # Separate matches with newlines so patterns can be
     # applied individually and without interference
     s/($pattern)/\n\1\n/g
 
-    s/^[0-9]+$/$(color 210)&$reset/mg               # Numbers
-    s/^\".*?\"$/$(color 171)&$reset/mg              # Strings
+    s/^[0-9]\.?[0-9]*$/$(color 210)&$reset/mg       # Numbers
+    s/^\".*\"$/$(color 174)&$reset/mg               # Strings
+    s/^\`.+\`$/$(color 178)&$reset/mg               # Inline Code
     s/^\\\$?\{.*?\}$/$(color 171)&$reset/mg         # Curly Braces
-    s/^#.*$/$(color 240)&$reset/m                   # Comments
+    s/^#.*$/$(color 203)&$reset/m                   # Comments
     s/^>.*$/$(color 171)&$reset/m                   # Quotes
     s/^[*-] .*:$/$(color 119)&$reset/mg             # List items
     s/^\\\$[A-Za-z0-9]+$/$(color 214\;1)&$reset/mg  # Variables
-    s/^($red_words)$/$(color 197\;1)&$reset/mg      # Keywords
+    s/^($red_words)$/$(color 197\;1)&$reset/mg      # Keywords [red]
+    s/^($green_words)$/$(color 119\;1)&$reset/mg    # Keywords [green]
 
     # Remove all the newlines
     s/\n//g;
