@@ -10,12 +10,12 @@ MAXWORKSPACE = 10
 
 def get_tree():
     output = subprocess.check_output(["i3-msg", "-t", "get_tree"])
-    output = output.decode("utf-8")
+    output = output.decode("utf-8", errors='ignore')
     return json.loads(output)
 
 def raw_get_workspaces():
     output = subprocess.check_output(["i3-msg", "-t", "get_workspaces"])
-    output = output.decode("utf-8")
+    output = output.decode("utf-8", errors='ignore')
     return json.loads(output)
 
 def get_workspaces(tree, workspaces=None):
