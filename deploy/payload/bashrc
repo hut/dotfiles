@@ -1,0 +1,20 @@
+export EDITOR=vim
+
+export PS1='\[\033[01;30m\]\A \[\033[31m\]\u\[\033[34m\]@\h\[\033[00m\] \w \$ '
+[ -n "$RANGER_LEVEL" ] && PS1="$PS1"'(R) '
+
+alias sl=ls ls='ls --color' lsd='"ls" --color=always -Acr | tail -n 5' l='ls -l --color'\
+    ..='cd ..' ...='cd ../..' ....='cd ../../..' .....='cd ../../../..' ranger='. ranger' vim=vi \
+    p='until ping -i 0.5 4.2.2.4; do sleep 0.5; done' 
+
+alias githut='git -c user.name=hut -c user.email=hut@hut.pm -c user.colors=true -c merge.tool=vimdiff'
+
+function scan () { grep --color=auto "$@" -nr --color=always -I *; }
+
+case "$-" in *i*)
+    [ -n "$RANGER_LEVEL" ] && PS1="$PS1"'(in ranger) '
+    bind '"\C-o":"\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h. ranger\C-m"';;
+esac
+
+alias ,=sudo
+complete -cf sudo ,
