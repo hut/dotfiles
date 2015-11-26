@@ -1,0 +1,51 @@
+set modeline
+set mouse=a
+set ruler
+set incsearch
+set scrolloff=4
+set formatoptions-=r,o
+set nohlsearch
+set wildmenu
+
+set smartcase
+set smartindent
+
+set backupdir=~/.vim/swap,/var/tmp,/tmp
+set directory=~/.vim/swap,/var/tmp,/tmp
+
+set viminfo='100,<0,s10,h
+
+command! W w
+command! Q q
+command! Wq wq
+command! WQ wq
+
+vnoremap < <rv
+vnoremap > >rv
+map S :%s/
+vmap S :s/
+
+map Q <ESC>
+map ; :
+
+map \0 :set sw=4 ts=4 sts=4 noexpandtab<CR>
+map \1 :set sw=1 ts=1 sts=1 expandtab<CR>
+map \2 :set sw=2 ts=2 sts=2 expandtab<CR>
+map \3 :set sw=3 ts=3 sts=3 expandtab<CR>
+map \4 :set sw=4 ts=4 sts=4 expandtab<CR>
+
+fun! TabDetect()
+    let lnum = 1
+    while lnum < 200
+        let lnum = lnum + 1
+        if getline(lnum) =~ "^\t\t"
+            set sw=4 ts=4 sts=4 noexpandtab
+            return
+        endif
+    endwhile
+    set sw=4 ts=4 sts=4 expandtab
+endfun
+
+au Filetype * call TabDetect()
+
+syntax on

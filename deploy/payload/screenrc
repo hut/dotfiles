@@ -1,0 +1,7 @@
+hardstatus string "%?%h%:%t (screen #%n on %H)%?"
+caption always "%w"
+
+startup_message off
+
+bindkey -d "^[`" next
+bindkey -d "^[~" prev
