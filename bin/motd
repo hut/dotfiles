@@ -1,0 +1,83 @@
+#!/usr/bin/python
+
+import os.path
+import datetime
+import dateutil.parser
+import random
+
+def clr(string, fg=None, bg=None):
+    color = []
+    if fg: color.append("38;5;%s" % fg)
+    if bg: color.append("48;5;%s" % bg)
+    return "\033[%sm%s\033[0m" % (";".join(color), string)
+
+TR = "\u2510"
+BR = "\u2518"
+BL = "\u2514"
+TL = "\u250C"
+H = "\u2500"
+V = "\u2502"
+JT = "\u252C"
+JR = "\u2524"
+JL = "\u251C"
+JB = "\u2534"
+JC = "\u253C"
+UNDERLINE = "\u0332"
+
+plan = open(os.path.expanduser("~/.plan"), "r").read().rstrip("\n").split("\n")
+
+items = dict()
+
+def strtodate(string):
+    return dateutil.parser.parse(string).date()
+
+for item in plan:
+    date, name = item.split(" ", 1)
+    items[strtodate(date)] = name
+
+today = datetime.date.today()
+
+dates = list(sorted(items))
+
+startweek = today.    isocalendar()[1]
+endweek   = dates[-1].isocalendar()[1]
+
+WIDTH = 9
+CLR = 208
+CLR_TODAY = 24
+CLR_QUOTE = 211
+def dumpweek(date):
+    for weekday in range(7):
+        bg = None
+        fg = CLR
+        day = date + datetime.timedelta(weekday-date.weekday())
+        if day in items:
+            days_until = (day - today).days
+            fg = "%d;1" % CLR
+            if days_until > 1:
+                entry = "%s.%d" % (items[day][:WIDTH - len(str(days_until)) - 1], days_until)
+            else:
+                entry = items[day][:WIDTH]
+        else:
+            entry = " " * WIDTH
+        if day <= today:
+            bg = CLR_TODAY
+        print(clr(V + ("" if weekday == 0 else UNDERLINE), CLR, bg), end="")
+        print(clr("".join(c + UNDERLINE for c in entry), fg=fg, bg=bg), end="")
+    print(clr(V+UNDERLINE, CLR, bg))
+    #print(clr(V,3) + UNDERLINE)
+
+#print(TL + JT.join([H * WIDTH] * 7) + TR)
+date = startday = today - datetime.timedelta(today.weekday())
+oneweek = datetime.timedelta(weeks=1)
+while date <= dates[-1]:
+    #if date != today: print(JL + JC.join([H * WIDTH] * 7) + JR)
+    dumpweek(date)
+    date += oneweek
+#print(BL + JB.join([H * WIDTH] * 7) + BR)
+
+
+lines = open(os.path.expanduser('~/sync/edge/quotes/motd'), "r").read().split("\n")
+lines = "\n".join(l for l in lines if not l.startswith("#"))
+quotes = lines.split("\n\n")
+print(clr(random.choice(quotes).rstrip("\n"), fg=CLR_QUOTE))
