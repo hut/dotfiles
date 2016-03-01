@@ -47,6 +47,7 @@ CLR = 208
 CLR_TODAY = 24
 CLR_QUOTE = 211
 def dumpweek(date):
+    print(clr(V,CLR), end="")
     for weekday in range(7):
         bg = None
         fg = CLR
@@ -60,11 +61,11 @@ def dumpweek(date):
                 entry = items[day][:WIDTH]
         else:
             entry = " " * WIDTH
-        if day <= today:
+        if day == today:
             bg = CLR_TODAY
-        print(clr(V + ("" if weekday == 0 else UNDERLINE), CLR, bg), end="")
         print(clr("".join(c + UNDERLINE for c in entry), fg=fg, bg=bg), end="")
-    print(clr(V+UNDERLINE, CLR, bg))
+        print(clr(V+UNDERLINE,CLR), end="")
+    print("")
     #print(clr(V,3) + UNDERLINE)
 
 #print(TL + JT.join([H * WIDTH] * 7) + TR)
