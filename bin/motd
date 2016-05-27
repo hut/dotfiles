@@ -1,15 +1,22 @@
 #!/usr/bin/python
 
+import math
 import os.path
 import datetime
 import dateutil.parser
 import random
+import subprocess
+import time
 
 def clr(string, fg=None, bg=None):
     color = []
     if fg: color.append("38;5;%s" % fg)
     if bg: color.append("48;5;%s" % bg)
     return "\033[%sm%s\033[0m" % (";".join(color), string)
+
+MOTD = False
+CRAP = False
+CLOCK = True
 
 TR = "\u2510"
 BR = "\u2518"
@@ -23,6 +30,7 @@ JL = "\u251C"
 JB = "\u2534"
 JC = "\u253C"
 UNDERLINE = "\u0332"
+ETC = "\u2026"
 
 plan = open(os.path.expanduser("~/.plan"), "r").read().rstrip("\n").split("\n")
 
@@ -32,6 +40,8 @@ def strtodate(string):
     return dateutil.parser.parse(string).date()
 
 for item in plan:
+    if item.startswith("#"):
+        continue
     date, name = item.split(" ", 1)
     items[strtodate(date)] = name
 
@@ -44,27 +54,45 @@ endweek   = dates[-1].isocalendar()[1]
 
 WIDTH = 9
 CLR = 208
-CLR_TODAY = 24
+CLR_REGULAR = CLR
+CLR_IMPORTANT = 73
+CLR_TODAY_BG = 24
+CLR_TODAY = CLR
 CLR_QUOTE = 211
 def dumpweek(date):
     print(clr(V,CLR), end="")
     for weekday in range(7):
         bg = None
         fg = CLR
+        important = False
         day = date + datetime.timedelta(weekday-date.weekday())
         if day in items:
-            days_until = (day - today).days
-            fg = "%d;1" % CLR
-            if days_until > 1:
-                entry = "%s.%d" % (items[day][:WIDTH - len(str(days_until)) - 1], days_until)
+            description = items[day]
+            if description.endswith("!"):
+                description = description[:-1]
+                important = True
+                fg = "%d;1" % (CLR if day == today else CLR_IMPORTANT)
             else:
-                entry = items[day][:WIDTH]
+                fg = "%d;1" % CLR_REGULAR
+            if day == today:
+                fg = CLR_TODAY
+            days_until = (day - today).days
+            if days_until > 1 and important:
+                w = WIDTH - len(str(days_until))
+                if len(description) > w:
+                    description = description[:w][:-1] + ETC
+                entry = "{s:<{w}}{d}".format(
+                        s=description[:w],
+                        w=w,
+                        d=days_until)
+            else:
+                entry = "{s:<{w}}".format(s=description[:WIDTH], w=WIDTH)
         else:
             entry = " " * WIDTH
         if day == today:
-            bg = CLR_TODAY
+            bg = CLR_TODAY_BG
         print(clr("".join(c + UNDERLINE for c in entry), fg=fg, bg=bg), end="")
-        print(clr(V+UNDERLINE,CLR), end="")
+        print(clr(V+UNDERLINE,fg), end="")
     print("")
     #print(clr(V,3) + UNDERLINE)
 
@@ -78,7 +106,53 @@ while date <= dates[-1]:
 #print(BL + JB.join([H * WIDTH] * 7) + BR)
 
 
-lines = open(os.path.expanduser('~/sync/edge/quotes/motd'), "r").read().split("\n")
-lines = "\n".join(l for l in lines if not l.startswith("#"))
-quotes = lines.split("\n\n")
-print(clr(random.choice(quotes).rstrip("\n"), fg=CLR_QUOTE))
+if MOTD:
+    lines = open(os.path.expanduser('~/sync/edge/quotes/motd'), "r").read().split("\n")
+    lines = "\n".join(l for l in lines if not l.startswith("#"))
+    quotes = lines.split("\n\n")
+    print(clr(random.choice(quotes).rstrip("\n"), fg=CLR_QUOTE))
+#else:
+    #print()
+
+if CRAP:
+    wcl = lambda f: open(os.path.expanduser("~/sync/edge/"+f), "r").read().count("\n")
+    sc, fl = wcl("recent_successes"), wcl("recent_failures")
+    limit, largest = 10, max(sc, fl)
+    if largest > limit:
+        sc *= limit / largest
+        fl *= limit / largest
+    print(clr("+" * math.ceil(sc), fg='2'))
+    print(clr("-" * math.ceil(fl), fg='1'))
+
+if CLOCK:
+    def get_suffix(d):
+        return 'th' if 11<=d<=13 else {1:'st',2:'nd',3:'rd'}.get(d%10, 'th')
+    suffix = get_suffix(int(time.strftime('%d')))
+    free_mem = int(open("/proc/meminfo", "r").read().split("\n")[2].split()[1]) / 1024**2
+    load = open("/proc/loadavg", "r").read().split()[1]
+    date = time.strftime("%A, %B %d" + suffix + ", w=%U, d=%j, %s")
+    print(clr("{date} 0x{0:x} mem={free_mem:.1f}G load={load}" \
+            .format(int(time.time()), **locals()), fg='76'))
+    places = [
+        ('LA-7', 'America/Los_Angeles'),
+        ('NY-5', 'America/New_York'),
+        ('\033[1mDE+1', 'Europe/Berlin'),
+        ('\033[21mMOS+3', 'Europe/Moscow'),
+        ('CH+8', 'Asia/Hong_Kong'),
+        ('JP+9', 'Asia/Tokyo'),
+    ]
+    output = []
+    old_zone = os.environ.get("TZ", None)
+    for name, zone in places:
+        os.environ['TZ'] = zone
+        time.tzset()
+        output.append(name + time.strftime("=%H%M"))
+    if old_zone is None:
+        del os.environ['TZ']
+    else:
+        os.environ['TZ'] = old_zone
+    time.tzset()
+
+    print(clr("  ".join(output), fg='76'))
+
+subprocess.call(['task', 'rc.verbose=', 'titleonly'])
