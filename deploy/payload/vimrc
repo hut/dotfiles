@@ -1,5 +1,5 @@
+syntax on
 set modeline
-set mouse=a
 set ruler
 set incsearch
 set scrolloff=4
@@ -13,19 +13,25 @@ set smartindent
 set backupdir=~/.vim/swap,/var/tmp,/tmp
 set directory=~/.vim/swap,/var/tmp,/tmp
 
+" Don't write copy&paste buffer into files, as to not leak sensitive data
 set viminfo='100,<0,s10,h
+
+if exists("&mouse")
+    set mouse=a
+endif
 
 command! W w
 command! Q q
 command! Wq wq
 command! WQ wq
 
-vnoremap < <rv
-vnoremap > >rv
+vnoremap < <<
+vnoremap > >>
 map S :%s/
 vmap S :s/
 
 map Q <ESC>
+map q: <ESC>
 map ; :
 
 map \0 :set sw=4 ts=4 sts=4 noexpandtab<CR>
@@ -34,7 +40,24 @@ map \2 :set sw=2 ts=2 sts=2 expandtab<CR>
 map \3 :set sw=3 ts=3 sts=3 expandtab<CR>
 map \4 :set sw=4 ts=4 sts=4 expandtab<CR>
 
-fun! TabDetect()
+map \e :edit .<CR>
+map \w :Explore<CR>
+map \p :set paste!<CR>:set ruler<CR>:echo "psate = " &paste<CR>
+map \M :silent !markdown % > %.html<CR>
+map \SE :set spell spelllang=en_us<CR>
+map \SD :set spell spelllang=de<CR>
+map \SS :set nospell<CR>
+
+if has("nvim")
+    map \b :source ~/.config/nvim/init.vim<CR>
+    map \B :edit ~/.config/nvim/init.vim<CR>
+else
+    map \b :source ~/.vimrc<CR>
+    map \B :edit ~/.vimrc<CR>
+endif
+
+
+function! TabDetect()
     let lnum = 1
     while lnum < 200
         let lnum = lnum + 1
@@ -45,7 +68,13 @@ fun! TabDetect()
     endwhile
     set sw=4 ts=4 sts=4 expandtab
 endfun
-
 au Filetype * call TabDetect()
 
-syntax on
+function! s:DiffWithSaved()
+  let filetype=&ft
+  diffthis
+  vnew | r # | normal! 1Gdd
+  diffthis
+  exe "setlocal bt=nofile bh=wipe nobl noswf ro ft=" . filetype
+endfunction
+command! DiffSaved call s:DiffWithSaved()
