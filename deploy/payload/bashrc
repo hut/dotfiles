@@ -13,6 +13,7 @@ alias sl=ls ls='ls --color' lsd='"ls" --color=always -Acr | tail -n 5' l='ls -l 
 #alias ranger='. ranger' vim=vi tag='tig --all'
 alias githut='git -c user.name=hut -c user.email=hut@hut.pm -c user.colors=true -c merge.tool=vimdiff'
 alias dps='docker ps --format="table {{.ID}}\t{{.Image}}\t{{.Status}}\t{{.Names}}"'
+alias tag='tig --all'
 
 function scan () { grep --color=auto "$@" -nr --color=always -I *; }
 
