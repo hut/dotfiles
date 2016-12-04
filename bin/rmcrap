@@ -5,3 +5,6 @@ test -f $prefix/log && test "$(stat -c%s $prefix/log)" -eq 0 && rm -f $prefix/lo
 rm -f $prefix/.local/share/{webkit,recently-used.xbel}
 rm -f /home/.root/.dbus
 rmdir $prefix/{Desktop,Downloads}
+rm -f $prefix/maxout_*
+
+sudo umount "$prefix"/.gvfs
