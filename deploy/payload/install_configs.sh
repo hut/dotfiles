@@ -11,3 +11,6 @@ cp --backup=numbered -v rangerrc ~/.config/ranger/rc.conf
 
 t='source ~/.bashrc_hut'
 grep -q -F "$t" ~/.bashrc || echo "$t" >> ~/.bashrc
+
+mkdir -p ~/.terminfo/r
+cp -fv rxvt-unicode-256color ~/.terminfo/r/

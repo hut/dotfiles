@@ -17,4 +17,5 @@ function make_output() {
     echo ". ~/.bashrc_hut"
 }
 
+cp /usr/share/terminfo/r/rxvt-unicode-256color payload/
 make_output | tee copied.tmp | xsel -i
