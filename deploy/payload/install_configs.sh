@@ -1,5 +1,5 @@
 #!/bin/sh
-echo "${0%/*}"
+echo "${0%/*}"  # TODO: figure out what this line does & write comment
 cd "${0%/*}" || exit
 cp --backup=numbered -v vimrc ~/.vimrc
 cp --backup=numbered -v screenrc ~/.screenrc
