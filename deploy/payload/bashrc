@@ -70,3 +70,10 @@ function bmark {
 		ln -sf "$(pwd)" "$BMDIR/$1"
 	fi
 }
+
+# Clear config file backups
+function clear_config_file_backups {
+	for f in "$HOME/.vimrc" "$HOME/.tmux.conf" "$HOME/.bashrc_hut" "$HOME/.screenrc"; do
+		rm -f "$f".\~*\~
+	done
+}
