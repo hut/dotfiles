@@ -3,7 +3,7 @@
 function make_script() {
     cat script.sh
     echo 'get_payload() {'
-    echo '    base64 -d <<EOF'
+    echo '    base64 -di <<EOF'
     tar --create --gzip payload | base64
     echo 'EOF'
     echo '}'
@@ -11,7 +11,7 @@ function make_script() {
 }
 
 function make_output() {
-    echo " ( base64 -d | sh -s ) <<EOF"
+    echo " ( base64 -di | sh -s ) <<EOF"
     make_script | tee compiled_script.tmp | base64
     echo "EOF"
     echo ". ~/.bashrc_hut"
