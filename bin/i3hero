@@ -6,6 +6,8 @@ import json
 import sys
 from pprint import pprint
 
+WORKSPACE_NAME_MAP = { 1: '1:web' }
+
 MAXWORKSPACE = 10
 
 def get_tree():
@@ -43,6 +45,8 @@ def get_current_workspace(tree, workspaces=None):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("action", nargs=1)
+    parser.add_argument("arg1", nargs='?', default=-1)
+    parser.add_argument("arg2", nargs='?', default=9999)
     arg = parser.parse_args()
     action = arg.action[0]
 
@@ -54,8 +58,9 @@ if __name__ == "__main__":
         tree = get_tree()
         workspaces = [ws["name"] for ws in get_workspaces(tree)]
         for i in range(1, len(workspaces) + 1):
-            if str(i) not in workspaces:
-                subprocess.call(["i3-msg", "workspace", str(i)])
+            mapped = str(WORKSPACE_NAME_MAP.get(i, i))
+            if mapped not in workspaces:
+                subprocess.call(["i3-msg", "workspace", mapped])
                 break
     elif action == "goto_empty_workspace":
         tree = get_tree()
@@ -86,3 +91,39 @@ if __name__ == "__main__":
                 n = str((workspace['num'] - 2) % MAXWORKSPACE + 1)
                 subprocess.call(["i3-msg", "move", "container", "to", "workspace", n+";", "workspace", n])
                 break
+#    elif action == "goto_next_workspace10":
+#        for workspace in raw_get_workspaces():
+#            if workspace['focused']:
+#                subprocess.call(["i3-msg", "workspace", str(workspace['num'] % MAXWORKSPACE + 1)])
+#                break
+#    elif action == "goto_prev_workspace10":
+#        for workspace in raw_get_workspaces():
+#            if workspace['focused']:
+#                subprocess.call(["i3-msg", "workspace", str((workspace['num'] - 2) % MAXWORKSPACE + 1)])
+#                break
+#    elif action == "moveto_next_workspace10":
+#        for workspace in raw_get_workspaces():
+#            if workspace['focused']:
+#                n = str(workspace['num'] % MAXWORKSPACE + 1)
+#                subprocess.call(["i3-msg", "move", "container", "to", "workspace", n+";", "workspace", n])
+#                break
+#    elif action == "moveto_prev_workspace10":
+#        for workspace in raw_get_workspaces():
+#            if workspace['focused']:
+#                n = str((workspace['num'] - 2) % MAXWORKSPACE + 1)
+#                subprocess.call(["i3-msg", "move", "container", "to", "workspace", n+";", "workspace", n])
+#                break
+#    elif action == "goto_next_workspace_inrange":
+#        range_ = range(int(arg.arg1), int(arg.arg2))
+#        workspaces = [workspace for workspace in raw_get_workspaces() if
+#                workspace['num'] in range_]
+#        for workspace in workspaces:
+#            if workspace['focused']:
+#                n = str((workspace['num'] - 2) % len(workspaces) + 1)
+#                print(((workspace['num'] - 1) % (len(workspaces) - 1)) + 1)
+#                #subprocess.call(["i3-msg", "workspace", str((workspace['num'] - 2) % MAXWORKSPACE + 1)])
+#                break
+
+        #print("\n".join(repr(d) for d in workspaces))
+        #for workspace in raw_get_workspaces():
+            #if workspace['focused']:
