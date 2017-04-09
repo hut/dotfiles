@@ -123,7 +123,7 @@ try:
     else:
       time.sleep(tick)
 except KeyboardInterrupt:
-  pass
+  raise SystemExit(1)
 finally:
   getch.deactivate()
   sys.stdout.write("\n")
