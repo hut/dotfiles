@@ -66,10 +66,17 @@ xkb_symbols "basic" {
     key <AD06> { [ y, Y, udiaeresis, Udiaeresis ] };
     key <AD09> { [ o, O, odiaeresis, Odiaeresis ] };
     key <AD01> { [ q, Q, adiaeresis, Adiaeresis ] };
-    key <AC02> { [ s, S, ssharp, paragraph ] };
+    key <AC02> { [ s, S, ssharp, Greek_SIGMA ] };
     key <AD05> { [ t, T, trademark, trademark ] };
     key <AD04> { [ r, R, registered, registered ] };
     key <AB03> { [ c, C, copyright, copyright ] };
+
+    // Greek:
+    key <AC01> { [   a, A, Greek_alpha, Greek_ALPHA   ] };
+    key <AB05> { [   b, B, Greek_beta, Greek_BETA  ] };
+    key <AC05> { [   g, G, Greek_gamma, Greek_GAMMA  ] };
+    key <AC03> { [   d, D, Greek_delta, Greek_DELTA  ] };
+    key <AD10> { [   p, P, Greek_pi, Greek_PI  ] };
 
     // Special Keys:
     key <AE01> { [ 1, exclam,     onesuperior,   onesubscript ] };
@@ -77,7 +84,12 @@ xkb_symbols "basic" {
     key <AE03> { [ 3, numbersign, threesuperior, threesubscript ] };
     key <AE04> { [ 4, dollar,     EuroSign,      yen ] };
     key <AE10> { [ 0, parenright, zerosuperior,  zerosubscript ] };
+    key <AD03> { [ e, E,          elementof,     heart ] };
+    key <AC10> { [ semicolon, colon, lessthanequal, includedin ] };
+    key <AC11> { [ apostrophe, quotedbl, greaterthanequal, includes ] };
+    key <AB10> { [ slash, question, logicaland, logicalor ] };
 
+    key <BKSL> { [ backslash, bar, enfilledcircbullet, emfilledcircle ] };
     key <AD11> { [ bracketleft,	braceleft, downarrow, leftarrow ] };
     key <AD12> { [ bracketright, braceright, uparrow, rightarrow ] };
 
@@ -85,12 +97,14 @@ xkb_symbols "basic" {
     key <AB09> { [ period, greater, includes,    union ] };
 
     key <TLDE> { [ grave, asciitilde, degree, deadgrave ] };
-    key <AE11> { [ minus, underscore, notequal, radical ] };
-    key <AE12> { [ equal, plus, rightarrow, infinity ] };
+    key <AE11> { [ minus, underscore, infinity, radical ] };
+#    key <AE11> { [ minus, underscore, rightarrow, radical ] };
+    key <AE12> { [ equal, plus, notequal, U2248 ] };
 
     key <CAPS> { [ Escape ] };
 
     #include "capslock(swapescape)"
+    include "altwin(swap_lalt_lwin)"
     include "level3(ralt_switch)"
 };
 
