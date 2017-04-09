@@ -1,18 +1,22 @@
-Xft.dpi: 90
+*.dpi: 130
 
 urxvt*lineSpace: 0
-urxvt*letterSpace: -1
+#urxvt*letterSpace: -1
 urxvt*internalBorder: 2
 *titeInhibit: false
 *titeModes: 64
 
 Xft.antialias: 1
+Xft.autohint: 0
+!Xft.hinting: 1
+!Xft.hintstyle: hintfull
+!Xft.ldcfilter: lcddefault
 
 urxvt*urgentOnBell: true
 urxvt*utf8:1
 urxvt*scrollBar: false
-urxvt*shading: 3
-urxvt*transparent: true
+#urxvt*shading: 3
+#urxvt*transparent: true
 urxvt*savelines: 8192
 
 urxvt*perl-lib: /home/hut/.config/urxvt/
@@ -20,28 +24,44 @@ urxvt*perl-ext: url-select,font-size
 
 urxvt*keysym.M-Escape: perl:url-select:activate
 urxvt*keysym.M-u: perl:url-select:select_next
-urxvt*font-size.step: 4
+urxvt*font-size.step: 2
 
-urxvt*keysym.Mod4-1: perl:font-size:decrease
-urxvt*keysym.Mod4-2: perl:font-size:increase
+urxvt*keysym.Mod4-8: perl:font-size:reset
+urxvt*keysym.Mod4-9: perl:font-size:decrease
+urxvt*keysym.Mod4-0: perl:font-size:increase
 urxvt*keysym.Mod4-3: perl:font-size:reset
-urxvt*keysym.Mod4-4: command:\033]710;xft:Monospace:pixelsize=12,xft:Meiryo:pixelsize=12\007\033]711;xft:Monospace:pixelsize=12:bold,xft:Meiryo:pixelsize=12:bold\007
-urxvt*keysym.Mod4-5: command:\033]710;xft:Yelena:pixelsize=12, xft:Meiryo:pixelsize=12\007\033]711;xft:Yelena:pixelsize=12:bold, xft:Meiryo:pixelsize=12:bold\007
+#urxvt*keysym.Mod4-4: command:\033]710;xft:Monospace:pixelsize=12,xft:Meiryo:pixelsize=12\007\033]711;xft:Monospace:pixelsize=12:bold,xft:Meiryo:pixelsize=12:bold\007
+#urxvt*keysym.Mod4-5: command:\033]710;xft:Yelena:pixelsize=12, xft:Meiryo:pixelsize=12\007\033]711;xft:Yelena:pixelsize=12:bold, xft:Meiryo:pixelsize=12:bold\007
 
 urxvt*urlLauncher: x-www-browser
 urxvt*underlineURLs: true
 
 urxvt*foreground: rgb:ff/ff/ff
 urxvt*colorBD: rgb:88/88/88
-urxvt*background: 0
+urxvt*background: rgb:00/00/00
 
-urxvt*font:xft:Yelena:pixelsize=12,xft:Meiryo:pixelsize=12
-urxvt*boldFont:xft:Yelena:pixelsize=12:bold,xft:Meiryo:pixelsize=12:bold
+urxvt*font:xft:Monospace:pixelsize=16
+urxvt*boldFont:xft:Monospace:pixelsize=16:bold
 
 xterm*background:white
 xterm*foreground:black
 xterm*faceName:xft:Monospace:pixelsize=16
 
+!gnuplot*background: rgb:22/22/22
+!gnuplot*textColor: cyan
+!gnuplot*borderColor: rgb:33/99/33
+!gnuplot*axisColor: red
+!gnuplot*line1Color: red
+!gnuplot*line2Color: green
+!gnuplot*line3Color: blue
+!gnuplot*line4Color: magenta
+!gnuplot*line5Color: cyan
+!gnuplot*line6Color: sienna
+!gnuplot*line7Color: orange
+!gnuplot*line8Color: coral
+
+
+!! Theme Twenty-One (modified)
 !--Black--
 *color0:     rgb:00/00/00
 *color8:     rgb:4f/4f/4f
