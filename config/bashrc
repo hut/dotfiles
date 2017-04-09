@@ -3,7 +3,7 @@ source ~/repos/dotfiles/deploy/payload/bashrc
 ####################################
 # Variables {{{
 export systemini=~/.config/system.ini
-export PYTHONPATH="/home/hut/repos/dotfiles/"
+export PYTHONPATH="$HOME/repos/dotfiles/pythonlib/importpath"
 export WEECHAT_HOME="~/.config/weechat"
 export JAVAFX_HOME="/usr/lib/jvm/java-8-openjdk/jre/lib/ext/jfxrt.jar"
 export IPYTHONDIR="$HOME/.config/ipython"
