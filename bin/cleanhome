@@ -13,9 +13,6 @@ DRY = bool(set(['-d', '--dry', 'dry']) & set(sys.argv[1:]))
 TARGET = "/home/hut/stuff/.autoclean"
 RE = r".+\.%s(?:\.part|~|_)?$"
 
-EXCEPT = {"~/fez.png", "~/rick.pdf", "~/rugar - a scent of europe.mp3", "~/caffeine.svg"}
-EXCEPT = set(map(os.path.expanduser, EXCEPT))
-
 def handle(directory, extensions):
     if isinstance(extensions, str):
         extensions = extensions.split(",")
@@ -24,8 +21,7 @@ def handle(directory, extensions):
         targetdir = os.path.join(TARGET, directory,
                                  time.strftime("%Y-%m-%d"), "")
         for filename in os.listdir(path):
-            if any(re.search(RE % ext, filename, re.I) for ext in extensions) \
-                    and os.path.join(path, filename) not in EXCEPT:
+            if any(re.search(RE % ext, filename, re.I) for ext in extensions):
                 params = ["mv", "--backup=numbered",
                           os.path.join(path, filename), targetdir]
                 os.makedirs(targetdir, exist_ok=True)
