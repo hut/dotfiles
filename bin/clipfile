@@ -1,0 +1,19 @@
+#!/bin/sh
+if [ "$1" == '--help' -o "$1" == '-h' ]; then
+    echo 'usage: clipfile <filename>'
+    echo
+    echo 'This generates a script that base64-encodes the given file and'
+    echo 'copies that script into your copy&paste buffer.  Pasting it into'
+    echo 'another shell recreates the file with the same file name.'
+    exit
+fi
+
+FILENAME="$1"
+
+function generate_script () {
+    echo " base64 -di > $FILENAME <<EOF"
+    base64 "$FILENAME"
+    echo "EOF"
+}
+
+generate_script | xclip -i
