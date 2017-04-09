@@ -6,7 +6,8 @@ import json
 import sys
 from pprint import pprint
 
-WORKSPACE_NAME_MAP = { 1: '1:web' }
+WORKSPACE_NAME_MAP = { }
+#WORKSPACE_NAME_MAP = { 1: '1:web' }
 
 MAXWORKSPACE = 10
 

@@ -17,14 +17,12 @@ export IPYTHONDIR="$HOME/.config/ipython"
 # Aliases {{{
 alias db=dashboard
 alias vim=nvim
-alias andr='ranger /home/hut/stuff/video/Andromeda'
-alias campbell='ranger-cd /home/hut/sync/books/biology/campbell_split'
-alias termine='task rc.context= due.any:'
 alias out='tmux new-session -A -s out'
 alias whatsmyip='dig +short myip.opendns.com \@resolver1.opendns.com'
 alias sd=systemctl
+alias rot13='tr a-zA-Z n-za-mN-ZA-M'
 
-alias cal='cal -m'
+alias cal='cal -3'
 
 imbusy() {
     test -f ~/.pomodoro_session || return 1

@@ -8,6 +8,10 @@ import random
 import subprocess
 import time
 
+PLAN_PATH = "~/sync/notes/vimwiki/plan.wiki" # "~/.plan"
+MAX_LOOKAHEAD_DAYS = 92#31
+MAX_WEEKS_TO_DISPLAY = 15
+
 def clr(string, fg=None, bg=None):
     color = []
     if fg: color.append("38;5;%s" % fg)
@@ -33,7 +37,7 @@ UNDERLINE = "\u0332"
 ETC = "\u2026"
 
 try:
-    plan = open(os.path.expanduser("~/.plan"), "r").read().rstrip("\n").split("\n")
+    plan = open(os.path.expanduser(PLAN_PATH), "r").read().rstrip("\n").split("\n")
 except:
     plan = None
 
@@ -48,7 +52,10 @@ if plan:
         if item.startswith("#"):
             continue
         date, name = item.split(" ", 1)
-        items[strtodate(date)] = name
+        date = strtodate(date)
+
+        if (date - today).days < MAX_LOOKAHEAD_DAYS:
+            items[date] = name
 
 
     dates = list(sorted(items))
@@ -104,7 +111,7 @@ if plan:
     date = startday = today - datetime.timedelta(today.weekday())
     oneweek = datetime.timedelta(weeks=1)
     count = 0
-    while date <= dates[-1] and count < 15:
+    while date <= dates[-1] and count < MAX_WEEKS_TO_DISPLAY:
         #if date != today: print(JL + JC.join([H * WIDTH] * 7) + JR)
         dumpweek(date)
         date += oneweek
