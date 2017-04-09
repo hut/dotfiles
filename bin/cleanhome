@@ -1,0 +1,46 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""poop"""
+
+import sys
+import os.path
+import re
+import time
+from subprocess import call
+
+
+DRY = bool(set(['-d', '--dry', 'dry']) & set(sys.argv[1:]))
+TARGET = "/home/hut/stuff/.autoclean"
+RE = r".+\.%s(?:\.part|~|_)?$"
+
+EXCEPT = {"~/fez.png", "~/rick.pdf", "~/rugar - a scent of europe.mp3", "~/caffeine.svg"}
+EXCEPT = set(map(os.path.expanduser, EXCEPT))
+
+def handle(directory, extensions):
+    if isinstance(extensions, str):
+        extensions = extensions.split(",")
+
+    for path in DIRS:
+        targetdir = os.path.join(TARGET, directory,
+                                 time.strftime("%Y-%m-%d"), "")
+        for filename in os.listdir(path):
+            if any(re.search(RE % ext, filename, re.I) for ext in extensions) \
+                    and os.path.join(path, filename) not in EXCEPT:
+                params = ["mv", "--backup=numbered",
+                          os.path.join(path, filename), targetdir]
+                os.makedirs(targetdir, exist_ok=True)
+                call(["echo"] + params if DRY else params)
+
+DIRS = [os.path.expanduser(d) for d in "~ ~/dl".split()]
+
+handle("vids", "flv,avi,mov,mkv,mp4,ogv,3gp,webm,mpeg,mpg")
+handle("images", "png,svg,gif,webp,jpg,jpeg,jpe,bmp")
+handle("documents", "pdf,xoj,gnumeric,odt,ppt")
+handle("music", "mp3,ogg,wmv,wav,m4a,opus")
+handle("torrents", "torrent,nzb")
+handle("maxima", "wxmx")
+
+DIRS = [os.path.expanduser(d) for d in "~".split()]
+
+handle("work", "xcf,py,cpp,sh,scm,pl,html?,r,c,dia,ttf,rb,m")
+handle("notes", "notes?,mockup,idea,letter,protokoll,quotes,guide,overview,list,dream")
