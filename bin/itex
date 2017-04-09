@@ -1,0 +1,47 @@
+#!/bin/bash
+# Generates an image from a file with latex content, automatically wrapping it
+# in some documentclass etc.
+
+test -f "$1" || { echo "Target doesn't exist."; exit; }
+test -r "$1" || { echo "Target unreadable."; exit; }
+
+cwd="$(pwd)"
+target="$(pwd)/$(echo "$1" | sed 's/\.[^.]*$/.png/')"
+tmpfile="/tmp/itex.tex"
+
+# Add some preamble
+cat <<EOF > "$tmpfile"
+\documentclass[12pt]{article}
+\special{papersize=3in,5in}
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb,amsmath,amsfonts,color}
+\pagestyle{empty}
+\setlength{\parindent}{0in}
+\newcommand{\mat}[1]{\begin{pmatrix}#1\end{pmatrix}}
+\newcommand{\ary}[2]{\left[\begin{array}{#1}#2\end{array}\right]}
+\newcommand{\fncdef}[1]{\left\{\begin{array}{l l}#1\end{array}\right.}
+\newcommand{\red}[1]{\color{red}#1\color{white}}
+\newcommand{\cyan}[1]{\color{cyan}#1\color{white}}
+\newcommand{\yellow}[1]{\color{yellow}#1\color{white}}
+\newcommand{\green}[1]{\color{green}#1\color{white}}
+\newcommand{\pink}[1]{\color{magenta}#1\color{white}}
+\renewcommand{\arraystretch}{1.05}
+\begin{document}
+\pagecolor{black}
+\color{white}
+EOF
+
+# Add the rest of the file
+cat "$1" >> "$tmpfile"
+
+# Finish up
+echo "\end{document}" >> "$tmpfile"
+
+cd "$(dirname "$tmpfile")"
+latex -interaction=nonstopmode "$tmpfile"
+dvipng -D 140 -T tight -o "$target" itex.dvi
+#dvipng -D 140 -T tight -bg Transparent -o "$target" itex.dvi
+
+if [ "$2" == "-e" ]; then
+  rifle "$target"
+fi
