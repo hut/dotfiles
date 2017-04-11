@@ -328,12 +328,18 @@ function - { cd -; }
 alias d='git diff HEAD'
 alias d-c='git diff --cached'
 alias pa='git add -p'
-alias commit='git commit -S'
 alias c='git checkout'
 alias tag='tig --all'
 alias tlg='tig --branches'
 alias b='git branch'
 alias mt='git mergetool --tool=vimdiff'
+commit () {
+    if [ "$(basename "$(git rev-parse --show-toplevel)")" == ranger ]; then
+        git commit -S "$@"
+    else
+        git commit "$@"
+    fi
+}
 
 # Starting X
 alias x='if [ -z "$DISPLAY" ]; then xinit -- "$@" & clear; exit; else echo x already running; fi'
