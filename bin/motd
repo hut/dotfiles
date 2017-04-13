@@ -168,4 +168,7 @@ if CLOCK:
 
     print(clr("  ".join(output), fg='76'))
 
-subprocess.call(['task', 'rc.verbose=', 'titleonly'])
+if os.path.exists(os.path.expanduser("~/repos/dotfiles")):
+    output = subprocess.check_output('cd ~/repos/dotfiles; git status --porcelain', shell=True)
+    print(output.decode("utf-8").rstrip())
+#subprocess.call(['task', 'rc.verbose=', 'titleonly'])
