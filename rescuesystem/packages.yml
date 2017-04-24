@@ -1,0 +1,61 @@
+packages:
+  # System Tools
+  - man
+  - less
+  - aptitude
+  - openssh-server
+  - busybox
+  - cryptsetup
+  - sudo
+  - htop
+  - ntfs-3g
+  - mdadm # RAID setup
+  - lsb-release
+  - dropbear
+  - curl
+  - wget
+  - iotop
+  - iftop
+  - powertop
+  - wpasupplicant
+  - sshfs
+  # Programming Languages
+  - perl
+  - python
+  - ruby
+  - gcc
+  - make
+  - cmake
+  - sqlite
+  # User Applications
+  - vim
+  - mercurial
+  - git
+  - tig
+  - cvs
+  - subversion
+  - syncthing
+  - unison
+  - gnupg
+  - w3m
+  - elinks
+  - lynx
+  - screen
+  - tmux
+  - hexedit
+  - unrar-free
+  - unzip
+  - atool
+  - rsync
+  - irssi
+  # Diagnostics/Repair tools
+  - extundelete
+  - testdisk
+  - hdparm
+  - nmap
+  - tcpdump
+  - parted
+  - lsof
+  - rtmpdump
+  - strace
+  - nikto

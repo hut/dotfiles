@@ -1,0 +1,35 @@
+- hosts: usb_stick
+  vars:
+    - distro: unstable
+    - mirror: http://debian.netcologne.de/debian/
+      #- packages: [] # loaded from packages.yml
+    - UUID: XXX # set from command line
+    - packages:
+        - vim
+        - tmux
+        - htop
+        - cryptsetup
+        - hdparm
+        - lsof
+        - strace
+        - grub
+        - nmap
+        - tcpdump
+        - linux-image-686
+        - grub
+  tasks:
+    - name: install packages
+      apt: pkg='{{item}}' state=present update_cache=yes
+      with_items: '{{ packages }}'
+    - name: copy system files
+      copy:
+        src="files/{{ item }}"
+        dest="/{{ item }}"
+      with_items:
+        - etc/fstab
+        - etc/hostname
+#    - name: insert UUID into fstab
+#      lineinfile:
+#        dest: /etc/fstab
+#        regexp: "^UUID=[^ ]* / "
+#        line: UUID={{ UUID }} / auto rw,noatime 0 1
