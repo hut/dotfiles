@@ -59,3 +59,4 @@ packages:
   - rtmpdump
   - strace
   - nikto
+  - whois
