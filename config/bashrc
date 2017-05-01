@@ -362,7 +362,7 @@ alias x2='if [ -z "$DISPLAY" ]; then cd; X & sleep 1; DISPLAY=:0 exec sh .xinitr
 scream() { setsid blink; echo -ne "\E[38;5;46m"; toilet --font future "${1:-WORK, INSECT!}"; }
 irc() { if imbusy; then sleep 0.5; scream; else ssh hut.pm -t tmux attach; fi; }
 #mutt() { if imbusy; then scream; else command mutt "$@"; fi }
-sticky() { if imbusy; then scream; else command sticky; fi }
+sticky() { if imbusy; then scream; else tmux_session sticky; fi }
 ncmpcpp() { if imbusy; then scream; else command ncmpcpp "$@"; fi }
 #alias irc='ssh hut.pm -t tmux attach'
 alias ddr='until ping -c 1 -i 0.2 4.2.2.4 >& /dev/null; do echo -n .; sleep 1; done; ssh -p 1338 hut.dyndns.org'
@@ -537,3 +537,4 @@ test -f ~/.bashrc.local && source ~/.bashrc.local
 #complete -F _Moo -o filenames n ne
 #complete -F _TabComplete_c -o filenames e ee
 #
+#}}}
