@@ -3,3 +3,4 @@
 *.pyo
 deploy/compiled_script.tmp
 deploy/copied.tmp
+pythonlib/data
