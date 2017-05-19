@@ -26,7 +26,7 @@ alias cal='cal -3'
 
 dotcommit () {
     cd ~/repos/dotfiles/
-    githut add -a
+    githut add -A
     githut commit -a --verbose -e -m "minor change" && githut push
 }
 
