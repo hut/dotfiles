@@ -1,0 +1,31 @@
+map <Button5> toggle_fullscreen
+unmap q
+map Q quit
+map g goto top
+map w adjust_window width
+map d scroll half-down
+map u scroll half-up
+map r reload
+map o toggle_index
+map [index] o toggle_index
+map R rotate
+set scroll-step 100
+set adjust-open width
+#adjust_window width
+map = zoom in
+map + zoom default
+map <End> abort
+
+
+#map = toggle_statusbar
+#set statusbar-bg "#ffffff"
+#set statusbar-fg "#999999"
+set selection-notification false
+
+map [fullscreen] j navigate next
+map [fullscreen] k navigate previous
+map [fullscreen] n navigate next
+map [fullscreen] p navigate previous
+map [fullscreen] d navigate next
+map [fullscreen] u navigate previous
+map [fullscreen] <Space> navigate next
