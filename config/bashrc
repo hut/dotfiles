@@ -24,6 +24,12 @@ alias rot13='tr a-zA-Z n-za-mN-ZA-M'
 
 alias cal='cal -3'
 
+dotcommit () {
+    cd ~/repos/dotfiles/
+    githut add -a
+    githut commit -a --verbose -e -m "minor change" && githut push
+}
+
 imbusy() {
     test -f ~/.pomodoro_session || return 1
     t1="$(stat --printf='%Y' ~/.pomodoro_session)"
