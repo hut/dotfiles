@@ -1,0 +1,73 @@
+snippet main
+	#include <stdio.h>
+
+	int main(int argc, const char *argv[])
+	{
+		${0}
+		return 0;
+	}
+snippet html
+	<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+	<html>
+		<head>
+			<title>${1}</title>
+			<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+			<meta name="viewport" content="width=device-width, initial-scale=0.5" />
+			<meta name="ROBOTS" content="NOINDEX, NOFOLLOW" />
+			<script src="jquery2.min.js"></script>
+			<link rel="stylesheet" href="style.css" type="text/css" />
+			<style type="text/css">
+				table, td, tr { border-collapse: collapse; }
+				div.foo { white-space: pre-line; }
+				p, h1, h2, h3 { background: url(""); } /* android fix #40186 */
+			</style>
+		</head>
+		<body>
+			${2}
+		</body>
+	</html>
+snippet make
+	.PHONY: all clean
+
+	all:
+		python build.py
+	
+	clean:
+		rm
+snippet latex
+	\documentclass{article}
+	\usepackage{graphicx}
+	
+	\begin{document}
+	
+	\title{${1}}
+	\author{Roman Zimbelmann}
+	
+	\maketitle
+	
+	\begin{abstract}
+	The abstract text goes here.
+	\end{abstract}
+	
+	\section{Introduction}
+	Here is the text of your introduction.
+	
+	\begin{equation}
+	    \label{simple_equation}
+	    \alpha = \sqrt{ \beta }
+	\end{equation}
+	
+	\subsection{Subsection Heading Here}
+	Write your subsection text here.
+	
+	\begin{figure}
+	    \centering
+	    %\includegraphics[width=3.0in]{myfigure}
+	    \caption{Simulation Results}
+	    \label{simulationfigure}
+	\end{figure}
+	
+	\section{Conclusion}
+	Write your conclusion here.
+	
+	\end{document}

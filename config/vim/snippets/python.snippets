@@ -1,0 +1,25 @@
+snippet doctest
+	if __name__ == '__main__':
+		import doctest
+		doctest.testmod()
+snippet ostruct
+	class ostruct(dict):
+		def __init__(self, *args, **keywords):
+			dict.__init__(self, *args, **keywords)
+			self.__dict__ = self
+snippet csv
+	import csv
+	reader = csv.reader(open("file.csv", "r"))
+	for entry in reader:
+		data[entry[1]] = entry[0]
+snippet arg
+	import argparse
+	parser = argparse.ArgumentParser(description='${0}')
+	parser.add_argument('-x', '--long', metavar='N', type=int, default=1, help='foo')
+	parser.add_argument('-d', '--days', nargs='+', default=['a', 'b'], dest='days', type=lambda s: s + "day")
+snippet main
+	def main():
+		${0:pass}
+
+	if __name__ == '__main__':
+		main()
