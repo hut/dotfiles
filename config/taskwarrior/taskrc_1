@@ -1,0 +1,77 @@
+# [Created by task 2.5.0.beta2 5/2/2016 20:13:20]
+verbose=footnote,label,new-id,edit,special,project
+
+context.job=+job
+context.uni=+uni
+
+data.location=~/.config/task
+include /usr/local/share/doc/task/rc/dark-green-256.theme
+bulk=2
+weekstart=Monday
+urgency.scheduled.coefficient=-4.0
+
+include /usr/share/doc/task/rc/holidays.de-DE.rc
+calendar.holidays=sparse
+calendar.details=full
+
+color.tagged=
+#color.blocked=rgb513
+#color.blocking=on rgb010
+color.blocking=
+color.blocked=rgb232
+#color.blocked=rgb523
+color.due=
+#color.due.today=rgb520
+color.overdue=rgb513
+color.tag.next=rgb520
+color.due.today=rgb550
+color.calendar.due.today=color0 on rgb520
+color.calendar.today=color0 on rgb520
+color.scheduled=
+
+# Display options
+defaultwidth=130
+_forcecolor=yes
+urgency.annotations.coefficient=0.0
+urgency.blocked.coefficient=-15
+#dateformat=Y-M-D-HN
+dateformat=Y-M-D
+
+# Urgency
+urgency.user.project.exam.coefficient=10.0
+#urgency.uda.bounty.coefficient=5.0
+urgency.blocking.coefficient=0
+
+# Reports
+report.next.labels=ID,Project,Due,Description,Hours
+report.next.columns=id,project,due.remaining,description,hours
+#report.next.columns=id,project,due.remaining,bounty,description
+report.next.sort=due,project,urgency-
+report.next.filter=status:pending limit:page ( due: or due.before:2w ) -BLOCKED +READY
+
+report.titleonly.labels=due,Description
+report.titleonly.columns=due,description
+report.titleonly.filter=due.before:tomorrow +PENDING +READY or +ACTIVE
+#report.titleonly.filter=due.before:tomorrow +PENDING +READY
+
+report.v.description="A little more verbose than the 'next' report"
+report.v.labels=ID,Active,P,Project,Tag,S,Due,Until,Description,Urg
+report.v.columns=id,start.age,priority,project,tags,scheduled.countdown,due.remaining,until.remaining,description,urgency.integer
+#report.v.columns=id,start.age,priority,project,tags,scheduled.countdown,due.remaining,until.remaining,bounty,description,urgency.integer
+#report.v.labels=ID,Active,Deps,P,Project,Tag,Recur,S,Due,Until,$,Description,Urg
+#report.v.columns=id,start.age,depends,priority,project,tags,recur,scheduled.countdown,due.remaining,until.remaining,bounty,description,urgency
+#report.v.labels=ID,Active,Deps,Recur,S,Due,Until,Description,Urg
+#report.v.columns=id,start.age,depends,recur,scheduled.countdown,due.remaining,until.remaining,description,urgency
+report.v.sort=urgency-
+report.v.filter=status:pending limit:page
+
+report.alll.description=All tasks
+report.alll.labels=ID,St,UUID,A,Age,Done,D,P,Project,Tags,R,Wait,Sch,Due,Until,Description
+report.alll.columns=id,status.short,uuid.short,start.active,entry.age,end.age,depends.indicator,priority,project,tags.count,recur.indicator,wait.remaining,scheduled.remaining,due,until.remaining,description
+report.alll.sort=entry-
+
+nag=
+
+# UDAs (User Defined Attributes)
+uda.hours.type=duration
+uda.hours.label=Hours
