@@ -12,4 +12,16 @@ include /usr/share/doc/packages/task/rc/light-256.theme
 #include /usr/share/doc/packages/task/rc/dark-yellow-green.theme
 #include /usr/share/doc/packages/task/rc/dark-gray-256.theme
 
+# Reports
+report.next.labels=ID,Project,Tags,Due,Description
+report.next.columns=id,project,tags,due.remaining,description
+
+# Urgency Tweaks
+urgency.annotations.coefficient=0.0
+urgency.blocked.coefficient=-15
+
+# Other tweaks
+verbose=footnote,label,new-id,edit,special,project
 default.priority=M
+weekstart=Monday
+nag=
