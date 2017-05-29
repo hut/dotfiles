@@ -7,6 +7,8 @@ snippet ostruct
 		def __init__(self, *args, **keywords):
 			dict.__init__(self, *args, **keywords)
 			self.__dict__ = self
+snippet pprint
+	import pprint; pprint.pprint(${1})
 snippet csv
 	import csv
 	reader = csv.reader(open("file.csv", "r"))
@@ -17,9 +19,22 @@ snippet arg
 	parser = argparse.ArgumentParser(description='${0}')
 	parser.add_argument('-x', '--long', metavar='N', type=int, default=1, help='foo')
 	parser.add_argument('-d', '--days', nargs='+', default=['a', 'b'], dest='days', type=lambda s: s + "day")
-snippet main
+
+snippet #!
+	#!/usr/bin/python
+	import os.path
+	import sys
+	import re
+	import time
+	import argparse
+
 	def main():
-		${0:pass}
+		parser = argparse.ArgumentParser(description='${1}')
+		parser.add_argument('-v', '--verbose', action='store_true', default=False)
+		parser.add_argument('-q', '--quiet', action='store_true', default=False)
+		args = parser.parse_args()
+		
+		${2:pass}
 
 	if __name__ == '__main__':
 		main()
