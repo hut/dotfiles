@@ -18,6 +18,15 @@ def clr(string, fg=None, bg=None):
     if bg: color.append("48;5;%s" % bg)
     return "\033[%sm%s\033[0m" % (";".join(color), string)
 
+def sleephour(weekday):
+    assert weekday in range(0,7)
+    if weekday == 4: #friday
+        return 26.5 + 24*2
+    elif weekday == 5: #saturday
+        return 26.5 + 24
+    else:
+        return 26.5
+
 MOTD = False
 CRAP = False
 CLOCK = True
@@ -165,6 +174,9 @@ if CLOCK:
     else:
         os.environ['TZ'] = old_zone
     time.tzset()
+
+    hour = (float(time.strftime("%H")) + float(time.strftime("%M")) / 60)
+    output.append("+%.1f" % (sleephour(today.weekday()) - hour))
 
     print(clr("  ".join(output), fg='76'))
 
