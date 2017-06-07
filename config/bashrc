@@ -32,6 +32,13 @@ dotcommit () {
         githut push
     fi
 }
+a() {
+    if [[ -z "$@" ]]; then
+        vim ~/anki
+    else
+        echo "$@" >> ~/anki
+    fi
+}
 
 imbusy() {
     test -f ~/.pomodoro_session || return 1
