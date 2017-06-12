@@ -349,6 +349,9 @@ commit () {
         git commit "$@"
     fi
 }
+function r () {
+    echo "$@" >> ~/repos/hutgit/fino
+}
 
 # Starting X
 alias x='if [ -z "$DISPLAY" ]; then xinit -- "$@" & clear; exit; else echo x already running; fi'
