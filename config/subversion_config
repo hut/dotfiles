@@ -1,2 +1,5 @@
 [helpers]
 diff-cmd = colordiff
+# password-stores = 
+# store-passwords = no  # needs to be done in "servers" file
+# store-auth-creds = no
