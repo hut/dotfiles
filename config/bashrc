@@ -14,6 +14,20 @@ export IPYTHONDIR="$HOME/.config/ipython"
 [ -z "$PS1" ] && return
 
 ####################################
+# Reusable functions {{{
+testscm () {
+    if git rev-parse --is-inside-git-dir >& /dev/null; then
+        echo git
+    elif svn info >& /dev/null; then
+        echo svn
+    else
+        echo none
+        return 1
+    fi
+}
+# }}}
+
+####################################
 # Aliases {{{
 alias db=dashboard
 alias vim=nvim
@@ -25,6 +39,7 @@ alias rot13='tr a-zA-Z n-za-mN-ZA-M'
 alias cal='cal -3'
 
 dotcommit () {
+    # use --local as $1 to prevent pushing
     cd ~/repos/dotfiles/
     githut add -A
     githut commit -a --verbose -e -m "minor change" \
@@ -38,6 +53,31 @@ a() {
     else
         echo "$@" >> ~/anki
     fi
+}
+
+function u {
+    if [ "$PWD" == "$HOME" ]; then
+        case "$HOSTNAME" in
+            lemming*|fez)
+                ( cd ~/repos/dotfiles; git pull; );;
+        esac
+    else
+        case "$(testscm)" in
+            git)
+                git fetch;;
+            svn)
+                svn update;;
+            *)
+                echo "Error: not in a VCS!";;
+        esac
+    fi
+}
+
+function d {
+    case "$(testscm)" in
+        git) git diff;;
+        svn) svn diff | less -R;; # could use "| colordiff", but better to add it to diff-cmd in ~/.subversion/config
+    esac
 }
 
 imbusy() {
@@ -341,20 +381,41 @@ alias .....='cd ../../../..'
 function - { cd -; }
 
 # git aliases
-alias d='git diff HEAD'
 alias d-c='git diff --cached'
-alias pa='git add -p'
-alias c='git checkout'
-alias tag='tig --all'
+alias pa='githut add -p'
+alias c='githut checkout'
 alias tlg='tig --branches'
-alias b='git branch'
-alias mt='git mergetool --tool=vimdiff'
-commit () {
-    if [ "$(basename "$(git rev-parse --show-toplevel)")" == ranger ]; then
-        git commit -S "$@"
-    else
-        git commit "$@"
-    fi
+alias b='githut branch'
+alias mt='githut mergetool --tool=vimdiff'
+
+function tag {
+    case "$(testscm)" in
+        git)
+            tig --all;;
+        svn)
+            svn log --diff -r HEAD:0 | less;;
+    esac
+}
+function commit {
+    case "$(testscm)" in
+        git)
+            if [ "$HOSTNAME" == "fez" -a "$(basename "$(git rev-parse --show-toplevel)")" == ranger ]; then
+                # Sign the commit when commiting for ranger:
+                git commit -S "$@"
+            else
+                githut commit "$@"
+            fi;;
+        svn)
+            svn update
+            if [ -z "$1" ]; then
+                msg='(RZ)'
+            else
+                msg="$@"
+            fi
+            svn commit -m "$msg"
+            ;;
+        *)  echo "Error: not in a VCS!";;
+    esac
 }
 function r () {
     echo "$@" >> ~/repos/hutgit/fino
