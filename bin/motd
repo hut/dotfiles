@@ -79,8 +79,13 @@ if plan:
     CLR_TODAY_BG = 24
     CLR_TODAY = CLR
     CLR_QUOTE = 211
+    CLR_NEWMONTH = 159
+
+    def underline(string, fg=None, bg=None):
+        print(clr("".join(c + UNDERLINE for c in string), fg=fg, bg=bg), end="")
+
     def dumpweek(date):
-        print(clr(V,CLR), end="")
+        underline('{:>2}'.format(date.day) + V, fg=CLR)
         for weekday in range(7):
             bg = None
             fg = CLR
@@ -111,10 +116,12 @@ if plan:
                 entry = " " * WIDTH
             if day == today:
                 bg = CLR_TODAY_BG
-            print(clr("".join(c + UNDERLINE for c in entry), fg=fg, bg=bg), end="")
-            print(clr(V+UNDERLINE,fg), end="")
+            separator_color = fg
+            if (date + datetime.timedelta(weekday-date.weekday() + 1)).day == 1:
+                separator_color = CLR_NEWMONTH
+            underline(entry, fg=fg, bg=bg)
+            underline(V, fg=separator_color)
         print("")
-        #print(clr(V,3) + UNDERLINE)
 
 #print(TL + JT.join([H * WIDTH] * 7) + TR)
     date = startday = today - datetime.timedelta(today.weekday())
