@@ -2,11 +2,48 @@ source ~/repos/dotfiles/deploy/payload/bashrc
 
 ####################################
 # Variables {{{
-export systemini=~/.config/system.ini
-export PYTHONPATH="$HOME/repos/dotfiles/pythonlib/importpath"
-export WEECHAT_HOME="~/.config/weechat"
-export JAVAFX_HOME="/usr/lib/jvm/java-8-openjdk/jre/lib/ext/jfxrt.jar"
-export IPYTHONDIR="$HOME/.config/ipython"
+case "$HOSTNAME" in
+    *)
+        export EDITOR=vim
+        export CVS_RSH=ssh
+        export LS_COLORS='ow=01;38;5;93:*.css=34:*.js=34:*.py=34:*.rb=34:*.c=34:*.cc=34:*.cpp=34:*.sh=34:*.h.in=35:*.h=35:*.hpp=35:*.png=33:*.jpg=33:*.jpeg=33:*.gif=33:*.gifv=33:*.bmp=33:*.xcf=33:*.rar=31:*.7z=31:*.gz=31:*.xz=31:*.chm=31:*.xpi=31:*.tgz=31:*.tar=31:*.bz2=31:*.iso=31:*.zip=31:*.mp3=35:*.ogg=35:*.wav=35:*.avi=35:*.webm=35:*.mp4=35:*.mpg=35:*.ogv=35:*.html=34:*.pyo=38;5;237:*.pyc=38;5;237:*.o=38;5;237'
+        export TIGRC_USER=~/.config/tigrc
+        export PROMPT_DIRTRIM=4
+        export HISTCONTROL=ignoreboth  # ignore duplicates & lines starting with spaces
+
+        shopt -s histappend
+        shopt -s checkwinsize
+        shopt -s cmdhist # save multiline commands as 1 line in history
+        ;;&
+    turban|fez)
+        export TERMCMD="urxvt"
+        export CHANGET_TARGET="/home/hut/stuff/changet"
+        unset MAIL
+        ;;&
+    fez)
+        export PATH=$HOME'/sync/bin/fez:'$HOME'/sync/bin/games:'$HOME'/sync/bin:'$HOME'/sync/bin/scripts:'$HOME'/sync/bin/redirected:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/games:/usr/games:/usr/bin/core_perl:'$HOME'/sync/bin/snes:/usr/bin/vendor_perl:/home/hut/.npm/bin:/usr/local/bin:/usr/local/sbin'
+        export VIMWIKI_ROOT="$HOME/sync/notes/vimwiki/"
+        export JAVAFX_HOME="/usr/lib/jvm/java-8-openjdk/jre/lib/ext/jfxrt.jar"
+        export systemini=~/.config/system.ini
+        export PYTHONPATH="$HOME/repos/dotfiles/pythonlib/importpath"
+        export IPYTHONDIR="$HOME/.config/ipython"
+        export WEECHAT_HOME="~/.config/weechat"
+        export MAKEFLAGS='-j 8'
+        export PASSWORD_STORE_DIR="$HOME/sync/configs/password-store"
+        export PASSWORD_STORE_CLIP_TIME=10
+        ;;
+    lemming*)
+        export VIMWIKI_ROOT="$HOME/vimwiki/"
+        export MAKEFLAGS='-j 4'
+        export TERMCMD="konsole"
+        export TASKDDATA=/srv/taskd
+        ;;
+    turban)
+        PATH=$HOME'/bin/turban:'$HOME'/bin:'$HOME'/bin/redirected:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/games:/usr/games:/usr/bin/core_perl'
+        export MAKEFLAGS='-j 8'
+        ;;
+esac
+
 # }}}
 
 ####################################
@@ -28,17 +65,42 @@ testscm () {
 # }}}
 
 ####################################
+# System-dependent instructions {{{
+case "$HOSTNAME" in
+    fez)
+        source /usr/share/bash-completion/completions/{git,route,rsync,ssh,scp,sshfs,strace,sudo,tar,tcpdump,tmux,umount,curl,wget,feh,fsck,gcc,passwd,gpasswd,mplayer,gpg2}
+        alias db=dashboard
+        ;;
+    lemming*)
+        ;;
+esac
+
+# }}}
+
+####################################
 # Aliases {{{
-alias db=dashboard
-alias vim=nvim
-alias out='tmux new-session -A -s out'
+
+# Generic tools
 alias whatsmyip='dig +short myip.opendns.com \@resolver1.opendns.com'
-alias sd=systemctl
 alias rot13='tr a-zA-Z n-za-mN-ZA-M'
 
+# Shortcuts
+alias vim=nvim
+alias sd=systemctl
+alias plan="vim $VIMWIKI_ROOT/plan.wiki"
+function a {
+    if [[ -z "$@" ]]; then
+        vim ~/anki
+    else
+        echo "$@" >> ~/anki
+    fi
+}
+
+# Fixed parameters
 alias cal='cal -3'
 
-dotcommit () {
+# Version Control Systems
+function dotcommit {
     # use --local as $1 to prevent pushing
     cd ~/repos/dotfiles/
     githut add -A
@@ -47,14 +109,6 @@ dotcommit () {
         githut push
     fi
 }
-a() {
-    if [[ -z "$@" ]]; then
-        vim ~/anki
-    else
-        echo "$@" >> ~/anki
-    fi
-}
-
 function u {
     if [ "$PWD" == "$HOME" ]; then
         case "$HOSTNAME" in
@@ -72,7 +126,6 @@ function u {
         esac
     fi
 }
-
 function d {
     case "$(testscm)" in
         git) git diff;;
@@ -80,78 +133,29 @@ function d {
     esac
 }
 
-imbusy() {
+# Workflow
+imbusy() { # TODO obsolete?
     test -f ~/.pomodoro_session || return 1
     t1="$(stat --printf='%Y' ~/.pomodoro_session)"
     t2="$(date +%s)"
     duration=$((25*60))
     test $((t1 + duration)) -gt  "$t2"
 }
-
 imbusy() {
     test -f /tmp/state.working && return 0
     grep -qi '\(job\|learning\) = true' "$systemini" && return 0
     return 1
 }
-
 taskdone() {
     if [ "$#" -eq 1 ]; then
-        f "$1" done
+        task "$1" done
     else
-        f "$@"
+        task "$@"
     fi
 }
 for i in {1..100}; do
     alias "$i"="taskdone $i"
 done
-# }}}
-
-####################################
-# Environment & Shell Options {{{
-
-export TASKDDATA=/srv/taskd
-export CVS_RSH=ssh
-export EDITOR=vim
-export TERMCMD="urxvt"
-export CHANGET_TARGET="/home/hut/stuff/changet"
-export LS_COLORS='ow=01;38;5;93:*.css=34:*.js=34:*.py=34:*.rb=34:*.c=34:*.cc=34:*.cpp=34:*.sh=34:*.h.in=35:*.h=35:*.hpp=35:*.png=33:*.jpg=33:*.jpeg=33:*.gif=33:*.gifv=33:*.bmp=33:*.xcf=33:*.rar=31:*.7z=31:*.gz=31:*.xz=31:*.chm=31:*.xpi=31:*.tgz=31:*.tar=31:*.bz2=31:*.iso=31:*.zip=31:*.mp3=35:*.ogg=35:*.wav=35:*.avi=35:*.webm=35:*.mp4=35:*.mpg=35:*.ogv=35:*.html=34:*.pyo=38;5;237:*.pyc=38;5;237:*.o=38;5;237'
-export MAKEFLAGS='-j 1'
-export TIGRC_USER=~/.config/tigrc
-export PASSWORD_STORE_DIR="$HOME/sync/configs/password-store"
-export PASSWORD_STORE_CLIP_TIME=10
-
-# Bash
-HISTCONTROL=ignoreboth  # ignore duplicates & lines starting with spaces
-HISTSIZE=10000
-PROMPT_DIRTRIM=4
-unset MAIL
-
-# Shell options
-shopt -s histappend
-shopt -s checkwinsize
-shopt -s cmdhist # save multiline commands as 1 line in history
-
-# Machine-dependent
-case "$HOSTNAME" in
-    fez)
-        export MAKEFLAGS='-j 4'
-        export CHANGET_TARGET="/home/common/archive/imagery/changet"
-        ;;
-    atom)
-        export MAKEFLAGS='-j 4'
-        ;;
-    turban)
-        PATH=$HOME'/bin/turban:'$HOME'/bin:'$HOME'/bin/redirected:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/games:/usr/games:/usr/bin/core_perl'
-        export MAKEFLAGS='-j 8'
-        #case "$PATH" in
-            #*"$HOME"/bin*) ;;
-            #*) export PATH="$HOME"/bin:"$PATH" ;;
-        #esac
-        ;;
-    tia)
-        ;;
-esac
-
 # }}}
 
 ####################################
