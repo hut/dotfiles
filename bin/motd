@@ -11,6 +11,7 @@ import time
 PLAN_PATH = "~/sync/notes/vimwiki/plan.wiki" # "~/.plan"
 MAX_LOOKAHEAD_DAYS = 92#31
 MAX_WEEKS_TO_DISPLAY = 15
+COLUMN_WIDTH = 8
 
 def clr(string, fg=None, bg=None):
     color = []
@@ -72,7 +73,6 @@ if plan:
     startweek = today.    isocalendar()[1]
     endweek   = dates[-1].isocalendar()[1]
 
-    WIDTH = 9
     CLR = 208
     CLR_REGULAR = CLR
     CLR_IMPORTANT = 73
@@ -103,7 +103,7 @@ if plan:
                     fg = CLR_TODAY
                 days_until = (day - today).days
                 if days_until > 1 and important:
-                    w = WIDTH - len(str(days_until))
+                    w = COLUMN_WIDTH - len(str(days_until))
                     if len(description) > w:
                         description = description[:w][:-1] + ETC
                     entry = "{s:<{w}}{d}".format(
@@ -111,9 +111,9 @@ if plan:
                             w=w,
                             d=days_until)
                 else:
-                    entry = "{s:<{w}}".format(s=description[:WIDTH], w=WIDTH)
+                    entry = "{s:<{w}}".format(s=description[:COLUMN_WIDTH], w=COLUMN_WIDTH)
             else:
-                entry = " " * WIDTH
+                entry = " " * COLUMN_WIDTH
             if day == today:
                 bg = CLR_TODAY_BG
             separator_color = fg
@@ -123,16 +123,16 @@ if plan:
             underline(V, fg=separator_color)
         print("")
 
-#print(TL + JT.join([H * WIDTH] * 7) + TR)
+#print(TL + JT.join([H * COLUMN_WIDTH] * 7) + TR)
     date = startday = today - datetime.timedelta(today.weekday())
     oneweek = datetime.timedelta(weeks=1)
     count = 0
     while date <= dates[-1] and count < MAX_WEEKS_TO_DISPLAY:
-        #if date != today: print(JL + JC.join([H * WIDTH] * 7) + JR)
+        #if date != today: print(JL + JC.join([H * COLUMN_WIDTH] * 7) + JR)
         dumpweek(date)
         date += oneweek
         count += 1
-#print(BL + JB.join([H * WIDTH] * 7) + BR)
+#print(BL + JB.join([H * COLUMN_WIDTH] * 7) + BR)
 
 
 if MOTD:
