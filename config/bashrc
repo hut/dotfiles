@@ -357,6 +357,7 @@ function d {
     fi
 }
 function tag {
+    # The name "tag" derives from "tig --all" and has nothing to do with tagging
     if [ "$PWD" == "$HOME" ]; then
         case "$HOSTNAME" in
             lemming*|fez)
@@ -372,6 +373,23 @@ function tag {
         esac
     fi
 }
+function push {
+    if [ "$PWD" == "$HOME" ]; then
+        case "$HOSTNAME" in
+            lemming*|fez)
+                ( cd ~/repos/dotfiles; git push );;
+        esac
+    else
+        case "$(testscm)" in
+            git)
+                git push;;
+            svn)
+                echo 'Pushing makes no sense in SVN, dude';;
+            *) vcsfail;;
+        esac
+    fi
+}
+
 alias tlg='tig --branches'
 alias pa='githut add -p'
 alias c='githut checkout'
