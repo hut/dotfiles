@@ -91,6 +91,34 @@ function make-completion-wrapper () {
 ####################################
 # System-dependent instructions {{{
 case "$HOSTNAME" in
+    fez|lemming*)
+        # Bookmarks for "cd" {{{
+        BMDIR="$HOME/.hut/bookmarks"
+        function cd {
+            if [ "$#" -eq 1 -a ! -e "$1" ]; then
+                if test -d "$BMDIR/$1"; then
+                    command cd -P "$BMDIR/$1"
+                    echo -ne '\033[1;33m>>>'
+                    #ls
+                    return
+                fi
+            fi
+            if [ "$#" -eq 0 ]; then
+                command cd ~
+                return
+            fi
+            command cd "$@"
+        }
+        function bmark {
+            if test -z "$1"; then
+                ls -l "$BMDIR" | awk 'NR > 1 { print $9"\t"$11 }'
+            else
+                rm "$BMDIR/$1" 2> /dev/null
+                ln -sf "$(pwd)" "$BMDIR/$1"
+            fi
+        }
+        # }}}
+        ;;&
     fez|turban)
         # Bind keys
         case "$-" in *i*)
