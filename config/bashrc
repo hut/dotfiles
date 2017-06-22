@@ -17,12 +17,13 @@ case "$HOSTNAME" in
         ;;&
     turban|fez)
         export TERMCMD="urxvt"
-        export CHANGET_TARGET="/home/hut/stuff/changet"
+        export CHANGET_TARGET=/home/archive/downloads/changet
         unset MAIL
         ;;&
     fez)
         export PATH=$HOME'/sync/bin/fez:'$HOME'/sync/bin/games:'$HOME'/sync/bin:'$HOME'/sync/bin/scripts:'$HOME'/sync/bin/redirected:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/games:/usr/games:/usr/bin/core_perl:'$HOME'/sync/bin/snes:/usr/bin/vendor_perl:/home/hut/.npm/bin:/usr/local/bin:/usr/local/sbin'
         export VIMWIKI_ROOT="$HOME/sync/notes/vimwiki/"
+        export EXOBRAIN_ROOT=~/sync/notes/quick
         export JAVAFX_HOME="/usr/lib/jvm/java-8-openjdk/jre/lib/ext/jfxrt.jar"
         export systemini=~/.config/system.ini
         export PYTHONPATH="$HOME/repos/dotfiles/pythonlib/importpath"
@@ -37,19 +38,24 @@ case "$HOSTNAME" in
             PS1='\[\033[0;38;5;243m\]\w\[\033[1;38;5;202m\]$(test "$?" -eq 0 && echo ">" || echo "$?") \[\033[0m\]'
             PS1="$PS1$PROMPT_SUFFIX"
         fi
-        ;;
+        ;;&
     lemming*)
         export VIMWIKI_ROOT="$HOME/vimwiki/"
         export EXOBRAIN_ROOT=~/vimwiki/Guides
         export EXOBRAIN_STATS_FILE=/dev/null
         export MAKEFLAGS='-j 4'
         export TERMCMD="konsole"
-        export TASKDDATA=/srv/taskd
-        ;;
+        ;;&
     turban)
         PATH=$HOME'/bin/turban:'$HOME'/bin:'$HOME'/bin/redirected:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/games:/usr/games:/usr/bin/core_perl'
         export MAKEFLAGS='-j 8'
-        ;;
+        ;;&
+    fez|lemming*)
+        source ~/repos/exobrain/bash_tab_completion.sh
+        function e  { ~/repos/exobrain/exobrain.py "$@"; }
+        function ee { ~/repos/exobrain/exobrain.py -e "$@"; }
+        function ea { echo "$(date +"%y-%m-%dT%H:%M")" "$@" >> "$EXOBRAIN_ROOT"/fino; }
+        ;;&
 esac
 
 # }}}
@@ -191,6 +197,7 @@ done
 alias hotp=htop
 alias sl=ls
 alias s=ls
+alias wlits=wlist
 
 
 # Fixed parameters
