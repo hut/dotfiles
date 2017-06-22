@@ -266,7 +266,7 @@ function ranger-cd {
     if [ -n "$REMOTED" ]; then
         set -- "$@" "--cmd=chain map <enter> play_remote; map x shell killall mpv"
     fi
-    python2.7 /home/hut/repos/ranger/ranger.py --choosedir="$tempfile" "${@:-$(pwd)}"
+    python2.7 ~/repos/ranger/ranger.py --choosedir="$tempfile" "${@:-$(pwd)}"
     test -f "$tempfile" &&
     if [ "$(cat -- "$tempfile")" != "$(echo -n `pwd`)" ]; then
         cd -- "$(cat "$tempfile")"
