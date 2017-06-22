@@ -31,9 +31,17 @@ case "$HOSTNAME" in
         export MAKEFLAGS='-j 8'
         export PASSWORD_STORE_DIR="$HOME/sync/configs/password-store"
         export PASSWORD_STORE_CLIP_TIME=10
+
+        # Prompt
+        if [ "$USER" != root ]; then
+            PS1='\[\033[0;38;5;243m\]\w\[\033[1;38;5;202m\]$(test "$?" -eq 0 && echo ">" || echo "$?") \[\033[0m\]'
+            PS1="$PS1$PROMPT_SUFFIX"
+        fi
         ;;
     lemming*)
         export VIMWIKI_ROOT="$HOME/vimwiki/"
+        export EXOBRAIN_ROOT=~/vimwiki/Guides
+        export EXOBRAIN_STATS_FILE=/dev/null
         export MAKEFLAGS='-j 4'
         export TERMCMD="konsole"
         export TASKDDATA=/srv/taskd
@@ -47,7 +55,7 @@ esac
 # }}}
 
 ####################################
-# If not running interactively, don't do anything
+# If not running interactively, don't do anything further
 [ -z "$PS1" ] && return
 
 ####################################
@@ -62,177 +70,6 @@ testscm () {
         return 1
     fi
 }
-# }}}
-
-####################################
-# System-dependent instructions {{{
-case "$HOSTNAME" in
-    fez)
-        source /usr/share/bash-completion/completions/{git,route,rsync,ssh,scp,sshfs,strace,sudo,tar,tcpdump,tmux,umount,curl,wget,feh,fsck,gcc,passwd,gpasswd,mplayer,gpg2}
-        alias db=dashboard
-        ;;
-    lemming*)
-        ;;
-esac
-
-# }}}
-
-####################################
-# Aliases {{{
-
-# Generic tools
-alias whatsmyip='dig +short myip.opendns.com \@resolver1.opendns.com'
-alias rot13='tr a-zA-Z n-za-mN-ZA-M'
-
-# Shortcuts
-alias vim=nvim
-alias sd=systemctl
-alias plan="vim $VIMWIKI_ROOT/plan.wiki"
-function a {
-    if [[ -z "$@" ]]; then
-        vim ~/anki
-    else
-        echo "$@" >> ~/anki
-    fi
-}
-
-# Fixed parameters
-alias cal='cal -3'
-
-# Version Control Systems
-function dotcommit {
-    # use --local as $1 to prevent pushing
-    cd ~/repos/dotfiles/
-    githut add -A
-    githut commit -a --verbose -e -m "minor change" \
-    && if [ "$1" != '--local' ]; then
-        githut push
-    fi
-}
-function u {
-    if [ "$PWD" == "$HOME" ]; then
-        case "$HOSTNAME" in
-            lemming*|fez)
-                ( cd ~/repos/dotfiles; git pull; );;
-        esac
-    else
-        case "$(testscm)" in
-            git)
-                git fetch;;
-            svn)
-                svn update;;
-            *)
-                echo "Error: not in a VCS!";;
-        esac
-    fi
-}
-function d {
-    case "$(testscm)" in
-        git) git diff;;
-        svn) svn diff | less -R;; # could use "| colordiff", but better to add it to diff-cmd in ~/.subversion/config
-    esac
-}
-
-# Workflow
-imbusy() { # TODO obsolete?
-    test -f ~/.pomodoro_session || return 1
-    t1="$(stat --printf='%Y' ~/.pomodoro_session)"
-    t2="$(date +%s)"
-    duration=$((25*60))
-    test $((t1 + duration)) -gt  "$t2"
-}
-imbusy() {
-    test -f /tmp/state.working && return 0
-    grep -qi '\(job\|learning\) = true' "$systemini" && return 0
-    return 1
-}
-taskdone() {
-    if [ "$#" -eq 1 ]; then
-        task "$1" done
-    else
-        task "$@"
-    fi
-}
-for i in {1..100}; do
-    alias "$i"="taskdone $i"
-done
-# }}}
-
-####################################
-# Prompt {{{
-
-if [ "$USER" == root ]; then
-    PS1='\[\033[00;31m\]\h \[\033[00m\]\w\[\033[00;31m\]#\[\033[00m\] '
-else
-    PSHOSTNAME="$HOSTNAME"
-    if [ "$HOSTNAME" == atom ]; then
-        PSCOLOR=32
-    elif [ "$HOSTNAME" == tia ]; then
-        PSCOLOR=32
-    elif [ "$HOSTNAME" == fez ]; then
-        PSCOLOR=33
-    elif [ "$HOSTNAME" == turban ]; then
-        PSCOLOR=35
-    else
-        PSCOLOR=34
-    fi
-
-    if [ "$HOSTNAME" == fez -a "$USER" == hut ]; then
-        #PS1="\[\033[1;38;5;44;48;5;234m\]fez\[\033[0;38;5;210;48;5;234m\]\w\[\033[00m\] \[\033[0m\]" # bubble-gum
-#        PS1="\[\033[1;38;5;208m\]fez\[\033[0;38;5;179m\]\w\[\033[1;38;5;208m\]$ \[\033[0m\]" # orange
-#        PS1='\[\033[0;38;5;0m\]\w\[\033[1;38;5;202m\]$(test "$?" -eq 0 && echo "$" || echo "$?") \[\033[0m\]' # green
-        PS1='\[\033[0;38;5;243m\]\w\[\033[1;38;5;202m\]$(test "$?" -eq 0 && echo ">" || echo "$?") \[\033[0m\]' # green
-
-    else
-        PS1='\[\033[00;'$PSCOLOR'm\]'"$PSHOSTNAME"'.\u \[\033[0m\]\w\[\033[00;'$PSCOLOR'm\]$\[\033[00m\] '
-    fi
-fi
-
-[ -n "$RANGER_LEVEL" ] && PS1="$PS1"'(in ranger) '
-
-####################################
-# Tab completions
-
-complete -cf sudo ,
-complete -A helptopic help
-
-####################################
-# Binds
-
-case "$-" in *i*)
-    bind '"\C-x\C-r":"source ~/.bashrc\C-m"'
-    bind '"\C-o":"\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-hranger-cd\C-m"'
-    bind '"\C-x\C-m":"\C-uecho '\''\C-y'\''>>~/memo\C-m"'
-    bind '"\C-x\C-f":"setfont Lat15-TerminusBold20x10.psf.gz\C-m"'
-    bind '"\C-x=":"setfont Uni3-TerminusBold22x11\C-j"'
-    bind '"\C-x-":"setfont Uni3-Terminus16\C-j"'
-    ;;
-esac
-
-####################################
-# Terminal Colors in TTY
-if [ "$TERM" = "linux" ]; then
-    echo -en "\e]P0000000" # Black
-    echo -en "\e]P19e2838" # Red
-    echo -en "\e]P2008800" # Green
-    echo -en "\e]P3aa6633" # Yellow
-    echo -en "\e]P45171b1" # Blue
-    echo -en "\e]P5963c59" # Magenta
-    echo -en "\e]P6418179" # Cyan
-    echo -en "\e]P7bebebe" # White
-    echo -en "\e]P8333333" # Bold Black
-    echo -en "\e]P9bc5766" # Bold Red
-    echo -en "\e]Pa61a171" # Bold Green
-    echo -en "\e]Pbe7db52" # Bold Yellow
-    echo -en "\e]Pc5085af" # Bold Blue
-    echo -en "\e]Pda97a99" # Bold Magenta
-    echo -en "\e]Pe6ba4a4" # Bold Cyan
-    echo -en "\e]Pfffffff" # Bold White
-fi
-
-####################################
-# Aliases & Functions
-
 function make-completion-wrapper () {
   local function_name="$2"
   local arg_count=$(($#-3))
@@ -249,121 +86,64 @@ function make-completion-wrapper () {
   echo $function_name
   echo "$function"
 }
+# }}}
 
-#make-completion-wrapper _task_add _task task add
-source /usr/share/bash-completion/completions/task
-complete -F _task -W 'peace zen home study book todo uni job cal burndown hist ghist none' f
-
-# Colors in man pages
-man() {
-    env LESS_TERMCAP_mb=$'\E[01;31m' \
-    LESS_TERMCAP_md=$'\E[1;38;5;172m' \
-    LESS_TERMCAP_me=$'\E[0m' \
-    LESS_TERMCAP_se=$'\E[0m' \
-    LESS_TERMCAP_ue=$'\E[0m' \
-    LESS_TERMCAP_us=$'\E[38;5;74m' \
-    man "$@"
-#    LESS_TERMCAP_md=$'\E[0;33m' \
-#    LESS_TERMCAP_so=$'\E[38;5;246m' \
-}
-
-# Typos
-alias hotp=htop
-alias sl=ls
-alias s=ls
-#alias g=gold
-alias fs='task sync'
-
-alias fv='f v'
-alias F='f v'
-f () {
-    if [ "$#" -eq 1 ]; then
-        case "$1" in
-            context)    task context list;;
-            none)       task context none;;
-            home)       task context home;;
-            book)       task context book;;
-            todo)       task context todo;;
-            zen)        task context zen;;
-            study|uni)  task context uni;;
-            peace)      task context peace;;
-            job)        task context job;;
-            motif)      task context motif;;
-            cal)        
-                context="$(task _get rc.context)"
-                if [ -z "$context" ]; then
-                    task calendar
-                else
-                    task rc.confirmation=no config context ""
-                    task calendar
-                    task rc.confirmation=no config context "$context"
-                fi
-                ;;
-            burndown)   task burndown.daily;;
-            hist)       task history.monthly;;
-            ghist)      task ghistory.monthly;;
-            p)          task summary;;
-            pa)         task rc.context= summary;;
-            paa)        task rc.context= summary rc.summary.all.projects=yes;;
-            l)          task next limit: | less -RS;;
-            *)          task "$1";;
+####################################
+# System-dependent instructions {{{
+case "$HOSTNAME" in
+    fez|turban)
+        # Bind keys
+        case "$-" in *i*)
+            bind '"\C-x\C-r":"source ~/.bashrc\C-m"'
+            bind '"\C-o":"\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-hranger-cd\C-m"'
+            bind '"\C-x\C-m":"\C-uecho '\''\C-y'\''>>~/memo\C-m"'
+            bind '"\C-x\C-f":"setfont Lat15-TerminusBold20x10.psf.gz\C-m"'
+            bind '"\C-x=":"setfont Uni3-TerminusBold22x11\C-j"'
+            bind '"\C-x-":"setfont Uni3-Terminus16\C-j"'
+            ;;
         esac
-    else
-        task "$@"
-#        if [ "${!#}" == "done" ]; then
-#            gold --update
-#        fi
-    fi
-}
-fa () {
-    project="$1"
-    shift
-    task add proj:"$project" "$@"
-}
-zen () {
-    if [ -z "$@" ]; then
-        task context show zen
-    else
-        task context define -- zen project:"$1"
-    fi
-    task context zen
-}
 
-# Shortcuts
-enter () { sudo docker exec -it "$1" bash; }
-alias docker="sudo docker"
-alias pac="sudo packer"
-alias am=alsamixer
-alias vi='command vim'
-#alias py='ipython'
-alias ,=sudo
-function p () { until ping -i 0.5 "${1:-4.2.2.4}"; do sleep 0.5; done; }
+        # Package Management
+        alias pac="sudo packer"
 
-# Passing options
-alias pass='EDITOR=nano pass'
-alias kbrate='xset r rate 220 35'
-alias blk="lsblk -no NAME,SIZE,TYPE,FSTYPE,MOUNTPOINT"
-alias wget-r='wget -r --no-parent --reject "index.html*"'
-alias ssh-f="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
-alias sshfs-f="sshfs -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
-alias restorebg='nitrogen --restore'
+        # Starting X
+        alias x='if [ -z "$DISPLAY" ]; then xinit -- "$@" & clear; exit; else echo x already running; fi'
+        alias x2='if [ -z "$DISPLAY" ]; then cd; X & sleep 1; DISPLAY=:0 exec sh .xinitrc & exit; else echo x already running; fi'
+        ;;&
+    fez)
+        source /usr/share/bash-completion/completions/{git,route,rsync,ssh,scp,sshfs,strace,sudo,tar,tcpdump,tmux,umount,curl,wget,feh,fsck,gcc,passwd,gpasswd,mplayer,gpg2}
+        alias db=dashboard
+        alias gdv='ssh rzimbelmann@login.gdv.uni-hannover.de'
 
-# ls
-export LS_OPTIONS='--color=auto --group-directories-first --quoting-style=literal'
-alias ls='ls $LS_OPTIONS'
-alias lsd='"ls" --color=always -Acr | tail -n 5'
-alias ll='ls $LS_OPTIONS -l'
-alias la='ls $LS_OPTIONS -A'
-alias lsa='ls $LS_OPTIONS -lA'
-alias l='ls $LS_OPTIONS -la'
+        # Staying focused
+        function _imbusy {
+            test -f /tmp/state.working && return 0
+            grep -qi '\(job\|learning\) = true' "$systemini" && return 0
+            return 1
+        }
+        function scream { setsid blink; echo -ne "\E[38;5;46m"; toilet --font future "${1:-WORK, INSECT!}"; }
+        for tool in irc sticky ncmpcpp; do
+            alias "$tool"="if _imbusy; then scream; else $tool; fi"
+        done
+        ;;
+    turban)
+        function remote {
+            export REMOTED=1
+            export DISPLAY=:0
+        }
+        ;;
+    lemming*)
+        ;;
+esac
 
-# grep
-alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
+# }}}
 
-function plow { mkdir -p "$1" && cd "$1"; }
+####################################
+# Aliases {{{
 
+# Generic tools
+alias whatsmyip='dig +short myip.opendns.com \@resolver1.opendns.com'
+alias rot13='tr a-zA-Z n-za-mN-ZA-M'
 function dice {
     total=0
     for i in $(seq "$1"); do
@@ -377,28 +157,115 @@ for i in {1..12}; do
     done
 done
 
-# moving upwards
-alias ..='cd ..'
-alias ...='cd ../..'
-alias ....='cd ../../..'
-alias .....='cd ../../../..'
-function - { cd -; }
 
-# git aliases
-alias d-c='git diff --cached'
-alias pa='githut add -p'
-alias c='githut checkout'
-alias tlg='tig --branches'
-alias b='githut branch'
-alias mt='githut mergetool --tool=vimdiff'
+# Typos
+alias hotp=htop
+alias sl=ls
+alias s=ls
 
-function tag {
-    case "$(testscm)" in
-        git)
-            tig --all;;
-        svn)
-            svn log --diff -r HEAD:0 | less;;
-    esac
+
+# Fixed parameters
+function sticky { tmux_session sticky; }
+alias cal='cal -3'
+function man {
+    # Add some colors! <3
+    env LESS_TERMCAP_mb=$'\E[01;31m' \
+    LESS_TERMCAP_md=$'\E[1;38;5;172m' \
+    LESS_TERMCAP_me=$'\E[0m' \
+    LESS_TERMCAP_se=$'\E[0m' \
+    LESS_TERMCAP_ue=$'\E[0m' \
+    LESS_TERMCAP_us=$'\E[38;5;74m' \
+    man "$@"
+#    LESS_TERMCAP_md=$'\E[0;33m' \
+#    LESS_TERMCAP_so=$'\E[38;5;246m' \
+}
+alias pass='EDITOR=nano pass'  # avoid vimhistory & other possible side effects
+alias kbrate='xset r rate 220 35'
+alias blk="lsblk -no NAME,SIZE,TYPE,FSTYPE,MOUNTPOINT"
+alias ssh-f="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+alias sshfs-f="sshfs -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+alias restorebg='nitrogen --restore'
+alias wget-r='wget -r --no-parent --reject "index.html*"'
+
+
+# Shortcuts
+export LS_OPTIONS='--color=auto --group-directories-first --quoting-style=literal'
+alias ls='ls $LS_OPTIONS'
+alias lsd='"ls" --color=always -Acr | tail -n 5'
+alias ll='ls $LS_OPTIONS -l'
+alias la='ls $LS_OPTIONS -A'
+alias lsa='ls $LS_OPTIONS -lA'
+alias l='ls $LS_OPTIONS -la'
+
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+
+function plow { mkdir -p "$1" && cd "$1"; }
+
+alias vim=nvim
+alias am=alsamixer
+alias sd=systemctl
+alias e=exobrain
+alias ee='exobrain -e'
+alias plan="vim $VIMWIKI_ROOT/plan.wiki"
+
+function a {
+    if [[ -z "$@" ]]; then
+        vim ~/anki
+    else
+        echo "$@" >> ~/anki
+    fi
+}
+function lscd {    
+    if [ "$#" -eq 0 ]; then
+        source ~/repos/lscd/lscd
+    else
+        command cd "$@"
+    fi
+}
+function tmux_session {
+    if tmux has -t $1; then
+        tmux -f ~/.config/tmux.conf attach -t $1
+    else
+        tmux -f ~/.config/tmux.conf new-session -s $1
+    fi
+}
+function ranger-cd {
+    tempfile='/tmp/chosendir'
+    extra_args=
+    if [ -n "$REMOTED" ]; then
+        set -- "$@" "--cmd=chain map <enter> play_remote; map x shell killall mpv"
+    fi
+    python2.7 /home/hut/repos/ranger/ranger.py --choosedir="$tempfile" "${@:-$(pwd)}"
+    test -f "$tempfile" &&
+    if [ "$(cat -- "$tempfile")" != "$(echo -n `pwd`)" ]; then
+        cd -- "$(cat "$tempfile")"
+        rm -f -- "$tempfile"
+    fi
+}
+_taskdone() {
+    if [ "$#" -eq 1 ]; then
+        task "$1" 'done'
+    else
+        task "$@"
+    fi
+}
+for i in {1..100}; do
+    alias "$i"="_taskdone $i"
+done
+
+
+# Version Control Systems
+function vcsfail { echo "Error: not in a VCS!"; }
+function dotcommit {
+    # use --local as $1 to prevent pushing
+    cd ~/repos/dotfiles/
+    githut add -A
+    githut commit -a --verbose -e -m "minor change" \
+    && if [ "$1" != '--local' ]; then
+        githut push
+    fi
 }
 function commit {
     case "$(testscm)" in
@@ -418,207 +285,70 @@ function commit {
             fi
             svn commit -m "$msg"
             ;;
-        *)  echo "Error: not in a VCS!";;
+        *) vcsfail;;
     esac
 }
-function r () {
-    echo "$@" >> ~/repos/hutgit/fino
+function u {
+    if [ "$PWD" == "$HOME" ]; then
+        case "$HOSTNAME" in
+            lemming*|fez)
+                ( cd ~/repos/dotfiles; git pull; );;
+        esac
+    else
+        case "$(testscm)" in
+            git) git fetch;;
+            svn) svn update;;
+            *) vcsfail;;
+        esac
+    fi
 }
+function d {
+    case "$(testscm)" in
+        git) git diff;;
+        svn) svn diff | less -R;; # could use "| colordiff", but better to add it to diff-cmd in ~/.subversion/config
+        *) vcsfail;;
+    esac
+}
+function tag {
+    case "$(testscm)" in
+        git)
+            tig --all;;
+        svn)
+            svn log --diff -r HEAD:0 | less;;
+        *) vcsfail;;
+    esac
+}
+alias tlg='tig --branches'
+alias pa='githut add -p'
+alias c='githut checkout'
+alias b='githut branch'
+alias d-c='git diff --cached'
+alias mt='githut mergetool --tool=vimdiff'
 
-# Starting X
-alias x='if [ -z "$DISPLAY" ]; then xinit -- "$@" & clear; exit; else echo x already running; fi'
-alias x2='if [ -z "$DISPLAY" ]; then cd; X & sleep 1; DISPLAY=:0 exec sh .xinitrc & exit; else echo x already running; fi'
+# }}}
 
-# Change fonts
-#function fsb {
-#    echo -en '\033]50;-*-terminus-bold-*-*-*-'"$1"'-*-*-*-*-*-koi8-u\007'
-#}
-#function fsv {
-#    echo -en '\033]50;xft:Bitstream Vera Sans Mono:pixelsize='"$1"'\007'
-##    echo -en '\033]50;xft:Meiryo:pixelsize=12\007'
-#}
-#function fs {
-#    echo -en '\033]50;-*-terminus-medium-*-*-*-'"$1"'-*-*-*-*-*-koi8-u\007'
-#}
-
-# SSH
-#scream() { toilet --gay --font future "${1:-WORK, INSECT!}"; }
-scream() { setsid blink; echo -ne "\E[38;5;46m"; toilet --font future "${1:-WORK, INSECT!}"; }
-irc() { if imbusy; then sleep 0.5; scream; else ssh hut.pm -t tmux attach; fi; }
-#mutt() { if imbusy; then scream; else command mutt "$@"; fi }
-sticky() { if imbusy; then scream; else tmux_session sticky; fi }
-ncmpcpp() { if imbusy; then scream; else command ncmpcpp "$@"; fi }
-#alias irc='ssh hut.pm -t tmux attach'
-alias ddr='until ping -c 1 -i 0.2 4.2.2.4 >& /dev/null; do echo -n .; sleep 1; done; ssh -p 1338 hut.dyndns.org'
-alias ddt='ssh "$(curl http://hut.pm/ip-turban.txt 2> /dev/null | cut -d " " -f 1)" -p 1336'
-alias ddhick='ssh root@192.168.100.1'
-alias ddranger='ssh ranger@carina.uberspace.de'
-alias dduber='ssh lepus.uberspace.de'
-alias gdv='ssh rzimbelmann@login.gdv.uni-hannover.de'
-#alias enton='sshfs enton:/home/hut/Desktop/Atom /home/hut/enton'
-#alias turban='sshfs turban:/ /home/hut/turban'
-#alias uenton='fusermount -u /home/hut/enton'
-#alias uenton='fusermount -u /home/hut/turban'
-
-if [ "$HOSTNAME" == "fez" ]; then
-#    function ddr {
-##        DEV="$(ip link show up | grep -B1 'link/ether' | head -n1 | cut -d: -f2 | cut -c2-)"
-##        IP="$(ip addr show $DEV | grep 'inet ' | grep -v 127.0.0.1 | sed 's/.*inet \([0-9.]*\).*/\1/')"
-##        if [ "$IP" == '10.0.0.23' ]; then
-##        if ping -c 1 -W 1 atom 2> /dev/null > /dev/null; then
-##        if ifconfig | grep -q 10.0.0.23; then
-##            ssh -p 1336 atom $@
-##        else
-#            ssh -p 1338 hut.dyndns.org
-##        fi
-#    }
-    alias ddf='tmux_session fezmain'
-    alias tur='ssh turban'
-elif [ "$HOSTNAME" == "atom" -o "$HOSTNAME" == "bao" ]; then
-    alias ddr='tmux_session main'
-    alias ddx='screen -DDR'
-elif [ "$HOSTNAME" == "turban" ]; then
-    remote () {
-        export REMOTED=1
-        export DISPLAY=:0
-    }
+####################################
+# Terminal Colors in TTY {{{
+if [ "$TERM" = "linux" ]; then
+    echo -en "\e]P0000000" # Black
+    echo -en "\e]P19e2838" # Red
+    echo -en "\e]P2008800" # Green
+    echo -en "\e]P3aa6633" # Yellow
+    echo -en "\e]P45171b1" # Blue
+    echo -en "\e]P5963c59" # Magenta
+    echo -en "\e]P6418179" # Cyan
+    echo -en "\e]P7bebebe" # White
+    echo -en "\e]P8333333" # Bold Black
+    echo -en "\e]P9bc5766" # Bold Red
+    echo -en "\e]Pa61a171" # Bold Green
+    echo -en "\e]Pbe7db52" # Bold Yellow
+    echo -en "\e]Pc5085af" # Bold Blue
+    echo -en "\e]Pda97a99" # Bold Magenta
+    echo -en "\e]Pe6ba4a4" # Bold Cyan
+    echo -en "\e]Pfffffff" # Bold White
 fi
-
-function scan {
-    grep "$@" -nr --color=always -I *
-}
-
-function tmux_session {
-    if tmux has -t $1; then
-        tmux -f ~/.config/tmux.conf attach -t $1
-    else
-        tmux -f ~/.config/tmux.conf new-session -s $1
-    fi
-}
-
-function ranger-cd {
-  tempfile='/tmp/chosendir'
-  extra_args=
-  if [ -n "$REMOTED" ]; then
-    set -- "$@" "--cmd=chain map <enter> play_remote; map x shell killall mpv"
-  fi
-  python2.7 /home/hut/repos/ranger/ranger.py --choosedir="$tempfile" "${@:-$(pwd)}"
-  test -f "$tempfile" &&
-  if [ "$(cat -- "$tempfile")" != "$(echo -n `pwd`)" ]; then
-    cd -- "$(cat "$tempfile")"
-    rm -f -- "$tempfile"
-  fi
-}
-
-function lscd {    
-    if [ "$#" -eq 0 ]; then
-        source /home/hut/repos/lscd/lscd
-    else
-        command cd "$@"
-    fi
-}
-
-# Pipe output of a command into a pager
-function o {
-    if [ -x "$1" ]; then
-        $@ | less -RFX
-    else
-        less "$1"
-    fi
-}
-
-#function g {
-#    grc --colour=on $@ | less -RFX
-#}
-#
-#
-#if [ -f /usr/bin/grc ]; then
-#    alias l="grc ls -l --color=yes --group-directories-first"
-#    alias ping="grc ping"
-#    alias netstat="grc netstat"
-#    alias diff="grc diff"
-#fi
-
-# Edge
-#if [ -f ~/repos/edge/edge.sh ]; then
-#    source ~/repos/edge/edge.sh
-#    export EDGE_ROOT=~/sync/edge
-#
-#    function e  { EDGE_ROOT=~/sync/edge edge "$@"; }
-#    function ee { EDGE_ROOT=~/sync/edge edge-edit "$@"; }
-#    function eee { vim +'set ft=sh' ~/sync/edge/"$1"; }
-#    function ea { echo "$(date +"%y-%m-%dT%H:%M")" "$@" >> "$EDGE_ROOT"/fino; }
-#
-#    #function n  { EDGE_ROOT=~/sync/edge/me; edge "$@"; }
-#    #function ne { vim +'set ft=sh' ~/sync/edge/me/"$1"; }
-#
-#    #function m  { EDGE_ROOT=~/sync/edge/med; edge "$@"; }
-#    #function me { vim +'set ft=sh' ~/sync/edge/med/"$1"; }
-#    
-#    _tc_e () { EDGE_ROOT=~/sync/edge _TabComplete_Edge "$@"; }
-#    _tc_n () { EDGE_ROOT=~/sync/edge/me _TabComplete_Edge "$@"; }
-#    _tc_m () { EDGE_ROOT=~/sync/edge/med _TabComplete_Edge "$@"; }
-#    complete -F _tc_e -o filenames e ee
-#    complete -F _tc_n -o filenames n ne
-#    complete -F _tc_m -o filenames m me
-#fi
-alias e='eb'
-alias ee='eb -e'
-
-#testicle () {
-#    COMPREPLY=( $(compgen -W "$(gold --list-raw)" -- ${COMP_WORDS[COMP_CWORD]} ) );
-#}
-#complete -F testicle gold g
+# }}}
 
 ######################################
-# Local
+# Local Overrides
 test -f ~/.bashrc.local && source ~/.bashrc.local
-
-#_Moo () {
-#    local cur
-#    local basepath=~/sync/info
-#    cd $basepath
-#    cur=${COMP_WORDS[COMP_CWORD]}
-#    COMPREPLY=( $(compgen -W pw -f -X '.*' -- "$cur") )
-##    COMPREPLY=( $(cd $basepath; compgen -W "$(ls -p "${cur%%/}")"-- $cur) )
-##    if [ -d "$basepath"/"$cur" ]; then
-##        COMPREPLY=( $(compgen -W "$(cd $basepath; find $cur -type f)" -- $cur) )
-##    else
-##        COMPREPLY=( $(compgen -W "$(ls $basepath)" -- $cur) )
-##    fi
-##    COMPREPLY=( $(compgen -W '-a -d -f' -- $cur) )
-#    return 0
-#}
-#
-#_TabComplete_c () {
-#    local cur="${COMP_WORDS[COMP_CWORD]}"
-#    local basepath=~/sync/edge
-#    COMPREPLY=( $(compgen -W "$(ls "$basepath") colors" -- "$cur") )
-#}
-#
-#function n {
-#    if [ "$1" == "pw" ]; then
-#        ( 
-#            cd ~/repos/admingit/cryptostore;
-#            make view:passwords;
-#        )
-#    else
-#        cat ~/sync/info/"$1" | hl | less -r -FX
-##        highlight -O ansi --src-lang=sh ~/sync/info/"$1" | less -R -FX
-#    fi
-#}
-#function ne {
-#    vim ~/sync/info/"$1"
-#}
-#
-#function ee {
-#    vim +'set ft=sh' ~/sync/edge/"$1"
-#}
-#function ea {
-#    e fifo add "$@"
-#}
-#
-#complete -F _Moo -o filenames n ne
-#complete -F _TabComplete_c -o filenames e ee
-#
-#}}}

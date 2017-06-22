@@ -4,20 +4,17 @@ export EDITOR=vim
 export LC_ALL=en_US.UTF-8
 export HISTSIZE=999999
 
-export PS1='\[\033[01;30m\]\A \[\033[31m\]\u\[\033[32m\]@\h \[\033[00;36m\]\w \[\033[00m\]\$ '
-
 alias sl=ls ls='ls --color' lsd='"ls" --color=always -Acr | tail -n 5' l='ls -l --color'\
-    ..='cd ..' ...='cd ../..' ....='cd ../../..' .....='cd ../../../..'\
-    p='until ping -i 0.5 4.2.2.4; do sleep 0.5; done'
+    ..='cd ..' ...='cd ../..' ....='cd ../../..' .....='cd ../../../..'
+p () { until ping -i 0.5 "${1:-4.2.2.4}"; do sleep 0.5; done; }
 
 #alias ranger='. ranger' vim=vi tag='tig --all'
 alias githut='git -c user.name=hut -c user.email=hut@hut.pm -c user.colors=true -c merge.tool=vimdiff'
 alias dps='docker ps --format="table {{.ID}}\t{{.Image}}\t{{.Status}}\t{{.Names}}"'
-alias tag='tig --all'
 
-function scan () { grep --color=auto "$@" -nr --color=always -I *; }
+scan () { grep "$@" -nr --color=always -I *; }
 
-function ranger-cd() {
+ranger-cd () {
     if [ "$1" == "--get" ]; then
         curl http://ranger.nongnu.org/ranger-stable.tar.gz -o /tmp/ranger.tar.gz
         mkdir -p ~/ranger-stable
@@ -38,7 +35,9 @@ function ranger-cd() {
 }
 
 case "$-" in *i*)
-    [ -n "$RANGER_LEVEL" ] && PS1="$PS1"'(in ranger) '
+	PROMPT_SUFFIX=''
+	[ -n "$RANGER_LEVEL" ] && PROMPT_SUFFIX="\[\033[43m\]<$RANGER_LEVEL>\[\033[0m\] "
+	export PS1='\[\033[01;30m\]\A \[\033[31m\]\u\[\033[32m\]@\h \[\033[00;36m\]\w \[\033[00m\]\$ '"$PROMPT_SUFFIX"
     bind '"\C-o":"\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-h\C-hranger-cd\C-m"'
 	bind '"\eOP":"hut_status\n"' # konsole
 	bind '"\e[11~":"hut_status\n"' # urxvt
@@ -51,7 +50,7 @@ complete -cf sudo ,
 # Bookmarks
 BMDIR="$HOME/.hut/bookmarks"
 #CDPATH=":$BMDIR"
-function cd {
+cd () {
 	if [ "$#" -eq 1 -a ! -e "$1" ]; then
 		if test -d "$BMDIR/$1"; then
 			command cd -P "$BMDIR/$1"
@@ -66,7 +65,7 @@ function cd {
 	fi
 	command cd "$@"
 }
-function bmark {
+bmark () {
 	if test -z "$1"; then
 		ls -l "$BMDIR" | awk 'NR > 1 { print $9"\t"$11 }'
 	else
@@ -76,7 +75,7 @@ function bmark {
 }
 
 # Clear config file backups
-function clear_config_file_backups {
+clear_config_file_backups () {
 	for f in "$HOME/.vimrc" "$HOME/.tmux.conf" "$HOME/.bashrc_hut" "$HOME/.screenrc"; do
 		rm -f "$f".\~*\~
 	done
