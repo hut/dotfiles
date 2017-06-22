@@ -33,11 +33,6 @@ case "$HOSTNAME" in
         export PASSWORD_STORE_DIR="$HOME/sync/configs/password-store"
         export PASSWORD_STORE_CLIP_TIME=10
 
-        # Prompt
-        if [ "$USER" != root ]; then
-            PS1='\[\033[0;38;5;243m\]\w\[\033[1;38;5;202m\]$(test "$?" -eq 0 && echo ">" || echo "$?") \[\033[0m\]'
-            PS1="$PS1$PROMPT_SUFFIX"
-        fi
         ;;&
     lemming*)
         export VIMWIKI_ROOT="$HOME/vimwiki/"
@@ -55,6 +50,15 @@ case "$HOSTNAME" in
         function e  { ~/repos/exobrain/exobrain.py "$@"; }
         function ee { ~/repos/exobrain/exobrain.py -e "$@"; }
         function ea { echo "$(date +"%y-%m-%dT%H:%M")" "$@" >> "$EXOBRAIN_ROOT"/fino; }
+
+        # Prompt
+        if [ "$USER" != root ]; then
+            export PS1='\[\033[0;38;5;243m\]\w\[\033[1;38;5;202m\]$(test "$?" -eq 0 && echo ">" || echo "$?") \[\033[0m\]'
+            export PS1="$PS1$PROMPT_SUFFIX"
+            if [ "$HOSTNAME" != fez ]; then
+                export PS1='\A '"$PS1"
+            fi
+        fi
         ;;&
 esac
 
@@ -339,20 +343,34 @@ function u {
     fi
 }
 function d {
-    case "$(testscm)" in
-        git) git diff;;
-        svn) svn diff | less -R;; # could use "| colordiff", but better to add it to diff-cmd in ~/.subversion/config
-        *) vcsfail;;
-    esac
+    if [ "$PWD" == "$HOME" ]; then
+        case "$HOSTNAME" in
+            lemming*|fez)
+                ( cd ~/repos/dotfiles; d );;
+        esac
+    else
+        case "$(testscm)" in
+            git) git diff;;
+            svn) svn diff | less -R;; # could use "| colordiff", but better to add it to diff-cmd in ~/.subversion/config
+            *) vcsfail;;
+        esac
+    fi
 }
 function tag {
-    case "$(testscm)" in
-        git)
-            tig --all;;
-        svn)
-            svn log --diff -r HEAD:0 | less;;
-        *) vcsfail;;
-    esac
+    if [ "$PWD" == "$HOME" ]; then
+        case "$HOSTNAME" in
+            lemming*|fez)
+                ( cd ~/repos/dotfiles; tag );;
+        esac
+    else
+        case "$(testscm)" in
+            git)
+                tig --all;;
+            svn)
+                svn log --diff -r HEAD:0 | less;;
+            *) vcsfail;;
+        esac
+    fi
 }
 alias tlg='tig --branches'
 alias pa='githut add -p'
