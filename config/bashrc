@@ -298,30 +298,35 @@ done
 
 # Version Control Systems
 function vcsfail { echo "Error: not in a VCS!"; }
-function dotcommit {
-    # use --local as $1 to prevent pushing
-    cd ~/repos/dotfiles/
-    githut add -A
-    githut commit -a --verbose -e -m "minor change" \
-    && if [ "$1" != '--local' ]; then
-        githut push
-    fi
-}
 function commit {
-    case "$(testscm)" in
-        git)
-            if [ "$HOSTNAME" == "fez" -a "$(basename "$(git rev-parse --show-toplevel)")" == ranger ]; then
-                # Sign the commit when commiting for ranger:
-                git commit -S "$@"
-            else
-                githut commit "$@"
-            fi;;
-        svn)
-            svn update
-            svn commit
-            ;;
-        *) vcsfail;;
-    esac
+    if [ "$PWD" == "$HOME" ]; then
+        case "$HOSTNAME" in
+            lemming*|fez)
+                (
+                    cd ~/repos/dotfiles;
+                    githut add -A;
+                    githut commit -a --verbose -e -m "minor change" \
+                    && if [ "$1" != '--local' ]; then
+                        githut push
+                    fi;
+                );;
+        esac
+    else
+        case "$(testscm)" in
+            git)
+                if [ "$HOSTNAME" == "fez" -a "$(basename "$(git rev-parse --show-toplevel)")" == ranger ]; then
+                    # Sign the commit when commiting for ranger:
+                    git commit -S "$@"
+                else
+                    githut commit "$@"
+                fi;;
+            svn)
+                svn update
+                svn commit
+                ;;
+            *) vcsfail;;
+        esac
+    fi
 }
 function u {
     if [ "$PWD" == "$HOME" ]; then
