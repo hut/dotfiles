@@ -318,12 +318,7 @@ function commit {
             fi;;
         svn)
             svn update
-            if [ -z "$1" ]; then
-                msg='(RZ)'
-            else
-                msg="$@"
-            fi
-            svn commit -m "$msg"
+            svn commit
             ;;
         *) vcsfail;;
     esac
