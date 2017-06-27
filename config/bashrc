@@ -350,6 +350,8 @@ function d {
             lemming*|fez)
                 ( cd ~/repos/dotfiles; d );;
         esac
+    elif [[ "$PWD" == "/projects" && "$HOSTNAME" =~ ^lemming ]]; then
+        diffall.sh
     else
         case "$(testscm)" in
             git) git diff;;
