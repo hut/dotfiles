@@ -334,6 +334,8 @@ function u {
             lemming*|fez)
                 ( cd ~/repos/dotfiles; git pull; );;
         esac
+    elif [[ "$PWD" == "/projects" && "$HOSTNAME" =~ ^lemming ]]; then
+        updateall.sh
     else
         case "$(testscm)" in
             git) git fetch;;
