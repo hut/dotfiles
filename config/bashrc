@@ -162,7 +162,7 @@ case "$HOSTNAME" in
         }
         function scream { setsid blink; echo -ne "\E[38;5;46m"; toilet --font future "${1:-WORK, INSECT!}"; }
         for tool in irc sticky ncmpcpp; do
-            alias "$tool"="if _imbusy; then scream; else $tool; fi"
+            eval "function $tool { if _imbusy; then scream; else command $tool \"\$@\"; fi }"  # because fuck it
         done
         ;;
     turban)
