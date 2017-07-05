@@ -296,6 +296,34 @@ for i in {1..100}; do
 done
 
 
+# Package Management
+OS=unknown
+case "$HOSTNAME" in
+    lemming*) OS=opensuse;;
+    fez) OS=arch;;
+esac
+
+function summon {
+    case "$OS" in
+        opensuse) sudo zypper install "$@";;
+        arch) pacman -S "$@";;
+    esac
+}
+
+function scry {
+    case "$OS" in
+        opensuse) sudo zypper search "$@";;
+        arch) pacman -Ss "$@";;
+    esac
+}
+
+function banish {
+    case "$OS" in
+        opensuse) sudo zypper remove "$@";;
+        arch) pacman -R "$@";;
+    esac
+}
+
 # Version Control Systems
 function vcsfail { echo "Error: not in a VCS!"; }
 function commit {
