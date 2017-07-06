@@ -1,7 +1,7 @@
 import subprocess
 import os.path
 
-from hutlib import prefs
+from pythonlib import prefs
 
 _CODING = "utf-8"
 

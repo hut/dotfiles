@@ -2,7 +2,7 @@
 # Opens up dmenu with a list of file names that were previously tagged with the
 # tag "q" for "quick access" in ranger.  The selected file is then opened with rifle.
 
-from hutlib.dmenu_tagged import dmenu_tagged
+from pythonlib.dmenu_tagged import dmenu_tagged
 dmenu_tagged("q")
 raise SystemExit()
 
