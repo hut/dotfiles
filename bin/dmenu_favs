@@ -4,38 +4,3 @@
 
 from pythonlib.dmenu_tagged import dmenu_tagged
 dmenu_tagged("q")
-raise SystemExit()
-
-import subprocess
-import os.path
-
-CODING = "utf-8"
-TAG = "q"
-
-#dmenu = "dmenu -f -l 40 -i -fn -*-terminus-bold-r-*-*-14-*-*-*-*-*-*-* -nb #000000 -nf #aa5533 -sb #885533 -sf #ffffff"
-dmenu = "dmenu -f -l 40 -i -fn Terminus:pixelsize=12 -nb #000000 -nf #aa5533 -sb #885533 -sf #ffffff"
-#files = subprocess.check_output(["python3", "/home/hut/repos/ranger/ranger.py", "--list-tagged-files="+TAG])
-files = subprocess.check_output(["grep", "-a", "^%s:" % TAG, "/home/hut/.config/ranger/tagged"])
-filelist = files.decode(CODING).rstrip("\n").split("\n")
-filelist = [f[2:] for f in filelist]
-for item in list(filelist):
-    if os.path.isdir(item):
-        filelist.remove(item)
-        filelist.extend([os.path.join(item, f) for f in os.listdir(item) \
-                if os.path.isfile(os.path.join(item, f))])
-    if not os.path.exists(item):
-        filelist.remove(item)
-names = dict((f.split("/")[-1], f) for f in filelist)
-input_data = "\n".join(sorted(names)).encode(CODING)
-
-p = subprocess.Popen(dmenu.split(), stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-out, err = p.communicate(input_data)
-selected = out.decode("utf-8").rstrip("\n")
-
-if not p.poll() and selected in names:
-    target = names[selected]
-    filetype = subprocess.check_output(['file', names[selected]]).decode(CODING)
-    if 'executable' in filetype:
-        os.execl(target, target)
-    else:
-        os.execl("/usr/bin/rifle", "/usr/bin/rifle", "-f", "f", target)
