@@ -150,6 +150,7 @@ map ,e :e.<cr>
 map ,S :set spell spelllang=en_us<CR>
 map ,P :call PagerMode()<CR>
 map ,H :silent !echo -ne "\033]12;black\007"<CR>:autocmd VimLeave * silent !echo -ne "\033]12;white\007"<CR>:set noruler<CR>
+map ,fs :%s/\s\+$//e<CR>:%s/\t/    /e<CR>
 
 noremap <C-p> <tab>
 
