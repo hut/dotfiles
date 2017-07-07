@@ -1,3 +1,27 @@
+" Hostname-based settings
+if $HOSTNAME =~ "^lem"
+    " Terminal-related
+    if has('nvim')
+        tnoremap <C-W> <C-\><C-n><C-W>
+        tnoremap <S-Tab> <C-\><C-n><S-Tab>
+        map <A-Enter> <ESC>:terminal<CR>
+        map <C-b> <ESC>:tab new term://bash<CR>i
+        let g:terminal_scrollback_buffer_size = 100000
+        let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 0
+    endif
+
+    " Styling
+    colorscheme default
+    set fillchars+=vert:\
+
+    set nofoldenable
+else
+    " Styling
+    colorscheme jungle
+    set fillchars=vert:│,fold:\
+endif
+
+set viminfo='100,<0,s10,h
 set modeline
 
 set lcs=tab:^\ ,trail:'
@@ -23,7 +47,6 @@ set smartcase
 set smartindent
 set backupdir=~/.vim/swap,/var/tmp,/tmp
 set directory=~/.vim/swap,/var/tmp,/tmp
-set fillchars=vert:│,fold:\ 
 
 set foldmethod=indent
 
@@ -147,10 +170,13 @@ map ,b :source ~/.vimrc<cr>
 map ,B :e ~/.vimrc<cr>
 map ,w :e <C-r>=substitute(@%, '^\(.*/\).*$', '\1', '')<cr><cr>
 map ,e :e.<cr>
-map ,S :set spell spelllang=en_us<CR>
+map ,SE :set spell spelllang=en_us<CR>
+map ,SD :set spell spelllang=de<CR>
+map ,SS :set nospell<CR>
 map ,P :call PagerMode()<CR>
 map ,H :silent !echo -ne "\033]12;black\007"<CR>:autocmd VimLeave * silent !echo -ne "\033]12;white\007"<CR>:set noruler<CR>
-map ,fs :%s/\s\+$//e<CR>:%s/\t/    /e<CR>
+map ,fs :%s/\s\+$//e<CR>:%s/\t/    /ge<CR>
+map \k :mksession! ~/Session.vim<CR>
 
 noremap <C-p> <tab>
 
@@ -202,8 +228,6 @@ let python_highlight_builtins = 1
 "source ~/.vim/plugin/speeddating.vim
 au Filetype *.org source ~/.vim/syntax/vorg.vim
 au BufRead *.pen setf python
-"colorscheme elflord
-colorscheme jungle
 syntax on
 filetype indent plugin on
 
