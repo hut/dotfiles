@@ -249,6 +249,15 @@ alias sd=systemctl
 alias e=exobrain
 alias ee='exobrain -e'
 alias plan="vim $VIMWIKI_ROOT/plan.wiki"
+function py {
+    if [ -z "$1" ]; then
+        ipython
+    elif [ -z "$2" ]; then
+        ipython -i "$1"
+    else
+        python "$@"
+    fi
+}
 
 function a {
     if [[ -z "$@" ]]; then
@@ -400,7 +409,12 @@ function tag {
             git)
                 tig --all;;
             svn)
-                svn log --diff -r HEAD:0 | less;;
+                if [ "$1" == '-q' ]; then
+                    args=
+                else
+                    args=--diff
+                fi
+                svn log $args -r HEAD:0 | less;;
             *) vcsfail;;
         esac
     fi
