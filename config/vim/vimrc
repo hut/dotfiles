@@ -201,8 +201,6 @@ map ,s :call UseSpaces()<CR>
 "map ,r :call RangerChooser()<CR>
 map <F2> :call ToggleTabsSpaces()<CR>
 imap <F2> <ESC>:call ToggleTabsSpaces()<CR>
-ino <tab> <C-r>=TriggerSnippet()<CR>
-snor <tab> <ESC>i<right><C-r>=TriggerSnippet()<CR>
 " }}}
 
 " Mappings {{{
@@ -280,14 +278,6 @@ au BufRead *.pen setf python
 syntax on
 filetype indent plugin on
 
-au Filetype * call SetOverLengthHighlight()
-fun! SetOverLengthHighlight()
-"    highlight OverLength ctermbg=darkred ctermfg=white
-"    syntax match OverLength /\%80v.\+/
-    highlight BlankLine ctermbg=darkgrey ctermfg=white
-    syntax match BlankLine /^\s\+$/
-endfun
-call SetOverLengthHighlight()
 au BufReadPost * call CheckForMaxima()
 fun! CheckForMaxima()
     if substitute(getreg('%'), '^.*\.', '', '') == 'maxima'
@@ -898,3 +888,7 @@ endfunction
 command! -bar RangerChooser call RangeChooser()
 nnoremap <leader>r :<C-U>RangerChooser<CR>
 "  --- /tmp ---
+
+if filereadable(glob("~/.vimrc.local"))
+    source ~/.vimrc.local
+endif
