@@ -12,13 +12,56 @@ if $HOSTNAME =~ "^lem"
 
     " Styling
     colorscheme default
-    set fillchars+=vert:\
+    set fillchars+=vert:\ 
 
     set nofoldenable
+
+    " Plugins
+    filetype off
+    set rtp+=~/.vim/bundle/Vundle.vim
+
+    call vundle#begin()
+    Plugin 'VundleVim/Vundle.vim'
+    Plugin 'https://github.com/vimwiki/vimwiki.git'
+    Plugin 'https://github.com/majutsushi/tagbar.git'
+    Plugin 'https://github.com/ctrlpvim/ctrlp.vim.git'
+    Plugin 'https://github.com/davidhalter/jedi-vim.git'
+    Plugin 'https://github.com/MarcWeber/vim-addon-mw-utils.git'
+    Plugin 'https://github.com/tomtom/tlib_vim.git'
+    Plugin 'https://github.com/garbas/vim-snipmate.git'
+    call vundle#end()
+
+    filetype plugin indent on
+
+    let g:ctrlp_cmd = 'CtrlP /projects'
+    let g:ctrlp_map = '<space>'
+    let g:ctrlp_extensions = ['line', 'dir']
+
+    let g:jedi#use_tabs_not_buffers = 1
+    let g:jedi#completions_enabled = 0
+    let g:jedi#documentation_command = "\\D"
+    let g:jedi#goto_assignments_command = "\\a"
+    let g:jedi#goto_definitions_command = "\\d"
+    let g:jedi#usages_command = "\\u"
 else
     " Styling
     colorscheme jungle
-    set fillchars=vert:│,fold:\
+    set fillchars=vert:│,fold:\ 
+
+    " Highlight long lines
+    au Filetype * call SetOverLengthHighlight()
+    fun! SetOverLengthHighlight()
+    "    highlight OverLength ctermbg=darkred ctermfg=white
+    "    syntax match OverLength /\%80v.\+/
+        highlight BlankLine ctermbg=darkgrey ctermfg=white
+        syntax match BlankLine /^\s\+$/
+    endfun
+    call SetOverLengthHighlight()
+
+    if $HOSTNAME == "fez"
+        ino <tab> <C-r>=TriggerSnippet()<CR>
+        snor <tab> <ESC>i<right><C-r>=TriggerSnippet()<CR>
+    endif
 endif
 
 set viminfo='100,<0,s10,h
