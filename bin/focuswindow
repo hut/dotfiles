@@ -1,0 +1,6 @@
+#!/bin/sh
+
+WINDOWNAME="${1:-Vimperator}"
+
+xdotool set_desktop "$(xdotool search --name "$WINDOWNAME" get_desktop_for_window)"
+xdotool search "$WINDOWNAME" windowfocus --sync
