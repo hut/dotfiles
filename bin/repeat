@@ -46,7 +46,7 @@ def main():
 
     try:
         db = db_read(args.file)
-    except OSError:
+    except IOError:
         db = dict()
 
     today = datetime.date.today()
