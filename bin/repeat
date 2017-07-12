@@ -63,11 +63,10 @@ def main():
         # no days -> just tell if time is up or not
         if not args.label in db or parse_date(db[args.label]['date']).date() > today:
             return 1
-        else:
-            return 0
+        return 0
     else:
         assert args.days >= 0
-        count = db.get(args.label, dict()).get('count', 0)
+        count = int(db.get(args.label, dict()).get('count', 0)) + 1
         date = today + relativedelta(days=args.days)
         db[args.label] = dict(label=args.label, date=date, count=count)
         db_write(args.file, db)
