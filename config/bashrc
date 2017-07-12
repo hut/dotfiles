@@ -206,7 +206,7 @@ alias wlits=wlist
 
 # Fixed parameters
 function sticky { tmux_session sticky; }
-alias cal='cal -3'
+function cal { [ -z "$@" ] && command cal -3 || command cal "$@"; }
 function man {
     # Add some colors! <3
     env LESS_TERMCAP_mb=$'\E[01;31m' \
