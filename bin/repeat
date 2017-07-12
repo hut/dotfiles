@@ -1,0 +1,76 @@
+#!/usr/bin/python
+"""
+Track tasks which have to be done repeatedly.
+
+A bashrc entry for doing a weekly task could look like this:
+
+if repeat -l mytask; then echo DO YOUR TASK; fi;
+function domytask () { repeat -l mytask -d 7; };
+
+if repeat --quiet; then echo "you need to do: $(repeat)"; fi;
+"""
+import argparse
+import csv
+import datetime
+import os.path
+import sys
+from dateutil.relativedelta import relativedelta
+from dateutil.parser import parse as parse_date
+
+REPEATFILE = os.path.expanduser("~/repeat")
+FIELDS = ['label', 'date', 'count']
+
+def db_read(csvfile):
+    data = {}
+    with open(csvfile, "r") as f:
+        for entry in csv.DictReader(f):
+            data[entry['label']] = entry
+    return data
+
+
+def db_write(csvfile, data):
+    with open(csvfile, "w") as f:
+        dictwriter = csv.DictWriter(f, fieldnames=FIELDS)
+        dictwriter.writeheader()
+        dictwriter.writerows(data.values())
+
+
+def main():
+    parser = argparse.ArgumentParser(description=sys.modules[__name__].__doc__.strip())
+    parser.add_argument('-v', '--verbose', action='store_true', default=False)
+    parser.add_argument('-q', '--quiet', action='store_true', default=False)
+    parser.add_argument('-l', '--label', type=str)
+    parser.add_argument('-d', '--days', type=int)
+    parser.add_argument('-f', '--file', type=str, default=REPEATFILE)
+    args = parser.parse_args()
+
+    try:
+        db = db_read(args.file)
+    except OSError:
+        db = dict()
+
+    today = datetime.date.today()
+
+    if args.label is None:
+        found = False
+        for entry in db.values():
+            if parse_date(entry['date']).date() <= today:
+                if not args.quiet:
+                    print(entry['label'])
+                found = True
+        return 0 if found else 1
+    elif args.days is None:
+        # no days -> just tell if time is up or not
+        if not args.label in db or parse_date(db[args.label]['date']).date() > today:
+            return 1
+        else:
+            return 0
+    else:
+        assert args.days >= 0
+        count = db.get(args.label, dict()).get('count', 0)
+        date = today + relativedelta(days=args.days)
+        db[args.label] = dict(label=args.label, date=date, count=count)
+        db_write(args.file, db)
+
+if __name__ == '__main__':
+    sys.exit(main())
