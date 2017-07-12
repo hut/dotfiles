@@ -369,6 +369,7 @@ function u {
     if [ "$PWD" == "$HOME" ]; then
         case "$HOSTNAME" in
             lemming*|fez)
+                repeat --label pull --days 1  # regularily notify that I have to pull
                 ( cd ~/repos/dotfiles; git pull; );;
         esac
     elif [[ "$PWD" == "/projects" && "$HOSTNAME" =~ ^lemming ]]; then
