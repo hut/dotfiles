@@ -19,6 +19,7 @@ from dateutil.parser import parse as parse_date
 
 REPEATFILE = os.path.expanduser("~/repeat")
 FIELDS = ['label', 'date', 'count']
+DAY_STARTS_AT = 6
 
 def db_read(csvfile):
     data = {}
@@ -50,22 +51,23 @@ def main():
         db = dict()
 
     today = datetime.date.today()
+    now = datetime.datetime.now()
+    now_compare = now - relativedelta(hours=DAY_STARTS_AT)
 
     if args.label is None:
         found = False
         for entry in db.values():
-            if parse_date(entry['date']).date() <= today:
+            if parse_date(entry['date']) <= now_compare:
                 if not args.quiet:
                     print(entry['label'])
                 found = True
         return 0 if found else 1
     elif args.days is None:
         # no days -> just tell if time is up or not
-        if not args.label in db or parse_date(db[args.label]['date']).date() > today:
+        if not args.label in db or parse_date(db[args.label]['date']) > now_compare:
             return 1
         return 0
     else:
-        assert args.days >= 0
         count = int(db.get(args.label, dict()).get('count', 0)) + 1
         date = today + relativedelta(days=args.days)
         db[args.label] = dict(label=args.label, date=date, count=count)
