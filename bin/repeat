@@ -18,7 +18,7 @@ from dateutil.relativedelta import relativedelta
 from dateutil.parser import parse as parse_date
 
 REPEATFILE = os.path.expanduser("~/repeat")
-FIELDS = ['label', 'date', 'count']
+FIELDS = ['label', 'date', 'count', 'last_step', 'finished']
 DAY_STARTS_AT = 6
 PRETTY_COLORS = '102 138 174 209 215'.split()
 
@@ -35,6 +35,11 @@ def db_write(csvfile, data):
         dictwriter = csv.DictWriter(f, fieldnames=FIELDS)
         dictwriter.writeheader()
         dictwriter.writerows(data.values())
+
+
+def date_offset(offset):
+    today = datetime.date.today()
+    return today + relativedelta(days=int(offset))
 
 
 def main():
@@ -58,7 +63,8 @@ def main():
 
     if args.label is None:
         items = [entry['label'] for entry in db.values() \
-                if parse_date(entry['date']) <= now_compare]
+                if parse_date(entry['date']) <= now_compare \
+                and not entry['finished']]
         if not args.quiet:
             if args.pretty:
                 for i, item in enumerate(items):
@@ -72,14 +78,22 @@ def main():
                 print("\n".join(items))
         return 0 if items else 1
     elif args.days is None:
-        # no days -> just tell if time is up or not
-        if not args.label in db or parse_date(db[args.label]['date']) > now_compare:
+        # no days -> reschedule it based on the last delay used
+        if not args.label in db:
+            if not args.quiet:
+                print("Error: no such label")
             return 1
-        return 0
+
+        entry = db[args.label]
+        if entry['last_step'] == '-1':
+            entry['finished'] = today
+        else:
+            entry['date'] = date_offset(entry['last_step'])
+        db_write(args.file, db)
     else:
         count = int(db.get(args.label, dict()).get('count', 0)) + 1
-        date = today + relativedelta(days=args.days)
-        db[args.label] = dict(label=args.label, date=date, count=count)
+        date = date_offset(args.days)
+        db[args.label] = dict(label=args.label, date=date, count=count, last_step=args.days)
         db_write(args.file, db)
 
 if __name__ == '__main__':
