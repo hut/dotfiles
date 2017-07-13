@@ -55,13 +55,11 @@ def main():
     now_compare = now - relativedelta(hours=DAY_STARTS_AT)
 
     if args.label is None:
-        found = False
-        for entry in db.values():
-            if parse_date(entry['date']) <= now_compare:
-                if not args.quiet:
-                    print(entry['label'])
-                found = True
-        return 0 if found else 1
+        items = [entry['label'] for entry in db.values() \
+                if parse_date(entry['date']) <= now_compare]
+        if not args.quiet:
+            print("\n".join(items))
+        return 0 if items else 1
     elif args.days is None:
         # no days -> just tell if time is up or not
         if not args.label in db or parse_date(db[args.label]['date']) > now_compare:
