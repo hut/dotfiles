@@ -31,13 +31,12 @@ def db_read(csvfile):
 
 
 def db_write(csvfile, data):
-    # rename csvfile instead overwriting to prevent data loss when disk is full
     suffix = '_write_tmp'
-    os.rename(csvfile, csvfile + suffix)
-    with open(csvfile, "w") as f:
+    with open(csvfile + suffix, "w") as f:
         dictwriter = csv.DictWriter(f, fieldnames=FIELDS)
         dictwriter.writeheader()
         dictwriter.writerows(data.values())
+    # rename csvfile instead overwriting to prevent data loss when disk is full
     os.rename(csvfile + suffix, csvfile)
 
 
