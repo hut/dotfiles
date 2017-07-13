@@ -20,6 +20,7 @@ from dateutil.parser import parse as parse_date
 REPEATFILE = os.path.expanduser("~/repeat")
 FIELDS = ['label', 'date', 'count']
 DAY_STARTS_AT = 6
+PRETTY_COLORS = '102 138 174 209 215'.split()
 
 def db_read(csvfile):
     data = {}
@@ -40,6 +41,7 @@ def main():
     parser = argparse.ArgumentParser(description=sys.modules[__name__].__doc__.strip())
     parser.add_argument('-v', '--verbose', action='store_true', default=False)
     parser.add_argument('-q', '--quiet', action='store_true', default=False)
+    parser.add_argument('--pretty', action='store_true', default=False)
     parser.add_argument('-l', '--label', type=str)
     parser.add_argument('-d', '--days', type=int)
     parser.add_argument('-f', '--file', type=str, default=REPEATFILE)
@@ -58,7 +60,16 @@ def main():
         items = [entry['label'] for entry in db.values() \
                 if parse_date(entry['date']) <= now_compare]
         if not args.quiet:
-            print("\n".join(items))
+            if args.pretty:
+                for i, item in enumerate(items):
+                    sys.stdout.write("\033[0;38;5;%sm%s" % \
+                            (PRETTY_COLORS[min(len(PRETTY_COLORS)-1, i)], item))
+                    if i < len(items):
+                        sys.stdout.write(" ")
+
+                sys.stdout.write("\033[0m\n")
+            else:
+                print("\n".join(items))
         return 0 if items else 1
     elif args.days is None:
         # no days -> just tell if time is up or not
