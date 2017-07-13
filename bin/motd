@@ -189,9 +189,13 @@ if CLOCK:
     print(clr("  ".join(output), fg='76'))
 
 if os.path.exists(os.path.expanduser("~/bin/repeat")):
-    sys.stdout.write(clr("---> ", fg=101))
-    sys.stdout.flush()
-    subprocess.call(["repeat", "--pretty"])
+    try:
+        tasks = subprocess.check_output(["repeat", "--pretty"])
+    except subprocess.CalledProcessError:
+        pass
+    else:
+        sys.stdout.write(clr("---> ", fg=101) + tasks.decode('utf-8'))
+        sys.stdout.flush()
 
 if os.path.exists(os.path.expanduser("~/repos/dotfiles")):
     subprocess.call('''

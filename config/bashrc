@@ -18,6 +18,7 @@ case "$HOSTNAME" in
     turban|fez)
         export TERMCMD="urxvt"
         export CHANGET_TARGET=/home/archive/downloads/changet
+        export BMDIR="$HOME/.hut/bookmarks"
         unset MAIL
         ;;&
     fez)
@@ -40,6 +41,8 @@ case "$HOSTNAME" in
         export EXOBRAIN_STATS_FILE=/dev/null
         export MAKEFLAGS='-j 4'
         export TERMCMD="konsole"
+        export BMDIR="$HOME/hut/bookmarks"
+        export PASSWORD_STORE_DIR="$HOME/hut/password-store"
         ;;&
     turban)
         PATH=$HOME'/bin/turban:'$HOME'/bin:'$HOME'/bin/redirected:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/games:/usr/games:/usr/bin/core_perl'
@@ -103,7 +106,6 @@ function make-completion-wrapper () {
 case "$HOSTNAME" in
     fez|lemming*)
         # Bookmarks for "cd" {{{
-        BMDIR="$HOME/.hut/bookmarks"
         function cd {
             if [ "$#" -eq 1 -a ! -e "$1" ]; then
                 if test -d "$BMDIR/$1"; then
