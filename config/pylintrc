@@ -1,0 +1,14 @@
+[MESSAGES CONTROL]
+disable=bad-continuation,attribute-defined-outside-init,invalid-name,too-many-arguments,missing-docstring
+
+[REPORTS]
+
+reports=yes
+score=yes
+
+[BASIC]
+no-docstring-rgx=.*
+
+[FORMAT]
+max-line-length=160
+indent-string='    '
