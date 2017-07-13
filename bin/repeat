@@ -49,7 +49,7 @@ def main():
     parser.add_argument('--pretty', action='store_true', default=False)
     parser.add_argument('-l', '--label', type=str)
     parser.add_argument('-d', '--days', type=int)
-    parser.add_argument('-f', '--file', type=str, default=REPEATFILE)
+    parser.add_argument('--file', type=str, default=REPEATFILE)
     args = parser.parse_args()
 
     try:
