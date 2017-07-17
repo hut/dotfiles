@@ -372,7 +372,9 @@ function u {
         case "$HOSTNAME" in
             lemming*|fez)
                 repeat --label pull --days 1  # regularily notify that I have to pull
-                ( cd ~/repos/dotfiles; git pull; );;
+                ( cd ~/repos/dotfiles; git pull; )
+                [[ "$HOSTNAME" =~ ^lemming ]] && updateall.sh
+                ;;
         esac
     elif [[ "$PWD" == "/projects" && "$HOSTNAME" =~ ^lemming ]]; then
         updateall.sh
