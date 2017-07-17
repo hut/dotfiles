@@ -41,8 +41,8 @@ case "$HOSTNAME" in
         export EXOBRAIN_STATS_FILE=/dev/null
         export MAKEFLAGS='-j 4'
         export TERMCMD="konsole"
-        export BMDIR="$HOME/hut/bookmarks"
-        export PASSWORD_STORE_DIR="$HOME/hut/password-store"
+        export BMDIR="$HOME/hut/git/bookmarks"
+        export PASSWORD_STORE_DIR="$HOME/hut/git/password-store"
         ;;&
     turban)
         PATH=$HOME'/bin/turban:'$HOME'/bin:'$HOME'/bin/redirected:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/games:/usr/games:/usr/bin/core_perl'
