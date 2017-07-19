@@ -36,8 +36,8 @@ case "$HOSTNAME" in
 
         ;;&
     lemming*)
-        export VIMWIKI_ROOT="$HOME/vimwiki/"
-        export EXOBRAIN_ROOT=~/vimwiki/Guides
+        export VIMWIKI_ROOT="$HOME/hut/git/vimwiki/"
+        export EXOBRAIN_ROOT="$VIMWIKI_ROOT"/Guides
         export EXOBRAIN_STATS_FILE=/dev/null
         export MAKEFLAGS='-j 4'
         export TERMCMD="konsole"
