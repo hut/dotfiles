@@ -7,6 +7,7 @@ import random
 import subprocess
 import time
 import sys
+import socket
 import dateutil.parser
 
 PLAN_PATH = "~/sync/notes/vimwiki/plan.wiki" # "~/.plan"
@@ -155,6 +156,7 @@ if CRAP:
     print(clr("-" * math.ceil(fl), fg='1'))
 
 if CLOCK:
+    fg = 22 if socket.gethostname().startswith('lemming') else 76
     def get_suffix(d):
         return 'th' if 11<=d<=13 else {1:'st',2:'nd',3:'rd'}.get(d%10, 'th')
     suffix = get_suffix(int(time.strftime('%d')))
@@ -162,12 +164,12 @@ if CLOCK:
     load = open("/proc/loadavg", "r").read().split()[1]
     date = time.strftime("%A, %B %d" + suffix + ", w=%U, d=%j, %s")
     print(clr("{date} 0x{0:x} mem={free_mem:.1f}G load={load}" \
-            .format(int(time.time()), **locals()), fg='76'))
+            .format(int(time.time()), **locals()), fg=fg))
     places = [
         ('LA-7', 'America/Los_Angeles'),
         ('NY-5', 'America/New_York'),
         ('\033[38;5;203mDE+1', 'Europe/Berlin'),
-        ('\033[38;5;76mMOS+3', 'Europe/Moscow'),
+        ('\033[38;5;%dmMOS+3' % fg, 'Europe/Moscow'),
         ('CH+8', 'Asia/Hong_Kong'),
         ('JP+9', 'Asia/Tokyo'),
     ]
@@ -186,7 +188,7 @@ if CLOCK:
     hour = (float(time.strftime("%H")) + float(time.strftime("%M")) / 60)
     output.append("+%.1f" % (sleephour(today.weekday()) - hour))
 
-    print(clr("  ".join(output), fg='76'))
+    print(clr("  ".join(output), fg=fg))
 
 if os.path.exists(os.path.expanduser("~/bin/repeat")):
     try:
