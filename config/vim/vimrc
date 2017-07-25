@@ -43,6 +43,8 @@ if $HOSTNAME =~ "^lem"
     let g:jedi#goto_assignments_command = "\\a"
     let g:jedi#goto_definitions_command = "\\d"
     let g:jedi#usages_command = "\\u"
+
+    let g:vimwiki_list = [{'path': '~/hut/git/vimwiki/'}]
 else
     " Styling
     colorscheme jungle
