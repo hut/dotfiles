@@ -198,6 +198,7 @@ for i in {1..12}; do
         eval "alias ${i}d${j}='dice ${i} ${j}'"
     done
 done
+function settitle { echo -ne "\033]30;$1\007"; }
 
 
 # Typos
