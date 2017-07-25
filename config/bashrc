@@ -166,6 +166,7 @@ case "$HOSTNAME" in
 #        for tool in irc sticky ncmpcpp; do
 #            eval "function $tool { if _imbusy; then scream; else command $tool \"\$@\"; fi }"  # because fuck it
 #        done
+        function backup_regular { repeat -l backup_regular; command backup_regular; }
         ;;
     turban)
         function remote {
