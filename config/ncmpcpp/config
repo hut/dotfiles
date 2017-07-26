@@ -1,0 +1,9 @@
+
+song_list_format = "{%n. %a - }{%t}|{$0%f$9}$R{$7%l$9}"
+song_columns_list_format = "(10)[cyan]{l} (20)[default]{a} (40)[cyan]{t} (30)[default]{b}"
+seek_time = 5
+follow_now_playing_lyrics = yes
+ignore_leading_the = yes
+external_editor = vi
+main_window_color = "default"
+main_window_highlight_color = default
