@@ -29,6 +29,7 @@ if $HOSTNAME =~ "^lem"
     Plugin 'https://github.com/MarcWeber/vim-addon-mw-utils.git'
     Plugin 'https://github.com/tomtom/tlib_vim.git'
     Plugin 'https://github.com/garbas/vim-snipmate.git'
+    "Plugin 'https://github.com/universal-ctags/ctags'
     call vundle#end()
 
     filetype plugin indent on
