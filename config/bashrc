@@ -130,6 +130,7 @@ case "$HOSTNAME" in
             fi
         }
         # }}}
+        function nom { repeat -l nom; }
         ;;&
     fez|turban)
         # Bind keys
