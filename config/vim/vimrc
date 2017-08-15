@@ -227,6 +227,7 @@ map ,P :call PagerMode()<CR>
 map ,H :silent !echo -ne "\033]12;black\007"<CR>:autocmd VimLeave * silent !echo -ne "\033]12;white\007"<CR>:set noruler<CR>
 map ,fs :%s/\s\+$//e<CR>:%s/\t/    /ge<CR>
 map \k :mksession! ~/Session.vim<CR>
+map \s :vsplit ~/repos/dotfiles/config/vim/snippets<CR>
 
 noremap <C-p> <tab>
 
