@@ -65,6 +65,27 @@ else
         ino <tab> <C-r>=TriggerSnippet()<CR>
         snor <tab> <ESC>i<right><C-r>=TriggerSnippet()<CR>
     endif
+
+    " Don't need this on lemming
+    fun! DecideIfShouldUseTab()
+        let lnum = 1
+        while lnum <= 200
+            let lnum = lnum + 1
+            let line = getline(lnum)
+        let got_spaces = 0
+            if line =~ "^\t\t"
+                call UseTabs()
+                return
+            endif
+            if line =~ "^    "
+          let got_spaces = 1
+            endif
+        endwhile
+      if got_spaces
+        call UseSpaces()
+      endif
+endfun
+au Filetype * call DecideIfShouldUseTab()
 endif
 
 set viminfo='100,<0,s10,h
@@ -159,25 +180,6 @@ fun! ToggleTabsSpaces()
   endif
 endfun
 
-fun! DecideIfShouldUseTab()
-    let lnum = 1
-    while lnum <= 200
-        let lnum = lnum + 1
-        let line = getline(lnum)
-    let got_spaces = 0
-        if line =~ "^\t\t"
-            call UseTabs()
-            return
-        endif
-        if line =~ "^    "
-      let got_spaces = 1
-        endif
-    endwhile
-  if got_spaces
-    call UseSpaces()
-  endif
-endfun
-au Filetype * call DecideIfShouldUseTab()
 au BufRead *.texx setf tex
 
 "fun! Ranger()
