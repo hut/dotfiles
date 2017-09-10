@@ -248,7 +248,9 @@ alias egrep='egrep --color=auto'
 
 function plow { mkdir -p "$1" && cd "$1"; }
 
-alias vim=nvim
+if which nvim >& /dev/null; then
+    alias vim=nvim
+fi
 alias am=alsamixer
 alias sd=systemctl
 alias e=exobrain
@@ -286,12 +288,17 @@ function tmux_session {
     fi
 }
 function ranger-cd {
+    if [ -f "~/repos/ranger/ranger.py" ]; then
+        ranger='python2.7 ~/repos/ranger/ranger.py'
+    else
+        ranger=ranger
+    fi
     tempfile='/tmp/chosendir'
     extra_args=
     if [ -n "$REMOTED" ]; then
         set -- "$@" "--cmd=chain map <enter> play_remote; map x shell killall mpv"
     fi
-    python2.7 ~/repos/ranger/ranger.py --choosedir="$tempfile" "${@:-$(pwd)}"
+    $ranger --choosedir="$tempfile" "${@:-$(pwd)}"
     test -f "$tempfile" &&
     if [ "$(cat -- "$tempfile")" != "$(echo -n `pwd`)" ]; then
         cd -- "$(cat "$tempfile")"
