@@ -419,6 +419,8 @@ function tag {
             svn)
                 if [ "$1" == '-q' ]; then
                     args=
+                elif [ "$1" == '-w' ]; then
+                    args='--diff -x -uw'
                 else
                     args=--diff
                 fi
