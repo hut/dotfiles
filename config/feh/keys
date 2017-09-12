@@ -1,0 +1,8 @@
+toggle_fullscreen f
+zoom_in = +
+zoom_out -
+
+# unbind these annoying actions
+save_filelist
+save_image
+delete
