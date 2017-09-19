@@ -1,4 +1,4 @@
-*.dpi: 130
+*.dpi: 90
 
 urxvt*lineSpace: 0
 #urxvt*letterSpace: -1
