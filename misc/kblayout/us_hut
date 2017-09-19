@@ -879,6 +879,8 @@ xkb_symbols "altgr-intl" {
    key <AC07> { [        j, J,           idiaeresis,   Idiaeresis      ] };
    key <AB02> { [        x, X,           oe,           OE              ] };
    key <AB04> { [        v, V,           registered,   registered      ] };
+   key <AB04> { [        v, V,           registered,   registered      ] };
+   key <AC09> { [	       l, L,           lstroke,         Lstroke ] };
 
 // onequarter etc (not in iso8859-15) moved to get three unshifted deadkeys:
 
