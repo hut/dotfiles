@@ -289,8 +289,8 @@ function tmux_session {
     fi
 }
 function ranger-cd {
-    if [ -f "~/repos/ranger/ranger.py" ]; then
-        ranger='python2.7 ~/repos/ranger/ranger.py'
+    if [ -f ~/repos/ranger/ranger.py ]; then
+        ranger="python2.7 $HOME/repos/ranger/ranger.py"
     else
         ranger=ranger
     fi
