@@ -1,0 +1,3 @@
+#!/bin/sh
+cd ~/repos/assistant
+python -m asslib "$@"
