@@ -177,6 +177,7 @@ case "$HOSTNAME" in
         }
         ;;
     lemming*)
+        alias tactivate='source /tools/python/bin/activate'
         ;;
 esac
 
