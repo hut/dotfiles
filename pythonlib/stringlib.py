@@ -23,3 +23,8 @@ def sed(string, pattern, replace, count=0):
     elif hasattr(string, '__iter__'):
         return list(sed(item, pattern, replace, count=count)
                 for item in string)
+
+
+def dictForPartialFormatting(dict):
+    def __missing__(self, key):
+        return '{%s}' % key
