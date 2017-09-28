@@ -1,0 +1,2 @@
+#!/bin/sh
+wget -Sq --max-redirect=0 "$1" |& grep --color=auto -C 1000 'Location.*'
