@@ -22,7 +22,7 @@ case "$HOSTNAME" in
         unset MAIL
         ;;&
     fez)
-        export PATH=$HOME'/sync/bin/fez:'$HOME'/sync/bin/games:'$HOME'/sync/bin:'$HOME'/sync/bin/scripts:'$HOME'/sync/bin/redirected:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/games:/usr/games:/usr/bin/core_perl:'$HOME'/sync/bin/snes:/usr/bin/vendor_perl:/home/hut/.npm/bin:/usr/local/bin:/usr/local/sbin'
+        export PATH=$HOME'/sync/bin/fez:'$HOME'/sync/bin/games:'$HOME'/sync/bin:'$HOME'/sync/bin/scripts:'$HOME'/sync/bin/redirected:'$HOME'/.local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/games:/usr/games:/usr/bin/core_perl:'$HOME'/sync/bin/snes:/usr/bin/vendor_perl:/home/hut/.npm/bin:/usr/local/bin:/usr/local/sbin'
         export VIMWIKI_ROOT="$HOME/sync/notes/vimwiki/"
         export EXOBRAIN_ROOT=~/sync/notes/quick
         export JAVAFX_HOME="/usr/lib/jvm/java-8-openjdk/jre/lib/ext/jfxrt.jar"
