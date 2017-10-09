@@ -11,8 +11,8 @@ if $HOSTNAME =~ "^lem"
     endif
 
     " Styling
-    colorscheme default
-    set fillchars+=vert:\ 
+    "colorscheme default
+    "set fillchars+=vert:\ 
 
     set nofoldenable
 
@@ -47,10 +47,6 @@ if $HOSTNAME =~ "^lem"
 
     let g:vimwiki_list = [{'path': '~/hut/git/vimwiki/'}]
 else
-    " Styling
-    colorscheme jungle
-    set fillchars=vert:│,fold:\ 
-
     " Highlight long lines
     au Filetype * call SetOverLengthHighlight()
     fun! SetOverLengthHighlight()
@@ -85,6 +81,11 @@ else
         call UseSpaces()
       endif
 endfun
+
+" Styling
+colorscheme jungle
+set fillchars=vert:│,fold:\ 
+
 au Filetype * call DecideIfShouldUseTab()
 endif
 
