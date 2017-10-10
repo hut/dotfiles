@@ -233,6 +233,7 @@ map \k :mksession! ~/Session.vim<CR>
 map \s :vsplit ~/repos/dotfiles/config/vim/snippets<CR>
 
 noremap <C-p> <tab>
+noremap <CR> :nohlsearch<CR><CR>
 
 " avoid typos
 map Q <ESC>
