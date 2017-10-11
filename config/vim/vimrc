@@ -80,14 +80,13 @@ else
       if got_spaces
         call UseSpaces()
       endif
-endfun
+    endfun
+    au Filetype * call DecideIfShouldUseTab()
+endif
 
 " Styling
 colorscheme jungle
 set fillchars=vert:│,fold:\ 
-
-au Filetype * call DecideIfShouldUseTab()
-endif
 
 set viminfo='100,<0,s10,h
 set modeline
