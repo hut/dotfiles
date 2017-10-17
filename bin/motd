@@ -156,7 +156,7 @@ if CRAP:
     print(clr("-" * math.ceil(fl), fg='1'))
 
 if CLOCK:
-    fg = 22 if socket.gethostname().startswith('lemming') else 76
+    fg = 255 if socket.gethostname().startswith('lemming') else 76
     def get_suffix(d):
         return 'th' if 11<=d<=13 else {1:'st',2:'nd',3:'rd'}.get(d%10, 'th')
     suffix = get_suffix(int(time.strftime('%d')))
