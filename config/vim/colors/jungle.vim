@@ -23,7 +23,7 @@ if &t_Co == 256
 	hi DiffText		ctermfg=1 ctermbg=none cterm=none
 
 	hi ErrorMsg		ctermfg=red ctermbg=none cterm=bold
-	hi VertSplit	ctermfg=234 ctermbg=none cterm=none
+	hi VertSplit	ctermfg=202 ctermbg=none cterm=none
 "	hi Folded		ctermfg=82 ctermbg=none
 	hi Folded		ctermfg=12 ctermbg=none
 	"hi FoldColumn	
@@ -40,8 +40,8 @@ if &t_Co == 256
 "	hi StatusLineNC	ctermfg=white ctermbg=80 cterm=none
 "	hi StatusLine	ctermfg=40  ctermbg=none cterm=none
 "	hi StatusLineNC	ctermfg=112 ctermbg=none cterm=none
-	hi StatusLine	ctermfg=241 ctermbg=none cterm=none
-	hi StatusLineNC	ctermfg=241 ctermbg=none cterm=none
+	hi StatusLine	ctermfg=232 ctermbg=202 cterm=underline
+	hi StatusLineNC	ctermfg=202 ctermbg=none cterm=underline
 	hi Visual		ctermfg=black ctermbg=10 cterm=none
 	hi Ignore		ctermfg=234 cterm=bold
 
@@ -74,10 +74,10 @@ if &t_Co == 256
 "	hi TabLine		ctermfg=white ctermbg=80 cterm=none
 "	hi TabLineFill	ctermfg=80 cterm=reverse
 "	hi TabLineSel	ctermfg=white ctermbg=81 cterm=none 
-	hi TabLine		ctermfg=241 ctermbg=none cterm=none
-	hi TabLineFill	ctermfg=215 cterm=underline
+	hi TabLine		ctermfg=248 ctermbg=none cterm=underline
+	hi TabLineFill	ctermfg=248 cterm=underline
 "	hi TabLineFill	ctermfg=234 cterm=underline
-	hi TabLineSel	ctermfg=191 ctermbg=none cterm=none
+	hi TabLineSel	ctermfg=232 ctermbg=202 cterm=none
 
 	hi MatchParen	ctermfg=2 ctermbg=none
 
