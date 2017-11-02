@@ -1,4 +1,60 @@
-@-moz-document url-prefix(https://getpocket.com/) {
+@-moz-document domain(getpocket.com) {
     li.item_type_spoc { display: none; }
     li.topic { display: none !important; }
+}
+
+
+@-moz-document domain(wikipedia.org) {
+body { font-family:tinos !important; font-size: 120% !important; }
+#p-logo { display: none; }
+#mw-navigation { width: 100px !important; }
+#p-interaction, #p-coll-print_export { display: none; }
+#siteSub { display: none !important; }
+.interlanguage-link, .after-portlet, #p-lang-label, #p-tb-label, #p-Mitmachen-label { display: none; }
+.interwiki-de, .interwiki-en, .interwiki-fr, .interwiki-es, .interwiki-nl, .interwiki-ru { display: block !important; }
+.portal .body { margin: 0 !important; padding: 0 !important; }
+.portal { padding: 0.25em; }
+#t-permalink a { font-weight: bold; }
+#content { border-width: 0px !important; }
+#content { max-width: 80ch; margin: 0 auto !important; text-align: justify !important; }
+body { width: 100%; }
+h1, h2, h3, h4 { font-family: coda !important; font-weight: normal !important; }
+
+/* left menu */
+#mw-panel { top: 0px !important; width: 1.3em !important; font-size: 80% !important; background-image: none !important; background: none !important; }
+#mw-head a { color: #999 !important; background: #fff !important; background-image: none !important; }
+.mw-body { margin: -1em 1em !important; }
+
+#mw-navigation div, html, body, #mw-page-base { background-image: none !important; background: #fff !important; }
+#mw-panel a { color: #fff !important; font-size: 1% !important; }
+
+#mw-panel:hover a { color: #00f !important; font-size: 130% !important; }
+#mw-panel:hover { width: 10em !important; }
+
+#n-sitesupport, #n-shoplink, #t-upload, #t-cite, #n-mainpage-description, #n-contents, #n-featuredcontent, #n-currentevents, #n-randompage, #n-specialpages { display: none !important; }
+
+/* the permanent link */
+#t-permalink a { position: fixed; top: 0px; left: 0px; color: #fff !important; font-size: 130% !important; }
+
+/* the top menu */
+#mw-head-base { height: 1.5em !important }
+/* #mw-head-base { height: 2.5em !important; background-image: none; background-color: #f6f6f6 } */
+#left-navigation { margin-top: 1.5em !important; margin-top: 0 !important; }
+#right-navigation { margin-top: 0 !important; }
+.vectorTabs { height: 1.5em !important; }
+#p-personal, #p-search, #ca-view { display: none !important; }
+#mw-head a { color: #fff !important; background-color: #fff !important; background-image: none !important; padding-top: 0px !important; }
+#mw-head div, #mw-head li { background-color: #fff !important; background-image: none !important; }
+#mw-head:hover a { color: #00f !important }
+
+/* footer */
+#footer { display: none }
+
+/* colorz */
+/*
+* { color: #fff !important; background: #000 !important }
+img { background: #fff !important; }
+img.tex { filter: invert(100%) !important }
+a { color: #f90 !important }
+*/
 }
