@@ -1,0 +1,4 @@
+@-moz-document url-prefix(https://getpocket.com/) {
+    li.item_type_spoc { display: none; }
+    li.topic { display: none !important; }
+}
