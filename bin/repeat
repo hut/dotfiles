@@ -17,7 +17,7 @@ import sys
 from dateutil.relativedelta import relativedelta
 from dateutil.parser import parse as parse_date
 
-REPEATFILE = os.path.expanduser("~/repeat")
+REPEATFILE = os.path.expanduser("~/.hut/repeat")
 FIELDS = ['label', 'date', 'count', 'last_step', 'finished']
 DAY_STARTS_AT = 6
 PRETTY_COLORS = '102 138 174 209 215'.split()
