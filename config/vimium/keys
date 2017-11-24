@@ -1,0 +1,5 @@
+unmap x
+map D removeTab
+
+map b goBack
+map v goForward
