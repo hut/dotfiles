@@ -3,3 +3,6 @@ map D removeTab
 
 map b goBack
 map v goForward
+
+map <a-`> nextTab
+map <a-~> previousTab
