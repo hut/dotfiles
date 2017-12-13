@@ -168,6 +168,7 @@ if CLOCK:
     places = [
         ('LA-7', 'America/Los_Angeles'),
         ('NY-5', 'America/New_York'),
+        ('UTC', 'Europe/Greenwich'),
         ('\033[38;5;203mDE+1', 'Europe/Berlin'),
         ('\033[38;5;%dmMOS+3' % fg, 'Europe/Moscow'),
         ('CH+8', 'Asia/Hong_Kong'),
