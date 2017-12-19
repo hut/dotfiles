@@ -1,5 +1,5 @@
 [MESSAGES CONTROL]
-disable=bad-continuation,attribute-defined-outside-init,invalid-name,too-many-arguments,missing-docstring,too-many-instance-attributes,too-few-public-methods
+disable=bad-continuation,attribute-defined-outside-init,invalid-name,too-many-arguments,missing-docstring,too-many-instance-attributes,too-few-public-methods,bad-whitespace
 
 [REPORTS]
 
