@@ -1,4 +1,5 @@
 import urllib.request
+import urllib.error
 import json
 
 def btc2eur_uncached(btc, date=None):
@@ -9,7 +10,10 @@ def btc2eur_uncached(btc, date=None):
     else:
         API_URL = "https://api.coindesk.com/v1/bpi/historical/close.json?start=%s&end=%s&currency=EUR" % (date, date)
 
-    request = urllib.request.urlopen(API_URL)
+    try:
+        request = urllib.request.urlopen(API_URL)
+    except urllib.error.HTTPError:
+        return float('nan')
     response_raw = request.read()
     response = json.loads(response_raw)
     if date is None:
