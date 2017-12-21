@@ -178,6 +178,7 @@ case "$HOSTNAME" in
         ;;
     lemming*)
         alias tactivate='source /tools/python/bin/activate'
+        scan () { grep "$@" -nr --color=always -I --exclude-dir=media *; }
         ;;
 esac
 
