@@ -227,6 +227,9 @@ function man {
 #    LESS_TERMCAP_md=$'\E[0;33m' \
 #    LESS_TERMCAP_so=$'\E[38;5;246m' \
 }
+function n {
+    sudo netstat -tulpn | awk 'NR>2{printf("%5-s %22-s %22-s %10s %-s\n",$1,$4,$5,$6,$7)}'
+}
 alias pass='EDITOR=nano pass'  # avoid vimhistory & other possible side effects
 alias kbrate='xset r rate 220 35'
 alias blk="lsblk -no NAME,SIZE,TYPE,FSTYPE,MOUNTPOINT"
@@ -234,7 +237,6 @@ alias ssh-f="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
 alias sshfs-f="sshfs -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
 alias restorebg='nitrogen --restore'
 alias wget-r='wget -r --no-parent --reject "index.html*"'
-
 
 # Shortcuts
 export LS_OPTIONS='--color=auto --group-directories-first --quoting-style=literal'
@@ -446,7 +448,7 @@ function push {
                 ( cd ~/repos/dotfiles; git push );;
         esac
     elif [ "$HOSTNAME" == "fez" -a "$(basename "$(git rev-parse --show-toplevel)")" == ranger ]; then
-        "$(git rev-parse --show-toplevel)"/push.sh
+        "$(git rev-parse --show-toplevel)"/stuff/push.sh
     else
         case "$(testscm)" in
             git)
