@@ -251,6 +251,15 @@ alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 
+function lsr {
+    find -type f -printf '%T@ %p\0' | \
+        sort -znr | \
+        tr '\0' '\n' | \
+        awk '$2 !~ /\/.git\// { print(strftime("%Y-%m-%d %H:%M:%S", $1), $2) }' | \
+        head -n ${1:-10} | \
+        tac \
+        2> /dev/null
+}
 function plow { mkdir -p "$1" && cd "$1"; }
 
 if which nvim >& /dev/null; then
