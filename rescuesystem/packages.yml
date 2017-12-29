@@ -35,7 +35,7 @@ packages:
   - cvs
   - subversion
   - syncthing
-  - unison
+  - ranger
   - gnupg
   - w3m
   - elinks
