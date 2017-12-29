@@ -7,45 +7,94 @@ import os
 import sys
 import time
 import argparse
+import threading
+import subprocess
+import pyinotify
+try:
+    from Queue import Queue, Empty
+except ImportError:
+    from queue import Queue, Empty
+
+GIT_AUTOCOMMIT_MESSAGE = 'autocommit'
 
 def main():
     parser = argparse.ArgumentParser(description=sys.modules[__name__].__doc__.strip())
     parser.add_argument('-c', '--clear', action='store_true', default=False)
+    parser.add_argument('-a', '--autocommit', action='store_true', default=False)
     parser.add_argument('command', nargs=1)
     parser.add_argument('files', nargs='*')
     args = parser.parse_args()
 
-    wx(command=args.command, files=args.files, clear=args.clear)
+    wx(command=args.command,
+       files=args.files,
+       clear=args.clear,
+       autocommit=args.autocommit)
 
 
-def wx(command, files, clear=False):
-    import pyinotify
-    import subprocess
+def worker_thread(queue, killswitch, command, files, clear, autocommit):
+    while not killswitch.isSet():
+        try:
+            filename = queue.get(block=True, timeout=0.1)
+        except Empty:
+            continue
 
-    files = [os.path.realpath(a) for a in files]
-    process = [None]  # use a 1-element-list to store a global variable
+        # only trigger if relevant file was changed
+        if not any(filename.startswith(f) for f in files):
+            continue
 
-    class INotifyHandler(pyinotify.ProcessEvent):
-        def process_IN_MODIFY(self, event):
-            if process[0] and process[0].poll() is None:
-                return
-            if any(event.pathname.startswith(f) for f in files):
-                process[0] = subprocess.Popen(command, shell=True)
-                if clear:
-                    sys.stdout.write('\033[2J\033[0;0H')
-                    sys.stdout.flush()
-                else:
-                    print("building at %s" % time.strftime("%x %X"))
+        if clear:
+            sys.stdout.write('\033[2J\033[0;0H')
+            sys.stdout.flush()
+        else:
+            print("building at %s" % time.strftime("%x %X"))
+        p = subprocess.Popen(command, shell=True)
+        return_code = p.wait()
+        if autocommit and return_code == 0:
+            p_git = subprocess.Popen(['git', 'commit', '-qam', GIT_AUTOCOMMIT_MESSAGE])
+            p_git.wait()
 
-        process_IN_MOVED_TO = process_IN_MODIFY
-        process_IN_DELETE = process_IN_MODIFY
+        queue.task_done()
 
-    handler = INotifyHandler()
-    wm = pyinotify.WatchManager()
-    notifier = pyinotify.Notifier(wm, handler)
-    for directory in set([f if os.path.isdir(f) else os.path.dirname(f) for f in files]):
-        wm.add_watch(directory, pyinotify.ALL_EVENTS, rec=True)
-    notifier.loop()
+
+class INotifyHandler(pyinotify.ProcessEvent):
+    def __init__(self, queue):
+        super(INotifyHandler, self).__init__()
+        self.queue = queue
+
+    def process_IN_MODIFY(self, event):
+        self.queue.put(event.pathname)
+
+    process_IN_MOVED_TO = process_IN_MODIFY
+    process_IN_DELETE = process_IN_MODIFY
+
+
+def wx(command, files, clear=False, autocommit=False):
+    killswitch = threading.Event()
+    try:
+        files = [os.path.realpath(a) for a in files]
+        queue = Queue(maxsize=1)
+        t_worker = threading.Thread(name='worker',
+                                    target=worker_thread,
+                                    args=(queue, killswitch, command, files,
+                                          clear, autocommit))
+        t_worker.start()
+
+        handler = INotifyHandler(queue)
+        wm = pyinotify.WatchManager()
+        notifier = pyinotify.Notifier(wm, handler)
+
+        for directory in set([f if os.path.isdir(f) else os.path.dirname(f) for f in files]):
+            wm.add_watch(directory, pyinotify.ALL_EVENTS, rec=True)
+
+        notifier.loop()
+
+        # Keep sleeping, to be able to catch a keyboard interrupt
+        while True:
+            time.sleep(100)
+    except (KeyboardInterrupt, SystemExit):
+        # Close threads
+        killswitch.set()
+        t_worker.join()
 
 if __name__ == '__main__':
     main()
