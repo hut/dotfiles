@@ -1,0 +1,51 @@
+#!/usr/bin/python
+"""
+Run a script whenever a change in files is detected via inotify
+"""
+
+import os
+import sys
+import time
+import argparse
+
+def main():
+    parser = argparse.ArgumentParser(description=sys.modules[__name__].__doc__.strip())
+    parser.add_argument('-c', '--clear', action='store_true', default=False)
+    parser.add_argument('command', nargs=1)
+    parser.add_argument('files', nargs='*')
+    args = parser.parse_args()
+
+    wx(command=args.command, files=args.files, clear=args.clear)
+
+
+def wx(command, files, clear=False):
+    import pyinotify
+    import subprocess
+
+    files = [os.path.realpath(a) for a in files]
+    process = [None]  # use a 1-element-list to store a global variable
+
+    class INotifyHandler(pyinotify.ProcessEvent):
+        def process_IN_MODIFY(self, event):
+            if process[0] and process[0].poll() is None:
+                return
+            if any(event.pathname.startswith(f) for f in files):
+                process[0] = subprocess.Popen(command, shell=True)
+                if clear:
+                    sys.stdout.write('\033[2J\033[0;0H')
+                    sys.stdout.flush()
+                else:
+                    print("building at %s" % time.strftime("%x %X"))
+
+        process_IN_MOVED_TO = process_IN_MODIFY
+        process_IN_DELETE = process_IN_MODIFY
+
+    handler = INotifyHandler()
+    wm = pyinotify.WatchManager()
+    notifier = pyinotify.Notifier(wm, handler)
+    for directory in set([f if os.path.isdir(f) else os.path.dirname(f) for f in files]):
+        wm.add_watch(directory, pyinotify.ALL_EVENTS, rec=True)
+    notifier.loop()
+
+if __name__ == '__main__':
+    main()
