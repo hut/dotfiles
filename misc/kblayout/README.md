@@ -11,3 +11,8 @@ vimdiff ...path/to/us_hut /usr/share/X11/xkb/symbols/us
 
 xmodmaps won't be applied to newly connected keyboards.  I'd have to write an
 udev rule for it and meh, this is easier.
+
+## why not simply a patch?
+
+the base file constantly changes and a patch wouldn't apply cleanly anymore
+after a while
