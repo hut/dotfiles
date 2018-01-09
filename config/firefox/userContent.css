@@ -1,6 +1,8 @@
 @-moz-document domain(getpocket.com) {
     li.item_type_spoc { display: none; }
     li.topic { display: none !important; }
+    #reader_explore_bar { display: none !important; }
+    .page-readerdark, .pkt-nav { background-color: black !important; }
 }
 
 
