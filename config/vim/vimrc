@@ -29,6 +29,8 @@ if $HOSTNAME =~ "^lem"
     Plugin 'https://github.com/MarcWeber/vim-addon-mw-utils.git'
     Plugin 'https://github.com/tomtom/tlib_vim.git'
     Plugin 'https://github.com/garbas/vim-snipmate.git'
+    Plugin 'https://github.com/Konfekt/FastFold.git'
+    Plugin 'https://github.com/tmhedberg/SimpylFold'
     "Plugin 'https://github.com/universal-ctags/ctags'
     call vundle#end()
 
@@ -230,6 +232,7 @@ map ,SS :set nospell<CR>
 map ,P :call PagerMode()<CR>
 map ,H :silent !echo -ne "\033]12;black\007"<CR>:autocmd VimLeave * silent !echo -ne "\033]12;white\007"<CR>:set noruler<CR>
 map ,fs :%s/\s\+$//e<CR>:%s/\t/    /ge<CR>
+vmap ,fs :s/\s\+$//e<CR>gv:s/\t/    /ge<CR>gv
 map \k :mksession! ~/Session.vim<CR>
 map \s :vsplit ~/repos/dotfiles/config/vim/snippets<CR>
 

@@ -439,7 +439,7 @@ function tag {
                 tig --all;;
             svn)
                 if [ "$1" == '-q' ]; then
-                    args=
+                    args='-v'
                 elif [ "$1" == '-w' ]; then
                     args='--diff -x -uw'
                 else
