@@ -3,6 +3,7 @@
     li.topic { display: none !important; }
     #reader_explore_bar { display: none !important; }
     .page-readerdark, .pkt-nav { background-color: black !important; }
+    .font-sans .reader_content, .font-sans h1, .font-sans h2, .font-sans h3 { font-family: monospace !important; }
 }
 
 
