@@ -11,6 +11,10 @@
 
 
 @-moz-document domain(wikipedia.org) {
+    /* hide wikipedia donation requests */
+    #centralNotice { display: None; }
+    #mw-page-base { padding-top: 0px !important } /* fix padding that's added by centralNotice */
+
 body { font-family:tinos !important; font-size: 120% !important; }
 #p-logo { display: none; }
 #mw-navigation { width: 100px !important; }
