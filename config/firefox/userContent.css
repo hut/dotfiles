@@ -5,6 +5,9 @@
     .page-readerdark, .pkt-nav { background-color: black !important; }
     .font-sans .reader_content, .font-sans h1, .font-sans h2, .font-sans h3 { font-family: monospace !important; }
 }
+@-moz-document domain(news.ycombinator.com) {
+    #hnmain > tbody > tr:first-child { display: none; }
+}
 
 
 @-moz-document domain(wikipedia.org) {
