@@ -8,12 +8,11 @@
 @-moz-document domain(news.ycombinator.com) {
     #hnmain > tbody > tr:first-child { display: none; }
 }
-
-
 @-moz-document domain(wikipedia.org) {
     /* hide wikipedia donation requests */
     #centralNotice { display: None; }
     #mw-page-base { padding-top: 0px !important } /* fix padding that's added by centralNotice */
+    #mw-head { top: 0px !important }
 
 body { font-family:tinos !important; font-size: 120% !important; }
 #p-logo { display: none; }
