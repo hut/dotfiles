@@ -166,20 +166,20 @@ if CLOCK:
     print(clr("{date} 0x{0:x} mem={free_mem:.1f}G load={load}" \
             .format(int(time.time()), **locals()), fg=fg))
     places = [
-        ('LA-7', 'America/Los_Angeles'),
+        #('LA-7', 'America/Los_Angeles'),
         ('NY-5', 'America/New_York'),
         ('UTC', 'Europe/Greenwich'),
         ('\033[38;5;203mDE+1', 'Europe/Berlin'),
-        ('\033[38;5;%dmMOS+3' % fg, 'Europe/Moscow'),
-        ('CH+8', 'Asia/Hong_Kong'),
-        ('JP+9', 'Asia/Tokyo'),
+        #('MOS+3', 'Europe/Moscow'),
+        #('CH+8', 'Asia/Hong_Kong'),
+        #('JP+9', 'Asia/Tokyo'),
     ]
     output = []
     old_zone = os.environ.get("TZ", None)
     for name, zone in places:
         os.environ['TZ'] = zone
         time.tzset()
-        output.append(name + time.strftime("=%H%M"))
+        output.append(name + time.strftime("=%H:%M") + "\033[38;5;%dm" % fg)
     if old_zone is None:
         del os.environ['TZ']
     else:
