@@ -33,6 +33,7 @@ def sleephour(weekday):
 MOTD = False
 CRAP = False
 CLOCK = True
+TIMEZONES = False
 
 TR = "\u2510"
 BR = "\u2518"
@@ -165,14 +166,17 @@ if CLOCK:
     date = time.strftime("%A, %B %d" + suffix + ", w=%W, d=%j, %s")
     print(clr("{date} 0x{0:x} mem={free_mem:.1f}G load={load}" \
             .format(int(time.time()), **locals()), fg=fg))
+
+if TIMEZONES:
+    fg = 255 if socket.gethostname().startswith('lemming') else 76
     places = [
-        #('LA-7', 'America/Los_Angeles'),
+        ('LA-7', 'America/Los_Angeles'),
         ('NY-5', 'America/New_York'),
         ('UTC', 'Europe/Greenwich'),
         ('\033[38;5;203mDE+1', 'Europe/Berlin'),
-        #('MOS+3', 'Europe/Moscow'),
-        #('CH+8', 'Asia/Hong_Kong'),
-        #('JP+9', 'Asia/Tokyo'),
+        ('MOS+3', 'Europe/Moscow'),
+        ('CH+8', 'Asia/Hong_Kong'),
+        ('JP+9', 'Asia/Tokyo'),
     ]
     output = []
     old_zone = os.environ.get("TZ", None)
