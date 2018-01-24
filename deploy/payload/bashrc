@@ -1,7 +1,9 @@
 # DO NOT EDIT, THIS FILE MAY BE AUTOMATICALLY OVERWRITTEN
 export PROMPT_DIRTRIM=2
 export EDITOR=vim
-export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LC_TIME=en_DK.UTF-8
+unset LC_ALL
 export HISTSIZE=999999
 
 alias sl=ls ls='ls --color' lsd='"ls" --color=always -Acr | tail -n 5' l='ls -l --color'\
