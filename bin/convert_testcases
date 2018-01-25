@@ -1,0 +1,93 @@
+#!/usr/bin/python
+import argparse
+import copy
+import pprint
+import re
+
+CHAPTERNAME_RE = re.compile(r'^#+ ((?:\d+\.)+) (.*)$')
+LINE_RE = re.compile(r'^\d\. (.*)$')
+REFERENCE_RE = re.compile(r'^Führe ((?:\d+\.)+) durch$')
+MAX_DEREFERENCES = 100
+
+
+def extract_chapters(text):
+    chapters = {}
+    chapter = None
+    for line in text.split('\n'):
+        line = line
+        match = CHAPTERNAME_RE.match(line)
+        if match:
+            chapter = match.group(1)
+            chapters[chapter] = dict(titles=match.group(2), content=[], was_included=False)
+        elif chapter:
+            if line:
+                match = LINE_RE.match(line)
+                if match:
+                    chapters[chapter]['content'].append(match.group(1))
+                else:
+                    chapters[chapter]['content'].append(line)
+    return chapters
+
+
+def dereference(chapters):
+    chapters = copy.deepcopy(chapters)
+    dereferences = 0
+    for data in chapters.values():
+        content = data['content']
+        i = 0
+        while i < len(content):
+            match = REFERENCE_RE.match(content[i])
+            if match:
+                reference = match.group(1)
+                referenced_content = chapters[reference]['content']
+                chapters[reference]['was_included'] = True
+                content[i:i+1] = referenced_content
+                dereferences += 1
+                if dereferences >= MAX_DEREFERENCES:
+                    break
+            i += 1
+    return chapters
+
+
+def select(chapters):
+    chapters = copy.deepcopy(chapters)
+    keys = list(chapters)
+    for chapter in keys:
+        if chapters[chapter]['was_included']:
+            del chapters[chapter]
+        elif not chapters[chapter]['content']:
+            del chapters[chapter]
+    return chapters
+
+
+def display(chapters):
+    for i, chaptername in enumerate(chapters):
+        chapter = chapters[chaptername]
+
+        print("# Testfall #%d/%d" % (i + 1, len(chapters)))
+        print("")
+        for j, line in enumerate(chapter['content']):
+            if line.startswith(' '):
+                print(line)
+            else:
+                print('%d. %s' % (j + 1, line))
+
+        if i < len(chapters) - 1:
+            print("")
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('positionals', nargs='*')
+    args = parser.parse_args()
+
+    sourcefile = args.positionals[0]
+    text = open(sourcefile, 'r').read()
+    chapters = extract_chapters(text)
+    chapters = dereference(chapters)
+    chapters = select(chapters)
+    display(chapters)
+
+
+if __name__ == '__main__':
+    main()
