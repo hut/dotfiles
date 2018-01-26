@@ -31,6 +31,7 @@ if $HOSTNAME =~ "^lem"
     Plugin 'https://github.com/garbas/vim-snipmate.git'
     Plugin 'https://github.com/Konfekt/FastFold.git'
     Plugin 'https://github.com/tmhedberg/SimpylFold'
+    Plugin 'https://github.com/nelstrom/vim-markdown-folding.git'
     "Plugin 'https://github.com/universal-ctags/ctags'
     call vundle#end()
 
