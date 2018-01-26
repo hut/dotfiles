@@ -1,12 +1,14 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 import argparse
 import copy
 import pprint
 import re
 
-CHAPTERNAME_RE = re.compile(r'^#+ ((?:\d+\.)+) (.*)$')
+CHAPTERNAME_RE = re.compile(r'^#+ ((?:\d+\.)+) (.*?)(\s*\(kein eigener Testfall\))?(\s*\(kein Titel\))?$')
 LINE_RE = re.compile(r'^\d\. (.*)$')
 REFERENCE_RE = re.compile(r'^Führe ((?:\d+\.)+) durch$')
+TITLE_TEMPLATE = '## %s'
 MAX_DEREFERENCES = 100
 
 
@@ -18,7 +20,14 @@ def extract_chapters(text):
         match = CHAPTERNAME_RE.match(line)
         if match:
             chapter = match.group(1)
-            chapters[chapter] = dict(titles=match.group(2), content=[], was_included=False)
+            title = match.group(2)
+            intended_to_be_included = bool(match.group(3))
+            was_included = False
+            if intended_to_be_included:
+                was_included = True
+            display_title = not bool(match.group(4))
+
+            chapters[chapter] = dict(title=title, content=[], content_before=[], was_included=was_included, display_title=display_title)
         elif chapter:
             if line:
                 match = LINE_RE.match(line)
@@ -29,23 +38,51 @@ def extract_chapters(text):
     return chapters
 
 
-def dereference(chapters):
-    chapters = copy.deepcopy(chapters)
-    dereferences = 0
-    for data in chapters.values():
-        content = data['content']
+def dereference(orig_chapters):
+    chapters = copy.deepcopy(orig_chapters)
+    count_dereferences = 0
+
+    def recursive_dereference(chapter, depth=0):
+        chapter = copy.deepcopy(chapter)
+
+        if depth >= MAX_DEREFERENCES:
+            return chapter
+
+        inserted_own_title = False
+        content = chapter['content']
         i = 0
         while i < len(content):
             match = REFERENCE_RE.match(content[i])
             if match:
                 reference = match.group(1)
-                referenced_content = chapters[reference]['content']
                 chapters[reference]['was_included'] = True
-                content[i:i+1] = referenced_content
-                dereferences += 1
-                if dereferences >= MAX_DEREFERENCES:
-                    break
-            i += 1
+                chap = orig_chapters[reference]
+                dereferenced_chap = recursive_dereference(chap, depth=depth+1)
+                added_content = dereferenced_chap['content']
+
+                # Add the title
+                if chap['display_title']:
+                    title = TITLE_TEMPLATE % chap['title']
+                    #added_content.insert(0, title + ' (Y)')
+                    #added_content.insert(1, "")
+                    if i == 0 and not inserted_own_title:
+                        added_content.append(TITLE_TEMPLATE % chapter['title'])
+                        added_content.append("")
+                        inserted_own_title = True
+
+                content[i:i+1] = added_content
+            else:
+                if i == 0 and not inserted_own_title:
+                    content.insert(0, TITLE_TEMPLATE % chapter['title'])
+                    content.insert(1, "")
+                    inserted_own_title = True
+                    i += 2
+                i += 1
+        return chapter
+
+
+    for data in chapters.values():
+        data['content'] = recursive_dereference(data)['content']
     return chapters
 
 
@@ -66,13 +103,24 @@ def display(chapters):
 
         print("# Testfall #%d/%d" % (i + 1, len(chapters)))
         print("")
-        for j, line in enumerate(chapter['content']):
-            if line.startswith(' '):
+        j = 1
+        needs_space = False
+        for line in chapter['content']:
+            if line.startswith('#'):
+                if needs_space:
+                    print("")
+                print(line)
+                needs_space = False
+            elif line.startswith(' ') or line == "":
                 print(line)
             else:
-                print('%d. %s' % (j + 1, line))
+                print('%d. %s' % (j, line))
+                j += 1
+                needs_space = True
 
         if i < len(chapters) - 1:
+            print("")
+            print("")
             print("")
 
 
