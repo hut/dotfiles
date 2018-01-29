@@ -4,6 +4,13 @@
     #reader_explore_bar { display: none !important; }
     .page-readerdark, .pkt-nav { background-color: black !important; }
     .font-sans .reader_content, .font-sans h1, .font-sans h2, .font-sans h3 { font-family: monospace !important; }
+
+    /* Hide the distracting menu */
+    .pkt-nav, .toolbar_queue_rainbow { display: none !important; }
+    .nav-bottom { display: none !important; }
+
+    /* Less whitespace at the top */
+    #page_queue { margin-top: 0px !important; padding-top: 0px !important; }
 }
 @-moz-document domain(news.ycombinator.com) {
     #hnmain > tbody > tr:first-child { display: none; }
