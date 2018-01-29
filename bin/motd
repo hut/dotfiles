@@ -33,7 +33,7 @@ def sleephour(weekday):
 MOTD = False
 CRAP = False
 CLOCK = True
-TIMEZONES = False
+TIMEZONES = True
 
 TR = "\u2510"
 BR = "\u2518"
