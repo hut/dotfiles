@@ -7,7 +7,7 @@ import re
 
 CHAPTERNAME_RE = re.compile(r'^#+ ((?:\d+\.)+) (.*?)(\s*\(kein eigener Testfall\))?(\s*\(kein Titel\))?(\s*\(ein mal reicht\))?$')
 LINE_RE = re.compile(r'^\d+\. (.*)$')
-REFERENCE_RE = re.compile(r'^Führe ((?:\d+\.)+) durch(\s*\(Vorbedingung\))?$')
+REFERENCE_RE = re.compile(r'^Führe ((?:\d+\.)+)\s*(?:\([^)]*\))?\sdurch(\s*\(Vorbedingung\))?$')
 TITLE_TEMPLATE = '## ☐ &nbsp; %s'
 MAX_DEREFERENCES = 100
 
