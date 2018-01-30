@@ -1,4 +1,71 @@
 /* Hide Tab Center Redux Sidebar Header */
+/*
 #sidebar-box[sidebarcommand="_0ad88674-2b41-4cfb-99e3-e206c74a0076_-sidebar-action"] #sidebar-header {
   visibility: collapse;
+}*/
+
+#tabbrowser-tabs {
+  visibility: collapse !important;
+}
+
+/*
+#sidebar-box {
+  overflow: hidden;
+  min-width: 32px;
+  max-width: 32px;
+  position: fixed;
+  transition: all 0.2s ease;
+  border-right: 1px solid #ddd;
+}
+*/
+
+#sidebar-box {
+  overflow: hidden;
+  min-width: 32px;
+}
+
+
+/*
+#sidebar-box:hover,
+#sidebar-header,
+#sidebar {
+  min-width: 13vw !important;
+  max-width: 13vw !important;
+}
+*/
+
+#sidebar-header /*,
+#sidebar-splitter*/ {
+  display: none;
+}
+
+/*
+ * ADJUST!
+ * You need to subtract the height of the panels above sidebar: nav bar,
+ * bokmarks bar, sidebar header, etc. -- whichever you have enabled.
+ * 
+ * 42px subtracted below is the height of the nav bar with default theme.
+ * I don't have bookmarks bar enabled, and sidebar header is hidden with
+ * CSS above, so this is all I need to do.
+ * 
+ * Compact theme nav bar height is 29px btw, if you use that.
+ */
+/*
+#sidebar {
+  height: calc(100vh - 29px); 
+}
+*/
+
+/*
+#appcontent {
+  margin-left: 32px;
+}
+
+#main-window[inFullscreen][inDOMFullscreen] #appcontent {
+  margin-left: 0;
+}
+*/
+
+#main-window[inFullscreen] #sidebar {
+  height: 100vh;
 }

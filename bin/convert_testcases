@@ -129,6 +129,8 @@ def display(chapters):
             elif line.startswith(' ') or line == "":
                 print(line)
             else:
+                if line.startswith('-> '):
+                    line = re.sub(r'^-> ', '☐ ', line)
                 print('%d. %s' % (j, line))
                 j += 1
                 needs_space = True
