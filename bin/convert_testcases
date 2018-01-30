@@ -5,10 +5,10 @@ import copy
 import pprint
 import re
 
-CHAPTERNAME_RE = re.compile(r'^#+ ((?:\d+\.)+) (.*?)(\s*\(kein eigener Testfall\))?(\s*\(kein Titel\))?$')
-LINE_RE = re.compile(r'^\d\. (.*)$')
-REFERENCE_RE = re.compile(r'^Führe ((?:\d+\.)+) durch$')
-TITLE_TEMPLATE = '## %s'
+CHAPTERNAME_RE = re.compile(r'^#+ ((?:\d+\.)+) (.*?)(\s*\(kein eigener Testfall\))?(\s*\(kein Titel\))?(\s*\(ein mal reicht\))?$')
+LINE_RE = re.compile(r'^\d+\. (.*)$')
+REFERENCE_RE = re.compile(r'^Führe ((?:\d+\.)+) durch(\s*\(Vorbedingung\))?$')
+TITLE_TEMPLATE = '## ☐ &nbsp; %s'
 MAX_DEREFERENCES = 100
 
 
@@ -26,8 +26,11 @@ def extract_chapters(text):
             if intended_to_be_included:
                 was_included = True
             display_title = not bool(match.group(4))
+            only_once = bool(match.group(5))
 
-            chapters[chapter] = dict(title=title, content=[], content_before=[], was_included=was_included, display_title=display_title)
+            if chapter in chapters:
+                raise Exception("Duplicate chapter: %s" % chapter)
+            chapters[chapter] = dict(title=title, content=[], content_before=[], was_included=was_included, display_title=display_title, only_once=only_once, included_once=False)
         elif chapter:
             if line:
                 match = LINE_RE.match(line)
@@ -57,22 +60,31 @@ def dereference(orig_chapters):
                 reference = match.group(1)
                 chapters[reference]['was_included'] = True
                 chap = orig_chapters[reference]
+                if chap['only_once'] and chap['included_once']:
+                    content[i:i+1] = ["Ignored chapter %s" % reference]
+                    continue
+                else:
+                    chap['included_once'] = True
                 dereferenced_chap = recursive_dereference(chap, depth=depth+1)
                 added_content = dereferenced_chap['content']
 
                 # Add the title
-                if chap['display_title']:
+                if chapter['display_title']:
                     title = TITLE_TEMPLATE % chap['title']
                     #added_content.insert(0, title + ' (Y)')
                     #added_content.insert(1, "")
-                    if i == 0 and not inserted_own_title:
-                        added_content.append(TITLE_TEMPLATE % chapter['title'])
-                        added_content.append("")
+                    if not inserted_own_title:
+                        if match.group(2):
+                            added_content.append(TITLE_TEMPLATE % chapter['title'])
+                            added_content.append("")
+                        else:
+                            added_content.insert(0, TITLE_TEMPLATE % chapter['title'])
+                            added_content.insert(0, "")
                         inserted_own_title = True
 
                 content[i:i+1] = added_content
             else:
-                if i == 0 and not inserted_own_title:
+                if i == 0 and not inserted_own_title and chapter['display_title']:
                     content.insert(0, TITLE_TEMPLATE % chapter['title'])
                     content.insert(1, "")
                     inserted_own_title = True
@@ -98,9 +110,12 @@ def select(chapters):
 
 
 def display(chapters):
-    for i, chaptername in enumerate(chapters):
+    chapternames = chapters.keys()
+    chapternames.sort(key=lambda key: -len(chapters[key]['content']))
+    for i, chaptername in enumerate(chapternames):
         chapter = chapters[chaptername]
 
+        #print("# Testfall #%d/%d (%s)" % (i + 1, len(chapters), chaptername))
         print("# Testfall #%d/%d" % (i + 1, len(chapters)))
         print("")
         j = 1
