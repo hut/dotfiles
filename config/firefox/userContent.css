@@ -2,8 +2,10 @@
     li.item_type_spoc { display: none; }
     li.topic { display: none !important; }
     #reader_explore_bar { display: none !important; }
+    .reading_progress_bar { display: none !important; }
     .page-readerdark, .pkt-nav { background-color: black !important; }
     .font-sans .reader_content, .font-sans h1, .font-sans h2, .font-sans h3 { font-family: monospace !important; }
+    .reader_content_wrapper, .reader_content_wrapper div { overflow-y: hidden; overflow-x: hidden; }
 
     /* Hide the distracting menu */
     .pkt-nav, .toolbar_queue_rainbow { display: none !important; }
