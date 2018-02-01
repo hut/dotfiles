@@ -32,6 +32,7 @@ if $HOSTNAME =~ "^lem"
     Plugin 'https://github.com/Konfekt/FastFold.git'
     Plugin 'https://github.com/tmhedberg/SimpylFold'
     Plugin 'https://github.com/nelstrom/vim-markdown-folding.git'
+    Plugin 'https://github.com/jceb/vim-orgmode.git'
     "Plugin 'https://github.com/universal-ctags/ctags'
     call vundle#end()
 
@@ -48,6 +49,7 @@ if $HOSTNAME =~ "^lem"
     let g:jedi#goto_definitions_command = "\\d"
     let g:jedi#usages_command = "\\u"
 
+    let g:vimwiki_folding = 'expr'
     let g:vimwiki_list = [{'path': '~/hut/git/vimwiki/'}]
 else
     " Highlight long lines
