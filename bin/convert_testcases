@@ -111,7 +111,8 @@ def select(chapters):
 
 def display(chapters):
     chapternames = chapters.keys()
-    chapternames.sort(key=lambda key: -len(chapters[key]['content']))
+    chapternames.sort()
+    #chapternames.sort(key=lambda key: -len(chapters[key]['content']))
     for i, chaptername in enumerate(chapternames):
         chapter = chapters[chaptername]
 
