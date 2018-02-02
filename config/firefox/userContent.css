@@ -23,6 +23,9 @@
         display: none;
     }
 }
+@-moz-document domain(outlook.office.com) { /* don't start... */
+    div[aria-label="Groups"] { display: none !important; }
+}
 @-moz-document domain(wikipedia.org) {
     /* hide wikipedia donation requests */
     #centralNotice { display: None; }
