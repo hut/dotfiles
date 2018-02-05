@@ -5,7 +5,7 @@ import copy
 import pprint
 import re
 
-CHAPTERNAME_RE = re.compile(r'^#+ ((?:\d+\.)+) (.*?)(\s*\(kein eigener Testfall\))?(\s*\(kein Titel\))?(\s*\(ein mal reicht\))?$')
+CHAPTERNAME_RE = re.compile(r'^#+ ((?:\d+\.)+) (.*?)(\s*\(kein eigener Testfall\))?(\s*\(kein Titel\))?(\s*\(ein mal reicht\))?(\s*\(Testfall\))?$')
 LINE_RE = re.compile(r'^\d+\. (.*)$')
 REFERENCE_RE = re.compile(r'^Führe ((?:\d+\.)+)\s*(?:\([^)]*\))?\sdurch(\s*\(Vorbedingung\))?$')
 TITLE_TEMPLATE = '## ☐ &nbsp; %s'
@@ -27,10 +27,11 @@ def extract_chapters(text):
                 was_included = True
             display_title = not bool(match.group(4))
             only_once = bool(match.group(5))
+            testcase_title = bool(match.group(6))
 
             if chapter in chapters:
                 raise Exception("Duplicate chapter: %s" % chapter)
-            chapters[chapter] = dict(title=title, content=[], content_before=[], was_included=was_included, display_title=display_title, only_once=only_once, included_once=False)
+            chapters[chapter] = dict(title=title, content=[], content_before=[], was_included=was_included, display_title=display_title, only_once=only_once, included_once=False, testcase_title=title if testcase_title else None)
         elif chapter:
             if line:
                 match = LINE_RE.match(line)
@@ -113,11 +114,25 @@ def display(chapters):
     chapternames = chapters.keys()
     chapternames.sort()
     #chapternames.sort(key=lambda key: -len(chapters[key]['content']))
+    index = []
+    print("# Index")
+    for i, chaptername in enumerate(chapternames):
+        chapter = chapters[chaptername]
+        title = chapter['testcase_title'] if chapter['testcase_title'] else ('Testfall #%d' % i + 1)
+        print("0. [%s](#%d)" % (title, i+1))
+    print('')
+
     for i, chaptername in enumerate(chapternames):
         chapter = chapters[chaptername]
 
         #print("# Testfall #%d/%d (%s)" % (i + 1, len(chapters), chaptername))
-        print("# Testfall #%d/%d" % (i + 1, len(chapters)))
+        title = ''
+        title += "<span id='%d'></span>\n\n" % (i + 1)
+        title += "# Testfall #%d/%d" % (i + 1, len(chapters))
+        if chapter['testcase_title']:
+            title += ': %s' % chapter['testcase_title']
+        #title += ' (%s)' % chaptername
+        print(title)
         print("")
         j = 1
         needs_space = False
