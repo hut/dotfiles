@@ -29,6 +29,10 @@ def extract_chapters(text):
             only_once = bool(match.group(5))
             testcase_title = bool(match.group(6))
 
+            # Only those with a "(Testfall)" hint will be actually displayed
+            if not testcase_title:
+                was_included = True
+
             if chapter in chapters:
                 raise Exception("Duplicate chapter: %s" % chapter)
             chapters[chapter] = dict(title=title, content=[], content_before=[], was_included=was_included, display_title=display_title, only_once=only_once, included_once=False, testcase_title=title if testcase_title else None)
