@@ -1,13 +1,22 @@
-#TabsToolbar {
-    visibility: collapse;
-}
-#titlebar {
-    display: none;
-}
-#nav-bar {
-    background-color: black !important;
+/***********************************
+ ************** COMMON *************
+ ***********************************/
+
+#nav-bar { /* Monospace font in nav bar 8) */
     font-family: monospace;
 }
+.bookmark-item .toolbarbutton-icon { /* Hide Bookmark Icons */
+    display: none;
+}
+/***********************************
+ ************ INDIVIDUAL ***********
+ ***********************************/
+
+/* Black theme */
+#nav-bar { background-color: black !important; }
+#urlbar { background: black !important; }
+
+/* Minimal theme in full screen */
 @media only screen and (min-height: 1080px) {
     /* Hide navigation bar in full screen */
     #navigator-toolbox { display: none !important; }
@@ -18,8 +27,12 @@
         margin-bottom: -17px !important;
     }
 }
-#urlbar { background: black !important; }
-.bookmark-item .toolbarbutton-icon { /* Hide Bookmark Icons */
+
+/* Other */
+#TabsToolbar {
+    visibility: collapse;
+}
+#titlebar {
     display: none;
 }
 

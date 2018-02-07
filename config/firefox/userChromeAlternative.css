@@ -1,3 +1,24 @@
+/***********************************
+ ************** COMMON *************
+ ***********************************/
+
+#nav-bar { /* Monospace font in nav bar 8) */
+    font-family: monospace;
+}
+.bookmark-item .toolbarbutton-icon { /* Hide Bookmark Icons */
+    display: none;
+}
+/* Hide Pocket/Bookmark icons */
+#star-button-box, #pocket-button-box, #pageActionSeparator {
+    display: none;
+}
+#pageActionButton {
+    list-stype-image: none;
+}
+/***********************************
+ ************ INDIVIDUAL ***********
+ ***********************************/
+
 /* Hide Tab Center Redux Sidebar Header */
 /*
 #sidebar-box[sidebarcommand="_0ad88674-2b41-4cfb-99e3-e206c74a0076_-sidebar-action"] #sidebar-header {
