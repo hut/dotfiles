@@ -4,6 +4,24 @@
 #titlebar {
     display: none;
 }
+#nav-bar {
+    background-color: black !important;
+    font-family: monospace;
+}
+@media only screen and (min-height: 1080px) {
+    /* Hide navigation bar in full screen */
+    #navigator-toolbox { display: none !important; }
+
+    /* Hide scroll bar in full screen.  wow this is a shitty hack... */
+    #content browser {
+        margin-right: -17px !important;
+        margin-bottom: -17px !important;
+    }
+}
+#urlbar { background: black !important; }
+.bookmark-item .toolbarbutton-icon { /* Hide Bookmark Icons */
+    display: none;
+}
 
 /* Hide Tab Center Redux Sidebar Header */
 #sidebar-box[sidebarcommand="_0ad88674-2b41-4cfb-99e3-e206c74a0076_-sidebar-action"] #sidebar-header {
