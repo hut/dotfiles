@@ -8,18 +8,49 @@
 .bookmark-item .toolbarbutton-icon { /* Hide Bookmark Icons */
     display: none;
 }
+/* Hide Pocket/Bookmark icons */
+#star-button-box, #pageActionSeparator {
+    display: none;
+}
+#pageActionButton {
+    list-stype-image: none;
+}
 /***********************************
  ************ INDIVIDUAL ***********
  ***********************************/
 
 /* Black theme */
 #nav-bar { background-color: black !important; }
-#urlbar { background: black !important; }
+#urlbar { background: black !important; text-align: center; }
+#navigator-toolbox .toolbarbutton-icon,
+#navigator-toolbox .toolbarbutton-1,
+#navigator-toolbox .urlbar-icon,
+#navigator-toolbox .bookmark-item,
+#navigator-toolbox #identity-box {
+    opacity: 0;
+    transition: opacity 0.1s ease;
+}
+#navigator-toolbox:hover .toolbarbutton-icon,
+#navigator-toolbox:hover .toolbarbutton-1,
+#navigator-toolbox:hover .urlbar-icon,
+#navigator-toolbox:hover .bookmark-item,
+#navigator-toolbox:hover #identity-box {
+    opacity: 1;
+    transition: opacity 0.1s ease;
+}
 
 /* Minimal theme in full screen */
 @media only screen and (min-height: 1080px) {
     /* Hide navigation bar in full screen */
-    #navigator-toolbox { display: none !important; }
+    /*#navigator-toolbox { display: none !important; }*/
+    #urlbar {
+        opacity: 0;
+        transition: opacity 0.1s ease;
+    }
+    #navigator-toolbox:hover #urlbar {
+        opacity: 1;
+        transition: opacity 0.1s ease;
+    }
 
     /* Hide scroll bar in full screen.  wow this is a shitty hack... */
     #content browser {
@@ -32,11 +63,23 @@
 #TabsToolbar {
     visibility: collapse;
 }
+#tabbrowser-tabs {
+  visibility: collapse !important;
+}
 #titlebar {
     display: none;
 }
 
-/* Hide Tab Center Redux Sidebar Header */
-#sidebar-box[sidebarcommand="_0ad88674-2b41-4cfb-99e3-e206c74a0076_-sidebar-action"] #sidebar-header {
-  visibility: collapse;
+/* Tab Center Redux Tweaks */
+#sidebar-header {
+  display: none;
+}
+#sidebar-splitter {
+    width: 3px !important;
+    background-color: #333 !important;
+    border-style: none !important;
+}
+#sidebar-box {
+  overflow: hidden;
+  min-width: 32px;
 }
