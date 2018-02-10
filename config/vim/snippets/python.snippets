@@ -63,3 +63,8 @@ snippet input
 		raw_input = input
 
 
+snippet os.walk
+	for dirpath, dirnames, filenames in os.walk(${1}):
+snippet md5
+	import hashlib
+	hash = hashlib.md5('sometext').hexdigest()
