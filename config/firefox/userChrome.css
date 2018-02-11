@@ -20,8 +20,11 @@
  ***********************************/
 
 /* Black theme */
+/*
 #nav-bar { background-color: black !important; }
-#urlbar { background: black !important; text-align: center; }
+#urlbar { background: black !important; }
+*/
+/*
 #navigator-toolbox .toolbarbutton-icon,
 #navigator-toolbox .toolbarbutton-1,
 #navigator-toolbox .urlbar-icon,
@@ -38,11 +41,12 @@
     opacity: 1;
     transition: opacity 0.1s ease;
 }
+*/
 
 /* Minimal theme in full screen */
 @media only screen and (min-height: 1080px) {
     /* Hide navigation bar in full screen */
-    /*#navigator-toolbox { display: none !important; }*/
+    #navigator-toolbox { display: none !important; }
     #urlbar {
         opacity: 0;
         transition: opacity 0.1s ease;
@@ -60,17 +64,19 @@
 }
 
 /* Other */
+/*
 #TabsToolbar {
     visibility: collapse;
 }
 #tabbrowser-tabs {
   visibility: collapse !important;
-}
+}*/
 #titlebar {
     display: none;
 }
 
 /* Tab Center Redux Tweaks */
+/*
 #sidebar-header {
   display: none;
 }
@@ -83,3 +89,4 @@
   overflow: hidden;
   min-width: 32px;
 }
+*/
