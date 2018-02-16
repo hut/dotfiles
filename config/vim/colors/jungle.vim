@@ -49,7 +49,7 @@ if &t_Co == 256
 	hi Constant		ctermfg=215 cterm=none
 "	hi Constant		ctermfg=191 cterm=none
 	hi Error		ctermfg=1 ctermbg=none
-	hi Todo			ctermfg=green ctermbg=none cterm=underline
+	hi Todo			ctermfg=green ctermbg=none cterm=bold
 	hi String		ctermfg=210
 	hi Number		ctermfg=222
 	hi Float		ctermfg=222
