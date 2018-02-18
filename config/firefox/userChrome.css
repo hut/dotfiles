@@ -46,7 +46,6 @@
 /* Minimal theme in full screen */
 @media only screen and (min-height: 1080px) {
     /* Hide navigation bar in full screen */
-    #navigator-toolbox { display: none !important; }
     #urlbar {
         opacity: 0;
         transition: opacity 0.1s ease;
