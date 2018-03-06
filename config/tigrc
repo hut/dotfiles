@@ -1,0 +1,5 @@
+set main-view-date-local = true
+set blame-view-date-local = true
+set refs-view-date-local = true
+set stash-view-date-local = true
+set tree-view-date-local = true

@@ -1,2 +1,9 @@
 [push]
 	default = simple
+
+[tig]
+    main-view-date-local = true
+    blame-view-date-local = true
+    refs-view-date-local = true
+    stash-view-date-local = true
+    tree-view-date-local = true
