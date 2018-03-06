@@ -70,7 +70,10 @@ esac
 
 ####################################
 # If not running interactively, don't do anything further
-[ -z "$PS1" ] && return
+case "$-" in
+    *i*) :;;
+    *) return;;
+esac
 
 ####################################
 # Reusable functions {{{
