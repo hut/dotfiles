@@ -238,6 +238,7 @@ map ,fs :%s/\s\+$//e<CR>:%s/\t/    /ge<CR>
 vmap ,fs :s/\s\+$//e<CR>gv:s/\t/    /ge<CR>gv
 map \k :mksession! ~/Session.vim<CR>
 map \s :vsplit ~/repos/dotfiles/config/vim/snippets<CR>
+map ,R :execute '!echo ' . v:servername . ' > /tmp/nvimserver'<CR>
 
 noremap <C-p> <tab>
 noremap <CR> :nohlsearch<CR><CR>

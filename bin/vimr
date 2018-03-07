@@ -1,0 +1,2 @@
+#!/bin/sh
+exec nvr --servername "$(cat /tmp/nvimserver)" --remote-tab -- "$@"

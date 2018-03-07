@@ -8,8 +8,8 @@
 .bookmark-item .toolbarbutton-icon { /* Hide Bookmark Icons */
     display: none;
 }
-/* Hide Pocket/Bookmark icons */
-#star-button-box, #pocket-button-box, #pageActionSeparator {
+/* Hide Bookmark icons */
+#star-button-box, #pageActionSeparator {
     display: none;
 }
 #pageActionButton {
