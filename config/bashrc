@@ -159,6 +159,7 @@ case "$HOSTNAME" in
         source /usr/share/bash-completion/completions/{git,route,rsync,ssh,scp,sshfs,strace,sudo,tar,tcpdump,tmux,umount,curl,wget,feh,fsck,gcc,passwd,gpasswd,mplayer,gpg2}
         alias db=dashboard
         alias pj='vim -O2 ~/syncthing/phone-org/inbox.org ~/syncthing/phone-org/projects.org'
+        alias pjt='vim ~/syncthing/phone-org/thesis.org'
         alias gdv='ssh rzimbelmann@login.gdv.uni-hannover.de'
         function irc { ssh hut.pm -t tmux attach; }
 
