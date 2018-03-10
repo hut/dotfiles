@@ -1,0 +1,20 @@
+#!/bin/sh
+
+case "$1" in
+    left) direction='--left-of';;
+    right) direction='--right-of';;
+    down|below) direction='--below';;
+    *) direction='--above';;
+esac
+case "$2" in
+    left|right) extra_args="--rotate $2";;
+    *) extra_args="";;
+esac
+
+if xrandr | grep -q 'HDMI1 disconnected'; then
+    xrandr --output HDMI1 --off --output eDP1 --mode 1920x1080 --pos 0x0
+else
+    xrandr --output HDMI1 --auto "$direction" eDP1 $extra_args --output eDP1 --mode 1920x1080 --pos 0x0
+fi
+
+sh ~/.fehbg
