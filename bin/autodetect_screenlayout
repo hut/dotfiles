@@ -11,10 +11,25 @@ case "$2" in
     *) extra_args="";;
 esac
 
-if xrandr | grep -q 'HDMI1 disconnected'; then
-    xrandr --output HDMI1 --off --output eDP1 --mode 1920x1080 --pos 0x0
+xrandr | grep -q 'HDMI-1 connected'
+hdmi_connected=$?
+
+xrandr | grep -q 'HDMI-2 connected'
+displayport_connected=$?
+
+if [ $displayport_connected == 0 ]; then
+    if [ $hdmi_connected == 0 ]; then
+        echo not implemented yet
+    else
+        xrandr --output HDMI-2 --auto "$direction" eDP-1 $extra_args --output eDP-1 --mode 1920x1080 --pos 0x0
+        echo activating displayport
+    fi
+elif [ $hdmi_connected == 0 ]; then
+    xrandr --output HDMI-1 --auto "$direction" eDP-1 $extra_args --output eDP-1 --mode 1920x1080 --pos 0x0
+    echo activating hdmi
 else
-    xrandr --output HDMI1 --auto "$direction" eDP1 $extra_args --output eDP1 --mode 1920x1080 --pos 0x0
+    xrandr --output HDMI-1 --off --output HDMI-2 --off --output eDP-1 --mode 1920x1080 --pos 0x0
+    echo deactivating external screens
 fi
 
 sh ~/.fehbg
