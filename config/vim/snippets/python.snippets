@@ -34,21 +34,22 @@ snippet json
 
 snippet #!
 	#!/usr/bin/python
-	"""
-	${1}
-	"""
 	import os.path
 	import sys
 	import re
 	import time
 	import argparse
 
+
 	def main():
-		parser = argparse.ArgumentParser(description=sys.modules[__name__].__doc__.strip())
+		default_logfile_name = '%s_%s.log' % (os.path.basename(__file__), time.strftime('%Y-%m-%dT%H%M%S'))
+		parser = argparse.ArgumentParser()  # description=sys.modules[__name__].__doc__.strip())
+		parser.add_argument('-o', '--logfile', type=str, default=default_logfile_name)
 		parser.add_argument('-v', '--verbose', action='store_true', default=False)
 		parser.add_argument('-q', '--quiet', action='store_true', default=False)
 		parser.add_argument('positionals', nargs='*')
 		args = parser.parse_args()
+
 
 	if __name__ == '__main__':
 		main()
