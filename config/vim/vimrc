@@ -155,11 +155,12 @@ noremap z<F3> :call EnableFolding(3)<CR>
 noremap z<F4> :call DisableFolding()<CR>
 
 " Tabs / Spaces {{{
-map \0 :set sw=4 ts=4 sts=4 noexpandtab<CR>
-map \1 :set sw=1 ts=1 sts=1 expandtab<CR>
-map \2 :set sw=2 ts=2 sts=2 expandtab<CR>
-map \3 :set sw=3 ts=3 sts=3 expandtab<CR>
-map \4 :set sw=4 ts=4 sts=4 expandtab<CR>
+map -<TAB>   :set sw=4 ts=4 sts=4 noexpandtab<CR>
+map -1       :set sw=1 ts=1 sts=1 expandtab<CR>
+map -2       :set sw=2 ts=2 sts=2 expandtab<CR>
+map -3       :set sw=3 ts=3 sts=3 expandtab<CR>
+map -4       :set sw=4 ts=4 sts=4 expandtab<CR>
+map -<SPACE> :set sw=4 ts=4 sts=4 expandtab<CR>
 
 fun! UseTabs()
     set shiftwidth=4
@@ -239,6 +240,7 @@ vmap ,fs :s/\s\+$//e<CR>gv:s/\t/    /ge<CR>gv
 map \k :mksession! ~/Session.vim<CR>
 map \s :vsplit ~/repos/dotfiles/config/vim/snippets<CR>
 map ,R :execute '!echo ' . v:servername . ' > /tmp/nvimserver'<CR>
+map -S :set wrap!<CR>
 
 noremap <C-p> <tab>
 noremap <CR> :nohlsearch<CR><CR>
