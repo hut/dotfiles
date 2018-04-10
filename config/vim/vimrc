@@ -1,3 +1,5 @@
+set nocompatible
+
 " Hostname-based settings
 if $HOSTNAME =~ "^lem"
     " Terminal-related
@@ -63,6 +65,109 @@ else
     call SetOverLengthHighlight()
 
     if $HOSTNAME == "fez"
+        filetype off
+        set rtp+=~/.config/nvim/bundle/Vundle.vim
+        call vundle#begin()
+
+        Plugin 'gmarik/Vundle.vim'
+        Plugin 'MarcWeber/vim-addon-mw-utils'
+        Plugin 'tomtom/tlib_vim'
+        Plugin 'garbas/vim-snipmate'
+        "Plugin 'honza/vim-snippets'
+        Plugin 'tikhomirov/vim-glsl'
+        Plugin 'mrk21/yaml-vim'
+        "Plugin 'rkulla/pydiction'
+        Plugin 'scrooloose/syntastic'
+        Plugin 'airblade/vim-gitgutter'
+        Plugin 'vimwiki/vimwiki'
+        Plugin 'kien/ctrlp.vim'
+        Plugin 'scrooloose/nerdtree'
+        Plugin 'dhruvasagar/vim-dotoo'
+        "Plugin 'hut/vim-orgmode'
+        Plugin 'dkarter/bullets.vim'
+        "Plugin 'Konfekt/FastFold'
+        "Plugin 'vim-scripts/utl'
+
+        call vundle#end()
+
+        " --- Settings for Plugin "dotoo" ---
+        autocmd BufNewFile,BufRead *.org setf dotoo
+        hi clear dotoo_italic
+        let g:dotoo_todo_keyword_faces = [
+          \ ['TODO', [':foreground 160', ':weight bold']],
+          \ ['NEXT', [':foreground 27', ':weight bold']],
+          \ ['DONE', [':foreground 22', ':weight bold']],
+          \ ['WAITING', [':foreground 202', ':weight bold']],
+          \ ['IN-PROGRESS', [':foreground 155', ':weight bold']],
+          \ ['HOLD', [':foreground 53', ':weight bold']],
+          \ ['CANCELLED', [':foreground 22', ':weight bold']],
+          \ ]
+        let g:dotoo#parser#todo_keywords = [
+          \ 'TODO',
+          \ 'NEXT',
+          \ 'WAITING',
+          \ 'HOLD',
+          \ 'IN-PROGRESS',
+          \ '|',
+          \ 'CANCELLED',
+          \ 'DONE']
+
+        " --- Settings for Plugin "bullet.vim" ---
+        let g:bullets_enabled_file_types = ['markdown', 'text', 'gitcommit', 'dotoo', 'tex']
+
+        let g:ctrlp_map = 'B'
+        map <A-`> :NERDTreeToggle<CR>
+        let g:NERDTreeDirArrowExpandable = '>'
+        let g:NERDTreeDirArrowCollapsible = 'v'
+        let NERDTreeIgnore=['\.pyc$', '\~$']
+
+        let g:syntastic_python_checkers = ['pylint']
+        "let g:syntastic_python_checkers = []
+
+        let g:org_todo_keywords = ['TODO', 'NEXT', 'IN-PROGRESS', 'WAITING', '|', 'DONE']
+        let g:org_agressive_conceal = 1
+
+        let g:pydiction_location = '/home/hut/.config/nvim/bundle/pydiction/complete-dict'
+        let g:vimwiki_list = [{'path': '~/sync/notes/vimwiki/'}]
+        let g:vimwiki_folding = 'marker'
+        "let g:vimwiki_folding = 'list'
+        "set statusline+=%#warningmsg#
+        "set statusline+=%{SyntasticStatuslineFlag()}
+        "set statusline+=%*
+        ""let g:syntastic_always_populate_loc_list = 1
+        ""let g:syntastic_auto_loc_list = 1
+        "let g:syntastic_check_on_open = 1
+        "let g:syntastic_python_python_exec = '/usr/bin/python3'
+        filetype plugin indent on
+        filetype plugin on
+
+        let g:syntastic_python_pylint_args = '--rcfile=/home/hut/.pylintrc'
+        "let g:syntastic_python_pylint_post_args = ['--version']
+        let g:hutsnip_path = '/home/hut/sync/notes/quick/snippets'
+
+        for f in split(glob(g:hutsnip_path . '/*'), '\n')
+            let basename = substitute(f, '.*/\([^/]*\)$', '\1', '')
+            exec "map \\\\" . basename . " <ESC>:.-1r " . f . "<CR>i"
+        endfor
+
+        "imap <silent><buffer> <S-Tab> <Plug>VimwikiDecreaseLvlSingleItem
+        "imap <silent><buffer> <Tab> <Plug>VimwikiIncreaseLvlSingleItem
+        map \w_n <Plug>VimwikiNextLink
+        map \w_p <Plug>VimwikiPrevLink
+
+        function! EfFive()
+            silent w
+            if expand("%:e") == "dot"
+                call system("gvpr -c 'N[$.indegree==0]{subnode(isSubg($G, \"next\"),$);} N[$.height==\"0\"]{delete(0,$);}' " . expand("%") . " 2> /tmp/f5.stderr | tee /tmp/f5.stdout | dot -Tpng -o /tmp/f5out.png && firefox /tmp/f5out.png")
+            endif
+            return ""
+        endfunction
+        map  \wr  :call EfFive()<CR>
+        map  <F5> :call EfFive()<CR>
+        imap <F5> <C-R>=EfFive()<CR>
+
+        nnoremap <space> za
+
         ino <tab> <C-r>=TriggerSnippet()<CR>
         snor <tab> <ESC>i<right><C-r>=TriggerSnippet()<CR>
     endif
@@ -105,10 +210,13 @@ set hidden
 set title
 
 set incsearch
-set foldmethod=indent
-set foldlevel=2
-set foldnestmax=2
+"set foldmethod=indent
+"set foldlevel=2
+"set foldnestmax=2
 set scrolloff=4
+
+set shortmess=IaWTF
+let g:bufferline_echo=0
 
 set formatoptions-=r,o
 set nohlsearch
@@ -120,7 +228,10 @@ set smartindent
 set backupdir=~/.vim/swap,/var/tmp,/tmp
 set directory=~/.vim/swap,/var/tmp,/tmp
 
-set foldmethod=indent
+"set foldmethod=indent
+set foldmethod=marker
+
+iab Zabc abcdefghijklmnopqrstuvwxyz
 
 fun! PagerMode()
 "  map n <C-d>
@@ -136,6 +247,7 @@ endfun
 
 if has("autocmd")
     autocmd FileType python set complete+=k~/.vim/complete-dict "isk+=.,(
+    autocmd FileType org set ft=dotoo
     "autocmd FileType python nnoremap <buffer> [[ ?^\*class\\|^\s*def<CR>
     "autocmd FileType python nnoremap <buffer> [[ /^\*class\\|^\s*def<CR>
 endif " has("autocmd"
@@ -212,8 +324,6 @@ au BufRead *.texx setf tex
 map ,T :call UseTabs()<CR>
 map ,s :call UseSpaces()<CR>
 "map ,r :call RangerChooser()<CR>
-map <F2> :call ToggleTabsSpaces()<CR>
-imap <F2> <ESC>:call ToggleTabsSpaces()<CR>
 " }}}
 
 " Mappings {{{
@@ -224,7 +334,7 @@ noremap <S-tab> gT
 map <C-n> :tabnew<cr>
 
 " bla
-map ,m :set list!<CR>
+map ,m :silent !markdown % > %.html<CR>
 map ,p :set paste!<CR>:set ruler<CR>:echo "paste =" &paste<CR>
 map ,b :source ~/.vimrc<cr>
 map ,B :e ~/.vimrc<cr>
@@ -238,9 +348,25 @@ map ,H :silent !echo -ne "\033]12;black\007"<CR>:autocmd VimLeave * silent !echo
 map ,fs :%s/\s\+$//e<CR>:%s/\t/    /ge<CR>
 vmap ,fs :s/\s\+$//e<CR>gv:s/\t/    /ge<CR>gv
 map \k :mksession! ~/Session.vim<CR>
-map \s :vsplit ~/repos/dotfiles/config/vim/snippets<CR>
 map ,R :execute '!echo ' . v:servername . ' > /tmp/nvimserver'<CR>
+map ,g :GitGutterToggle<CR>
+map ,ts :SyntasticToggleMode<CR>
 map -S :set wrap!<CR>
+map ,> :s/^\*/**/<CR>
+map ,< :s/^\*//<CR>
+
+map go :call NewHeader()<CR>kA
+
+fun! NewHeader()
+    let l:bullets = matchend(getline('.'), '*\+')
+    let l:regex = '^\*\{1,' . l:bullets . '} '
+    let l:insert = repeat('*', l:bullets) . ' '
+
+    call search(l:regex, 'W')
+    call append(line('.')-1, l:insert)
+    "let l:bullets_regex = '^' . substitute(l:bullets, '*', '\\*', 'g')
+    "call search(l:bullets_regex, 'W')
+endfun
 
 noremap <C-p> <tab>
 noremap <CR> :nohlsearch<CR><CR>
@@ -248,9 +374,9 @@ noremap <CR> :nohlsearch<CR><CR>
 " avoid typos
 map Q <ESC>
 map ; :
-map <F1> <ESC>
-imap <F1> <ESC>
-vmap <F1> <ESC>
+"map <F1> <ESC>
+"imap <F1> <ESC>
+"vmap <F1> <ESC>
 command! W w
 command! Q q
 command! Wq wq
@@ -263,7 +389,7 @@ vnoremap > >gv
 map gV ggVG
 map s :s/
 map S :%s/
-map b :b
+map b :b 
 vmap S :s/
 inoremap <F9>  <C-R>=strftime("%Y/%m/%d %H:%M ")<CR>
 inoremap <F10> <C-R>=strftime("%s ")<CR>
@@ -307,22 +433,22 @@ inoremap # x#
 " Automatic compilation {{{
 
 " Compile + Run Project
-imap <F3> <ESC>:call Compilef5(2)<CR>
-map  <F3> :call Compilef5(2)<CR>
+"imap <F3> <ESC>:call Compilef5(2)<CR>
+"map  <F3> :call Compilef5(2)<CR>
 
 " Run Project
 "imap <F4> <ESC>:call Compilef5(3)<CR>
 "map  <F4> :call Compilef5(3)<CR>
-map <F4> :e %:p:s,.h$,.X123X,:s,.cpp$,.h,:s,.X123X$,.cpp,<CR>
-imap <F4> <ESC>:e %:p:s,.h$,.X123X,:s,.cpp$,.h,:s,.X123X$,.cpp,<CR>
+"map <F5> :e %:p:s,.h$,.X123X,:s,.cpp$,.h,:s,.X123X$,.cpp,<CR>
+"imap <F5> <ESC>:e %:p:s,.h$,.X123X,:s,.cpp$,.h,:s,.X123X$,.cpp,<CR>
 
 " Compile + Run File
-imap <F5> <ESC>:call Compilef5(0)<CR>
-map  <F5> :call Compilef5(0)<CR>
+"imap <F5> <ESC>:call Compilef5(0)<CR>
+"map  <F5> :call Compilef5(0)<CR>
 
 " Run File
-imap <F6> <ESC>:call Compilef5(1)<CR>
-map  <F6> :call Compilef5(1)<CR>
+"imap <F6> <ESC>:call Compilef5(1)<CR>
+"map  <F6> :call Compilef5(1)<CR>
 
 "map gR :silent w<CR>:call system("/home/hut/code/pendulum/pendulum.py " . @%)<cr>
 "map g<c-r> :w<CR>:silent !/home/hut/code/pendulum/pendulum.py % &<cr><c-l>
@@ -377,6 +503,8 @@ fun! GetFoldText()
         \'\('.b:cmchr.'\)*{{'.'{\d*',
         \'- '.(v:foldend-v:foldstart).'l',
         \'')
+    let l:line = substitute(l:line, '^\*+', ' ')
+    return l:line
 endfun
 " }}}
 " comments {{{
@@ -389,10 +517,10 @@ vmap ,f :call ToggleComment(1,2)<CR>gv
 au Filetype * call GetCommentCharacter()
 
 fun! ToggleComment(range, mode)
-"    Range Values:
-"    0: Normal Mode (1 line), 1: Visual Mode (range)
-"    Mode Vaules:
-"    0: uncomment, 1: comment, 2: toggle
+"   Range Values:
+"   0: Normal Mode (1 line), 1: Visual Mode (range)
+"   Mode Vaules:
+"   0: uncomment, 1: comment, 2: toggle
 
     if a:range
         if line('.') != line("'<") | return | endif
@@ -873,39 +1001,26 @@ endfun
 "endfunction
 "autocmd FileType python call InstallPythonFold()
 
-map <F1> $?^$<cr>jV/^$<cr>k!texin<cr>u
+"map <F1> $?^$<cr>jV/^$<cr>k!texin<cr>u
 imap ,m \vec{\mathbf{
 imap ,v \vec{
+map \s :SnipMateOpenSnippetFiles<CR>
 
-map g/., :w ~/sync/more/ramblings/<C-R>=strftime("%Y-%m-%d_%H%M%S")<CR>_<C-r>=$USER<CR>_<C-r>=hostname()<CR>.txt<CR>ggVGd:w<CR>
+map g/., :w ~/sync/ramblings/<C-R>=strftime("%Y-%m-%d_%H%M%S")<CR>_<C-r>=$USER<CR>_<C-r>=hostname()<CR>.txt<CR>ggdG:w<CR>
 
-
-"  --- tmp ---
-function! RangeChooser()
-    let temp = tempname()
-    " The option "--choosefiles" was added in ranger 1.5.1. Use the next line
-    " with ranger 1.4.2 through 1.5.0 instead.
-    "exec 'silent !ranger --choosefile=' . shellescape(temp)
-    exec 'silent !ranger --choosefiles=' . shellescape(temp)
-    if !filereadable(temp)
-        " Nothing to read.
-        return
-    endif
-    let names = readfile(temp)
-    if empty(names)
-        " Nothing to open.
-        return
-    endif
-    " Edit the first item.
-    exec 'edit ' . fnameescape(names[0])
-    " Add any remaning items to the arg list/buffer list.
-    for name in names[1:]
-        exec 'argadd ' . fnameescape(name)
-    endfor
-endfunction
-command! -bar RangerChooser call RangeChooser()
-nnoremap <leader>r :<C-U>RangerChooser<CR>
-"  --- /tmp ---
+let g:hut_projectpath = '/home/hut/sync/notes/vimwiki/tasks/'
+let g:hut_indexpath = '/home/hut/sync/notes/vimwiki/tasks/tasks.wiki'
+function! NewProject()
+	call inputsave()
+	let name = input('Task name: ')
+	call inputrestore()
+	if strlen(name) > 0
+		let fullname = strftime('%Y-%m-%d_').  name
+		execute "silent !echo '- [ ] [[" . substitute(fullname, "'", "'\\\\''", '') . "]]' >> '" . g:hut_indexpath . "'"
+		execute 'edit '.fnameescape(g:hut_projectpath . fullname . '.wiki')
+	endif
+endfun
+nmap \wc :call NewProject()<CR>
 
 if filereadable(glob("~/.vimrc.local"))
     source ~/.vimrc.local
