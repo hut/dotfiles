@@ -1,18 +1,27 @@
 @-moz-document domain(getpocket.com) {
-    li.item_type_spoc { display: none; }
-    li.topic { display: none !important; }
-    #reader_explore_bar { display: none !important; }
-    .reading_progress_bar { display: none !important; }
-    .page-readerdark, .pkt-nav { background-color: black !important; }
+    /* font: monospace */
     .font-sans .reader_content, .font-sans h1, .font-sans h2, .font-sans h3 { font-family: monospace !important; }
+
+    /* Black! */
+    .page-readerdark, .pkt-nav { background-color: black !important; }
+
+    /* Hide things */
+    li.item_type_spoc, /* ads? */
+    #reader_explore_bar, /* "Read more about"-bar at the bottom */
+    .nav-bottom, /* irrelevant menu entries in bottom left corner */
+    .toolbar_queue_rainbow, /* redundant scroll bar? */
+    .reading_progress_bar  /* redundant scroll bar? */
+    { display: none !important; }
+
+    /* no scroll bar */
     .reader_content_wrapper, .reader_content_wrapper div { overflow-y: hidden; overflow-x: hidden; }
 
-    /* Hide the distracting menu */
-    .pkt-nav, .toolbar_queue_rainbow { display: none !important; }
-    .nav-bottom { display: none !important; }
-
-    /* Less whitespace at the top */
+    /* hide menu */
+    /*
     #page_queue { margin-top: 0px !important; padding-top: 0px !important; }
+    .pkt-nav { display: none !important; }
+    */
+
 }
 @-moz-document domain(news.ycombinator.com) {
     #hnmain > tbody > tr:first-child { display: none; }
