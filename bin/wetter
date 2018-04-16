@@ -1,2 +1,2 @@
 #!/bin/sh
-exec curl wttr.in/Cologne
+exec curl wttr.in/Cologne?m
