@@ -34,13 +34,13 @@ MOTD = False
 CRAP = False
 CLOCK = True
 TIMEZONES = [
-    ('LA-7', 'America/Los_Angeles'),
-    ('NY-5', 'America/New_York'),
+    ('LA', 'America/Los_Angeles'),
+    ('NY', 'America/New_York'),
     ('UTC', 'Europe/Greenwich'),
-    ('\033[38;5;203mDE+1', 'Europe/Berlin'),
-    ('MOS+3', 'Europe/Moscow'),
-    #('CH+8', 'Asia/Hong_Kong'),
-    #('JP+9', 'Asia/Tokyo'),
+    ('\033[38;5;203mDE', 'Europe/Berlin'),
+    #('MOS', 'Europe/Moscow'),
+    #('CH', 'Asia/Hong_Kong'),
+    #('JP', 'Asia/Tokyo'),
 ]
 
 TR = "\u2510"
