@@ -172,7 +172,7 @@ if CLOCK:
     free_mem = int(open("/proc/meminfo", "r").read().split("\n")[2].split()[1]) / 1024**2
     load = open("/proc/loadavg", "r").read().split()[1]
     date = time.strftime("%A, %B %d" + suffix + ", w=%W, d=%j, %s")
-    print(clr("{date} 0x{0:x} mem={free_mem:.1f}G load={load}" \
+    print(clr("{date} free={free_mem:.1f}G load={load}" \
             .format(int(time.time()), **locals()), fg=fg))
 
 if TIMEZONES:
