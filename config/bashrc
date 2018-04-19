@@ -6,6 +6,7 @@ source_if_exists ~/.env
 
 ####################################
 # Variables {{{
+export HOSTNAME
 case "$HOSTNAME" in
     *)
         export EDITOR=vim
