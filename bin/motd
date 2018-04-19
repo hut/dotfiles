@@ -190,8 +190,8 @@ if TIMEZONES:
         os.environ['TZ'] = old_zone
     time.tzset()
 
-    hour = (float(time.strftime("%H")) + float(time.strftime("%M")) / 60)
-    output.append("+%.1f" % (sleephour(today.weekday()) - hour))
+    #hour = (float(time.strftime("%H")) + float(time.strftime("%M")) / 60)
+    #output.append("+%.1f" % (sleephour(today.weekday()) - hour))
 
     print(clr("  ".join(output), fg=fg))
 
