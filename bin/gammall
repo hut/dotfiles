@@ -1,0 +1,19 @@
+#!/bin/sh
+
+displays="eDP-1 HDMI-1"
+
+if [ -z "$1" ]; then
+    echo 'usage: gammall R:G:B'
+    echo 'example gamma_value: 1:1:1.5 for blue hue'
+    echo 'you can use "reset" as gamma value as an alias for 1:1:1'
+fi
+
+if [ "$1" == 'reset' ]; then
+    gamma="1:1:1"
+else
+    gamma="$1"
+fi
+
+for display in $displays; do
+    xrandr --output $display --gamma "$gamma" 2> /dev/null
+done

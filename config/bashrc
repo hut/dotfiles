@@ -27,7 +27,8 @@ case "$HOSTNAME" in
         unset MAIL
         ;;&
     fez)
-        export PATH="$BINDIR/fez:$BINDIR/games:$BINDIR:$BINDIR/scripts:$BINDIR/redirected:$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/games:/usr/games:/usr/bin/core_perl:$HOME/me/configs/bin/snes:/usr/bin/vendor_perl:/home/hut/.npm/bin:/usr/local/bin:/usr/local/sbin"
+        #export PATH="$BINDIR/fez:$BINDIR/games:$BINDIR:$BINDIR/scripts:$BINDIR/redirected:$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/games:/usr/games:/usr/bin/core_perl:$HOME/me/configs/bin/snes:/usr/bin/vendor_perl:/home/hut/.npm/bin:/usr/local/bin:/usr/local/sbin"
+        export PATH
         export VIMWIKI_ROOT="$HOME/sync/notes/vimwiki/"
         export EXOBRAIN_ROOT=~/sync/notes/quick
         export JAVAFX_HOME="/usr/lib/jvm/java-8-openjdk/jre/lib/ext/jfxrt.jar"

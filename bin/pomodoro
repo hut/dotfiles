@@ -1,0 +1,67 @@
+#!/bin/sh
+
+file_prefix=/tmp/.pomodoro
+file_timer=$file_prefix.timer
+file_description=$file_prefix.description
+file_stats=~/.pomodoro_stats
+duration=600
+
+dumpstat() {
+    timestamp="$(date +%s)"
+    verbosedate="$(date +"%Y-%m-%d %H:%M")"
+    success="$1"  # y|n
+    info="$(cat "$file_description")"
+    printf "%s,%s,%s,%s\n" "$timestamp" "$verbosedate" "$success" "$info" >> "$file_stats"
+}
+
+generate_suggestions() {
+    if [ -f "$file_description" ]; then
+        cat "$file_description"
+    fi
+    if [ -f "$file_stats" ]; then
+        cat "$file_stats" | cut -d, -f4 | sort -u
+    fi
+}
+
+pomo() {
+    case "$1" in
+        query)
+            description="$(generate_suggestions | dmenu)"
+            if [ "$?" -eq 0 ]; then
+                if [ "$description" != "" ]; then
+                    echo "$description" > "$file_description"
+                fi
+                pomo on
+            fi
+            ;;
+        on|start)
+            i3-msg bar mode invisible
+            gammall 1:1:1.5
+            date +%s > "$file_timer"
+            ;;
+        off|stop)
+            dumpstat n
+            pomo raw_off
+            ;;
+        raw_off)
+            i3-msg bar mode dock
+            gammall reset
+            ;;
+        check)
+            if [ -f "$file_timer" ]; then
+                t1="$(cat "$file_timer")"
+                t2="$(date +%s)"
+                dt="$((t2-t1))"
+                if [ "$dt" -gt "$duration" ]; then
+                    rm "$file_timer"
+                    dumpstat y
+                    pomo raw_off
+                fi
+            fi
+            ;;
+        *)
+            echo "usage: $0 [on|off] [delay]";;
+    esac
+}
+
+pomo "$1"

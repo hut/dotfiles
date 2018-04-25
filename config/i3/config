@@ -277,6 +277,9 @@ mode "command" {
     bindsym e exec pc location fez; mode "default"
     bindsym r exec pc location turban; mode "default"
 
+    bindsym p exec pomodoro query; mode "default"
+    bindsym shift+p exec pomodoro off; mode "default"
+
     bindsym $mod+s layout stacking; mode "default"
     bindsym $mod+d layout default; mode "default"
     bindsym $mod+h layout splith; mode "default"
