@@ -9,7 +9,7 @@ duration=600
 dumpstat() {
     timestamp="$(date +%s)"
     verbosedate="$(date +"%Y-%m-%d %H:%M")"
-    success="$1"  # y|n
+    success="$1"  # "0" or "1"
     info="$(cat "$file_description")"
     printf "%s,%s,%s,%s\n" "$timestamp" "$verbosedate" "$success" "$info" >> "$file_stats"
 }
@@ -40,7 +40,7 @@ pomo() {
             date +%s > "$file_timer"
             ;;
         off|stop)
-            dumpstat n
+            dumpstat 0  # 0=failure
             pomo raw_off
             ;;
         raw_off)
@@ -54,7 +54,7 @@ pomo() {
                 dt="$((t2-t1))"
                 if [ "$dt" -gt "$duration" ]; then
                     rm "$file_timer"
-                    dumpstat y
+                    dumpstat 1  # 1=success
                     pomo raw_off
                 fi
             fi
