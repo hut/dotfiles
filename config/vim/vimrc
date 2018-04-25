@@ -233,18 +233,6 @@ set foldmethod=marker
 
 iab Zabc abcdefghijklmnopqrstuvwxyz
 
-fun! PagerMode()
-"  map n <C-d>
-"  map p <C-u>
-  noremap j 3gj
-  noremap k 3gk
-  noremap <space> <C-D>
-  set scrolloff=9999
-  if &term == "linux"
-    let &t_ve = "\033[?25c"
-  endif
-endfun
-
 if has("autocmd")
     autocmd FileType python set complete+=k~/.vim/complete-dict "isk+=.,(
     autocmd FileType org set ft=dotoo
@@ -343,7 +331,6 @@ map ,e :e.<cr>
 map ,SE :set spell spelllang=en_us<CR>
 map ,SD :set spell spelllang=de<CR>
 map ,SS :set nospell<CR>
-map ,P :call PagerMode()<CR>
 map ,H :silent !echo -ne "\033]12;black\007"<CR>:autocmd VimLeave * silent !echo -ne "\033]12;white\007"<CR>:set noruler<CR>
 map ,fs :%s/\s\+$//e<CR>:%s/\t/    /ge<CR>
 vmap ,fs :s/\s\+$//e<CR>gv:s/\t/    /ge<CR>gv
