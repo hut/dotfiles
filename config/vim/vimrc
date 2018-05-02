@@ -69,6 +69,7 @@ else
         set rtp+=~/.config/nvim/bundle/Vundle.vim
         call vundle#begin()
 
+        Plugin 'majutsushi/tagbar'
         Plugin 'gmarik/Vundle.vim'
         Plugin 'MarcWeber/vim-addon-mw-utils'
         Plugin 'tomtom/tlib_vim'
@@ -322,6 +323,7 @@ noremap <S-tab> gT
 map <C-n> :tabnew<cr>
 
 " bla
+map <F12> :TagbarToggle<CR>
 map ,m :silent !markdown % > %.html<CR>
 map ,p :set paste!<CR>:set ruler<CR>:echo "paste =" &paste<CR>
 map ,b :source ~/.vimrc<cr>
