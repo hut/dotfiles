@@ -69,3 +69,6 @@ snippet os.walk
 snippet md5
 	import hashlib
 	hash = hashlib.md5('sometext').hexdigest()
+snippet stack
+	import traceback, sys
+	traceback.print_stack(f=sys.stderr)
