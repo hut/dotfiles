@@ -169,8 +169,8 @@ else
 
         nnoremap <space> za
 
-        ino <tab> <C-r>=TriggerSnippet()<CR>
-        snor <tab> <ESC>i<right><C-r>=TriggerSnippet()<CR>
+        "ino <tab> <C-r>=TriggerSnippet()<CR>
+        "snor <tab> <ESC>i<right><C-r>=TriggerSnippet()<CR>
     endif
 
     " Don't need this on lemming
