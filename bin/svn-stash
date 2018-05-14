@@ -1,0 +1,34 @@
+#!/bin/bash
+
+current_svn_revision() {
+    svn info | sed -n 's/Revision:.//p'
+}
+
+parse_args() {
+    if [ "$1" == "--help" ]; then
+        echo "usage: svn-stash <label>"
+        echo
+        echo "Branching for limited people."
+        echo "Dumps the diff into a file with a nicely formatted filename."
+        exit
+    fi
+
+    if [ -n "$1" ]; then
+        label="_$1"
+    else
+        label=""
+    fi
+    fname="svn_pseudobranch_$(date +'%Y-%m-%d-%H%M')_r$(current_svn_revision)$label.patch"
+
+    if [ -f "$fname" ]; then
+        echo "Refusing; file name already exists: $fname"
+        exit 1
+    fi
+}
+
+main() {
+    parse_args "$@"
+    svn diff > "$fname"
+}
+
+main "$@"
