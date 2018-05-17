@@ -1,0 +1,37 @@
+#!/bin/bash
+
+latest_file() {
+    ls -c svn_pseudobranch* | head -n 1
+}
+
+parse_args() {
+    if [ "$1" == "--help" ]; then
+        echo "usage: svn-stash-apply"
+        echo
+        echo "Branching for limited people."
+        echo '"Check out" the most recently saved branch.'
+        exit
+    fi
+
+    dryrun=
+    if [ "$1" == "--dry-run" ]; then
+        dryrun=true
+    fi
+
+    fname="$(latest_file)"
+    if [ ! -f "$fname" ]; then
+        echo "Refusing; file doesn't exist exists: $fname"
+        exit 1
+    fi
+}
+
+main() {
+    parse_args "$@"
+    if [ -z "$dryrun" ]; then
+        patch -p0 < "$fname"
+    else
+        echo patch -p0 \< \""$fname"\"
+    fi
+}
+
+main "$@"
