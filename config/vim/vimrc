@@ -326,6 +326,7 @@ map <C-n> :tabnew<cr>
 map <F12> :TagbarToggle<CR>
 map ,m :silent !markdown % > %.html<CR>
 map ,p :set paste!<CR>:set ruler<CR>:echo "paste =" &paste<CR>
+map ,T :edit ~/me/notes/org/thesis.org<CR>
 map ,b :source ~/.vimrc<cr>
 map ,B :e ~/.vimrc<cr>
 map ,w :e <C-r>=substitute(@%, '^\(.*/\).*$', '\1', '')<cr><cr>
