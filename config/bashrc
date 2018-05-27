@@ -448,7 +448,11 @@ function tag {
     else
         case "$(testscm)" in
             git)
-                tig --all;;
+                if type -t tig 2> /dev/null; then
+                    tig --all
+                else
+                    git log --abbrev-commit --graph --color=always --all | less -RS
+                fi;;
             svn)
                 if [ "$1" == '-q' ]; then
                     args='-v'
