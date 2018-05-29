@@ -13,6 +13,7 @@ p () { until ping -i 0.5 "${1:-4.2.2.4}"; do sleep 0.5; done; }
 #alias ranger='. ranger' vim=vi tag='tig --all'
 alias githut='git -c user.name=hut -c user.email=hut@hut.pm -c user.colors=true -c merge.tool=vimdiff'
 alias dps='docker ps --format="table {{.ID}}\t{{.Image}}\t{{.Status}}\t{{.Names}}"'
+csv () { column -s, -t < "$1" | less -S; }
 
 scan () { grep "$@" -nr --color=always -I *; }
 
