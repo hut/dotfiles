@@ -2,9 +2,6 @@
  ************** COMMON *************
  ***********************************/
 
-#nav-bar { /* Monospace font in nav bar 8) */
-    font-family: fira sans;
-}
 .bookmark-item .toolbarbutton-icon { /* Hide Bookmark Icons */
     display: none;
 }
