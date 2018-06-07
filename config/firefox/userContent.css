@@ -1,6 +1,6 @@
 @-moz-document domain(getpocket.com) {
     /* font: monospace */
-    .font-sans .reader_content, .font-sans h1, .font-sans h2, .font-sans h3 { font-family: monospace !important; }
+    .font-sans .reader_content, .font-sans h1, .font-sans h2, .font-sans h3 { font-family: fira mono, fira sans, monospace !important; }
 
     /* Black! */
     .page-readerdark, .pkt-nav { background-color: black !important; }
