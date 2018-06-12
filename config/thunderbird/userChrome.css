@@ -1,0 +1,11 @@
+#calendar-task-box > vbox {
+    -moz-box-orient: horizontal;
+}
+
+#calendar-task-view-splitter {
+    width: 5px;
+}
+
+#calendar-task-tree {
+    min-width: 300px;
+}
