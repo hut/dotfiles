@@ -40,8 +40,8 @@ urxvt*foreground: rgb:ff/ff/ff
 urxvt*colorBD: rgb:88/88/88
 urxvt*background: rgb:00/00/00
 
-urxvt*font:xft:Fira Mono:pixelsize=15
-urxvt*boldFont:xft:Fira Mono:pixelsize=15:bold
+urxvt*font:xft:Fira Mono:pixelsize=14
+urxvt*boldFont:xft:Fira Mono:pixelsize=14:bold
 #urxvt*font:xft:Monospace:pixelsize=16
 #urxvt*boldFont:xft:Monospace:pixelsize=16:bold
 
