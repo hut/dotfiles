@@ -1,6 +1,17 @@
 #!/bin/sh
+# Argument 1: Window title
+# Argument 2: Fallback command
 
 WINDOWNAME="${1:-Vimperator}"
 
-xdotool set_desktop "$(xdotool search --name "$WINDOWNAME" get_desktop_for_window)"
+DESKTOP="$(xdotool search --name "$WINDOWNAME" get_desktop_for_window)"
+if [ $? -gt 0 ]; then
+    if [ -n "$2" ]; then
+        exec $2
+    else
+        exit 1
+    fi
+fi
+
+xdotool set_desktop "$DESKTOP"
 xdotool search "$WINDOWNAME" windowfocus --sync
