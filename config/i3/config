@@ -115,6 +115,7 @@ bindsym $mod+Shift+q kill
 # Focus firefox
 #bindsym $mod+q exec xdotool set_desktop "$(xdotool search --name Vimperator get_desktop_for_window)"; exec xdotool search Vimperator windowfocus --sync
 bindsym $mod+q exec focuswindow 'Mozilla Firefox'
+bindsym $mod+t exec focuswindow 'Mozilla Thunderbird'
 
 # start dmenu (a program launcher)
 bindsym $mod+r exec dmenu_run
