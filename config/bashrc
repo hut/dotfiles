@@ -114,7 +114,7 @@ function make-completion-wrapper () {
 ####################################
 # System-dependent instructions {{{
 case "$HOSTNAME" in
-    fez|turban)
+    fez|turban) # {{{
         # Bind keys
         case "$-" in *i*)
             bind '"\C-x\C-r":"source ~/.bashrc\C-m"'
@@ -128,8 +128,8 @@ case "$HOSTNAME" in
 
         # Starting X
         alias x='if [ -z "$DISPLAY" ]; then xinit -- "$@" & clear; exit; else echo x already running; fi'
-        ;;&
-    fez)
+        ;;& # }}}
+    fez) # {{{
         source /usr/share/bash-completion/completions/{git,route,rsync,ssh,scp,sshfs,strace,sudo,tar,tcpdump,tmux,umount,curl,wget,feh,fsck,gcc,passwd,gpasswd,mplayer,gpg2}
         alias pj='vim -O2 ~/syncthing/phone-org/notes.org ~/syncthing/phone-org/projects.org'
         alias pjt='vim ~/syncthing/phone-org/thesis.org'
@@ -143,17 +143,17 @@ case "$HOSTNAME" in
         }
         function scream { setsid blink; echo -ne "\E[38;5;46m"; toilet --font future "${1:-WORK, INSECT!}"; }
         function backup_regular { repeat -l backup_regular; command backup_regular "$@"; }
-        ;;
-    turban)
+        ;; # }}}
+    turban) # {{{
         function remote {
             export REMOTED=1
             export DISPLAY=:0
         }
-        ;;
-    lemming*)
+        ;; # }}}
+    lemming*) # {{{
         alias tactivate='source /tools/python/bin/activate'
         scan () { grep "$@" -nr --color=always -I *; }
-        ;;
+        ;; # }}}
 esac
 
 # }}}
@@ -161,7 +161,7 @@ esac
 ####################################
 # Aliases {{{
 
-# Generic tools
+# Generic tools {{{
 alias whatsmyip='dig +short myip.opendns.com \@resolver1.opendns.com'
 alias rot13='tr a-zA-Z n-za-mN-ZA-M'
 function dice {
@@ -177,16 +177,18 @@ for i in {1..12}; do
     done
 done
 function settitle { echo -ne "\033]30;$1\007"; }
+# }}}
 
 
-# Typos
+# Typos {{{
 alias hotp=htop
 alias sl=ls
 alias s=ls
 alias wlits=wlist
+# }}}
 
 
-# Fixed parameters
+# Fixed parameters {{{
 function sticky { tmux_session sticky; }
 function cal { [ -z "$@" ] && command cal -3 -w || command cal "$@"; }
 function man {
@@ -211,9 +213,10 @@ alias blk="lsblk -no NAME,SIZE,TYPE,FSTYPE,MOUNTPOINT"
 alias ssh-f="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
 alias sshfs-f="sshfs -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
 alias wget-r='wget -r --no-parent --reject "index.html*"'
+# }}}
 
 
-# Shortcuts
+# Shortcuts {{{
 export LS_OPTIONS='--color=auto --group-directories-first --quoting-style=literal'
 alias ls='ls $LS_OPTIONS'
 alias lsd='"ls" --color=always -Acr | tail -n 5'
@@ -294,6 +297,7 @@ function ranger-cd {
         rm -f -- "$tempfile"
     fi
 }
+# }}}
 
 
 # Bookmarks for "cd" {{{
@@ -323,7 +327,7 @@ function bmark {
 # }}}
 
 
-# Version Control Systems
+# Version Control Systems {{{
 function vcsfail { echo "Error: not in a VCS!"; }
 function commit {
     if [ "$PWD" == "$HOME" ]; then
@@ -443,6 +447,7 @@ alias c='githut checkout'
 alias b='githut branch'
 alias d-c='git diff --cached'
 alias mt='githut mergetool --tool=vimdiff'
+# }}}
 
 # }}}
 
