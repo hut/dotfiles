@@ -126,19 +126,13 @@ case "$HOSTNAME" in
             ;;
         esac
 
-        # Package Management
-        alias pac="sudo packer"
-
         # Starting X
         alias x='if [ -z "$DISPLAY" ]; then xinit -- "$@" & clear; exit; else echo x already running; fi'
-        alias x2='if [ -z "$DISPLAY" ]; then cd; X & sleep 1; DISPLAY=:0 exec sh .xinitrc & exit; else echo x already running; fi'
         ;;&
     fez)
         source /usr/share/bash-completion/completions/{git,route,rsync,ssh,scp,sshfs,strace,sudo,tar,tcpdump,tmux,umount,curl,wget,feh,fsck,gcc,passwd,gpasswd,mplayer,gpg2}
-        alias db=dashboard
         alias pj='vim -O2 ~/syncthing/phone-org/notes.org ~/syncthing/phone-org/projects.org'
         alias pjt='vim ~/syncthing/phone-org/thesis.org'
-        alias gdv='ssh rzimbelmann@login.gdv.uni-hannover.de'
         function irc { ssh hut.pm -t tmux attach; }
 
         # Staying focused
@@ -148,9 +142,6 @@ case "$HOSTNAME" in
             return 1
         }
         function scream { setsid blink; echo -ne "\E[38;5;46m"; toilet --font future "${1:-WORK, INSECT!}"; }
-#        for tool in irc sticky ncmpcpp; do
-#            eval "function $tool { if _imbusy; then scream; else command $tool \"\$@\"; fi }"  # because fuck it
-#        done
         function backup_regular { repeat -l backup_regular; command backup_regular "$@"; }
         ;;
     turban)
@@ -219,8 +210,8 @@ alias kbrate='xset r rate 220 35'
 alias blk="lsblk -no NAME,SIZE,TYPE,FSTYPE,MOUNTPOINT"
 alias ssh-f="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
 alias sshfs-f="sshfs -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
-alias restorebg='nitrogen --restore'
 alias wget-r='wget -r --no-parent --reject "index.html*"'
+
 
 # Shortcuts
 export LS_OPTIONS='--color=auto --group-directories-first --quoting-style=literal'
@@ -303,16 +294,7 @@ function ranger-cd {
         rm -f -- "$tempfile"
     fi
 }
-_taskdone() {
-    if [ "$#" -eq 1 ]; then
-        task "$1" 'done'
-    else
-        task "$@"
-    fi
-}
-for i in {1..100}; do
-    alias "$i"="_taskdone $i"
-done
+
 
 # Bookmarks for "cd" {{{
 function cd {
@@ -340,34 +322,6 @@ function bmark {
 }
 # }}}
 
-
-# Package Management
-OS=unknown
-case "$HOSTNAME" in
-    lemming*) OS=opensuse;;
-    fez) OS=arch;;
-esac
-
-function summon {
-    case "$OS" in
-        opensuse) sudo zypper install "$@";;
-        arch) pacman -S "$@";;
-    esac
-}
-
-function scry {
-    case "$OS" in
-        opensuse) sudo zypper search "$@";;
-        arch) pacman -Ss "$@";;
-    esac
-}
-
-function banish {
-    case "$OS" in
-        opensuse) sudo zypper remove "$@";;
-        arch) pacman -R "$@";;
-    esac
-}
 
 # Version Control Systems
 function vcsfail { echo "Error: not in a VCS!"; }
