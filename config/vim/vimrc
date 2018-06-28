@@ -35,10 +35,13 @@ if $HOSTNAME =~ "^lem"
     Plugin 'https://github.com/tmhedberg/SimpylFold'
     Plugin 'https://github.com/nelstrom/vim-markdown-folding.git'
     Plugin 'https://github.com/jceb/vim-orgmode.git'
+    Plugin 'dkarter/bullets.vim'
     "Plugin 'https://github.com/universal-ctags/ctags'
     call vundle#end()
 
     filetype plugin indent on
+
+    let g:bullets_enabled_file_types = ['markdown', 'text', 'gitcommit', 'dotoo', 'tex']
 
     let g:ctrlp_cmd = 'CtrlP /projects'
     let g:ctrlp_map = '<space>'

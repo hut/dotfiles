@@ -5,3 +5,5 @@ startup_message off
 
 bindkey -d "^[`" next
 bindkey -d "^[~" prev
+
+maptimeout 5
