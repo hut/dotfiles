@@ -240,7 +240,6 @@ iab Zabc abcdefghijklmnopqrstuvwxyz
 if has("autocmd")
     autocmd FileType python set complete+=k~/.vim/complete-dict "isk+=.,(
     autocmd FileType org set ft=dotoo
-    autocmd FileType org set ft=dotoo
     "autocmd FileType python nnoremap <buffer> [[ ?^\*class\\|^\s*def<CR>
     "autocmd FileType python nnoremap <buffer> [[ /^\*class\\|^\s*def<CR>
 endif " has("autocmd"
