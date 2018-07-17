@@ -131,7 +131,13 @@ case "$HOSTNAME" in
         ;;& # }}}
     fez) # {{{
         source /usr/share/bash-completion/completions/{git,route,rsync,ssh,scp,sshfs,strace,sudo,tar,tcpdump,tmux,umount,curl,wget,feh,fsck,gcc,passwd,gpasswd,mplayer,gpg2}
-        alias pj='vim ~/syncthing/phone-org/projects.org'
+        function pj {
+            if [ -z "$1" ]; then
+                while kanban; do :; done
+            else
+                kanban "$@"
+            fi
+        }
         function irc { ssh hut.pm -t tmux attach; }
 
         # Staying focused
