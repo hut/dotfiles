@@ -26,7 +26,7 @@ if $HOSTNAME =~ "^lem"
     Plugin 'VundleVim/Vundle.vim'
     Plugin 'https://github.com/vimwiki/vimwiki.git'
     Plugin 'https://github.com/majutsushi/tagbar.git'
-    Plugin 'https://github.com/ctrlpvim/ctrlp.vim.git'
+    "Plugin 'https://github.com/ctrlpvim/ctrlp.vim.git'
     "Plugin 'https://github.com/davidhalter/jedi-vim.git'
     Plugin 'https://github.com/MarcWeber/vim-addon-mw-utils.git'
     Plugin 'https://github.com/tomtom/tlib_vim.git'
@@ -55,7 +55,7 @@ if $HOSTNAME =~ "^lem"
     let g:jedi#usages_command = "\\u"
 
     let g:vimwiki_folding = 'expr'
-    let g:vimwiki_list = [{'path': '~/hut/git/vimwiki/'}]
+    let g:vimwiki_list = [{'path': '~/hut/git/vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
 else
     " Highlight long lines
     au Filetype * call SetOverLengthHighlight()
@@ -1003,7 +1003,7 @@ map \s :SnipMateOpenSnippetFiles<CR>
 map g/., :w ~/sync/ramblings/<C-R>=strftime("%Y-%m-%d_%H%M%S")<CR>_<C-r>=$USER<CR>_<C-r>=hostname()<CR>.txt<CR>ggdG:w<CR>
 
 let g:hut_projectpath = '/home/hut/sync/notes/vimwiki/tasks/'
-let g:hut_indexpath = '/home/hut/sync/notes/vimwiki/tasks/tasks.wiki'
+let g:hut_indexpath = '/home/hut/sync/notes/vimwiki/tasks/tasks.md'
 function! NewProject()
 	call inputsave()
 	let name = input('Task name: ')
@@ -1011,7 +1011,7 @@ function! NewProject()
 	if strlen(name) > 0
 		let fullname = strftime('%Y-%m-%d_').  name
 		execute "silent !echo '- [ ] [[" . substitute(fullname, "'", "'\\\\''", '') . "]]' >> '" . g:hut_indexpath . "'"
-		execute 'edit '.fnameescape(g:hut_projectpath . fullname . '.wiki')
+		execute 'edit '.fnameescape(g:hut_projectpath . fullname . '.md')
 	endif
 endfun
 nmap \wc :call NewProject()<CR>
