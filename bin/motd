@@ -8,7 +8,6 @@ import subprocess
 import time
 import sys
 import socket
-import dateutil.parser
 
 PLAN_PATH = "~/sync/notes/vimwiki/plan.wiki" # "~/.plan"
 MAX_LOOKAHEAD_DAYS = 92#31
@@ -30,6 +29,7 @@ def sleephour(weekday):
     else:
         return 26.5
 
+CALENDAR = True
 MOTD = False
 CRAP = False
 CLOCK = True
@@ -54,97 +54,15 @@ JR = "\u2524"
 JL = "\u251C"
 JB = "\u2534"
 JC = "\u253C"
-UNDERLINE = "\u0332"
+UNDERLINE = ""
+#UNDERLINE = "\u0332"
 ETC = "\u2026"
-
-try:
-    plan = open(os.path.expanduser(PLAN_PATH), "r").read().rstrip("\n").split("\n")
-except:
-    plan = None
 
 today = datetime.date.today()
 
-if plan:
-    items = dict()
-
-    def strtodate(string):
-        return dateutil.parser.parse(string).date()
-    for item in plan:
-        if item.startswith("#"):
-            continue
-        date, name = item.split(" ", 1)
-        date = strtodate(date)
-
-        if (date - today).days < MAX_LOOKAHEAD_DAYS:
-            items[date] = name
-
-
-    dates = list(sorted(items))
-
-    startweek = today.    isocalendar()[1]
-    endweek   = dates[-1].isocalendar()[1]
-
-    CLR = 208
-    CLR_REGULAR = CLR
-    CLR_IMPORTANT = 73
-    CLR_TODAY_BG = 24
-    CLR_TODAY = CLR
-    CLR_QUOTE = 211
-    CLR_NEWMONTH = 159
-
-    def underline(string, fg=None, bg=None):
-        print(clr("".join(c + UNDERLINE for c in string), fg=fg, bg=bg), end="")
-
-    def dumpweek(date):
-        underline('{:>2}'.format(date.day) + V, fg=CLR)
-        for weekday in range(7):
-            bg = None
-            fg = CLR
-            important = False
-            day = date + datetime.timedelta(weekday-date.weekday())
-            if day in items:
-                description = items[day]
-                if description.endswith("!"):
-                    description = description[:-1]
-                    important = True
-                    fg = "%d;1" % (CLR if day == today else CLR_IMPORTANT)
-                else:
-                    fg = "%d;1" % CLR_REGULAR
-                if day == today:
-                    fg = CLR_TODAY
-                days_until = (day - today).days
-                if days_until > 1 and important:
-                    w = COLUMN_WIDTH - len(str(days_until))
-                    if len(description) > w:
-                        description = description[:w][:-1] + ETC
-                    entry = "{s:<{w}}{d}".format(
-                            s=description[:w],
-                            w=w,
-                            d=days_until)
-                else:
-                    entry = "{s:<{w}}".format(s=description[:COLUMN_WIDTH], w=COLUMN_WIDTH)
-            else:
-                entry = " " * COLUMN_WIDTH
-            if day == today:
-                bg = CLR_TODAY_BG
-            separator_color = fg
-            if (date + datetime.timedelta(weekday-date.weekday() + 1)).day == 1:
-                separator_color = CLR_NEWMONTH
-            underline(entry, fg=fg, bg=bg)
-            underline(V, fg=separator_color)
-        print("")
-
-#print(TL + JT.join([H * COLUMN_WIDTH] * 7) + TR)
-    date = startday = today - datetime.timedelta(today.weekday())
-    oneweek = datetime.timedelta(weeks=1)
-    count = 0
-    while date <= dates[-1] and count < MAX_WEEKS_TO_DISPLAY:
-        #if date != today: print(JL + JC.join([H * COLUMN_WIDTH] * 7) + JR)
-        dumpweek(date)
-        date += oneweek
-        count += 1
-#print(BL + JB.join([H * COLUMN_WIDTH] * 7) + BR)
-
+if CALENDAR:
+    import asciicalendar
+    asciicalendar.main()
 
 if MOTD:
     lines = open(os.path.expanduser('~/sync/edge/quotes/motd'), "r").read().split("\n")
