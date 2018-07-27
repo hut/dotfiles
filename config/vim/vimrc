@@ -132,8 +132,6 @@ else
         let g:markdown_folding=1
 
         let g:pydiction_location = '/home/hut/.config/nvim/bundle/pydiction/complete-dict'
-        let g:vimwiki_list = [{'path': '~/sync/notes/vimwiki/'}]
-        let g:vimwiki_folding = 'marker'
         "let g:vimwiki_folding = 'list'
         "set statusline+=%#warningmsg#
         "set statusline+=%{SyntasticStatuslineFlag()}
@@ -197,6 +195,15 @@ else
     endfun
     au Filetype * call DecideIfShouldUseTab()
 endif
+
+" Common Plugin settings
+let g:vimwiki_list = [{
+    \ 'path': '~/sync/notes/vimwiki/',
+    \ 'syntax': 'markdown',
+    \ 'ext': '.md',
+    \ }]
+let g:vimwiki_folding = 'expr'
+let g:vimwiki_hl_cb_checked = 2
 
 " Styling
 colorscheme jungle
