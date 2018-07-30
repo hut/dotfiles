@@ -81,7 +81,7 @@ else
         Plugin 'scrooloose/syntastic'
         Plugin 'airblade/vim-gitgutter'
         Plugin 'vimwiki/vimwiki'
-        Plugin 'kien/ctrlp.vim'
+        "Plugin 'kien/ctrlp.vim'
         Plugin 'scrooloose/nerdtree'
         Plugin 'dhruvasagar/vim-dotoo'
         "Plugin 'hut/vim-orgmode'
@@ -117,7 +117,7 @@ else
         " --- Settings for Plugin "bullet.vim" ---
         let g:bullets_enabled_file_types = ['markdown', 'text', 'gitcommit', 'dotoo', 'tex']
 
-        let g:ctrlp_map = 'B'
+        "let g:ctrlp_map = 'B'
         map <A-`> :NERDTreeToggle<CR>
         let g:NERDTreeDirArrowExpandable = '>'
         let g:NERDTreeDirArrowCollapsible = 'v'

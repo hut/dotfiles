@@ -97,9 +97,10 @@ class AsciiCalendar(object):
                             w=w,
                             d=days_until)
                 else:
-                    entry = "{s:<{w}}".format(s=description[:COLUMN_WIDTH], w=COLUMN_WIDTH)
+                    entry = "{s:%(fillchar)s<{w}}" % {'fillchar': H}
+                    entry = entry.format(s=description[:COLUMN_WIDTH], w=COLUMN_WIDTH)
             else:
-                entry = " " * COLUMN_WIDTH
+                entry = H * COLUMN_WIDTH
             if day == today:
                 bg = CLR_TODAY_BG
             separator_color = fg

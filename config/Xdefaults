@@ -17,7 +17,7 @@ urxvt*utf8:1
 urxvt*scrollBar: false
 #urxvt*shading: 3
 #urxvt*transparent: true
-urxvt*savelines: 8192
+urxvt*savelines: 65536
 
 urxvt*perl-lib: /home/hut/.config/urxvt/
 urxvt*perl-ext: url-select,font-size

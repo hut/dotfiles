@@ -8,7 +8,15 @@ export HISTSIZE=999999
 
 alias sl=ls ls='ls --color' lsd='"ls" --color=always -Acr | tail -n 5' l='ls -l --color'\
     ..='cd ..' ...='cd ../..' ....='cd ../../..' .....='cd ../../../..'
-p () { until ping -i 0.5 "${1:-4.2.2.4}"; do sleep 0.5; done; }
+p () {
+	if [ -n "$1" ]; then
+		until ping -c 1 -W 2 -w 2 4.2.2.4; do sleep 0.5; done
+		"$@"
+	else
+		until ping -i 0.5 4.2.2.4; do sleep 0.5; done
+	fi
+}
+
 
 #alias ranger='. ranger' vim=vi tag='tig --all'
 alias githut='git -c user.name=hut -c user.email=hut@hut.pm -c user.colors=true -c merge.tool=vimdiff'

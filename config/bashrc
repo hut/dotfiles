@@ -252,7 +252,7 @@ alias am=alsamixer
 alias sd=systemctl
 alias e=exobrain
 alias ee='exobrain -e'
-alias plan="vim $VIMWIKI_ROOT/plan.wiki"
+alias plan="vim $VIMWIKI_ROOT/plan.md"
 function py {
     if [ -z "$1" ]; then
         ipython
