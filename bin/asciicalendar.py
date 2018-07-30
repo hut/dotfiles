@@ -124,9 +124,10 @@ class AsciiCalendar(object):
         #print(BL + JB.join([H * COLUMN_WIDTH] * 7) + BR)
 
 def main():
-    cal = AsciiCalendar()
-    cal.read_file(PLAN_PATH)
-    cal.print()
+    if os.path.exists(PLAN_PATH):
+        cal = AsciiCalendar()
+        cal.read_file(PLAN_PATH)
+        cal.print()
 
 if __name__ == '__main__':
     main()
