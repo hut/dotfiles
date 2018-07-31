@@ -10,9 +10,9 @@ import sys
 import socket
 import dateutil.parser
 
-PLAN_PATH = "~/sync/notes/vimwiki/plan.md" # "~/.plan"
+PLAN_PATH = os.environ.get("ASCIICALENDAR_PATH", "~/sync/notes/vimwiki/plan.md")
 MAX_LOOKAHEAD_DAYS = 92#31
-MAX_WEEKS_TO_DISPLAY = 15
+MAX_WEEKS_TO_DISPLAY = 4
 COLUMN_WIDTH = 8
 
 TR = "\u2510"
@@ -48,7 +48,8 @@ def _clr(string, fg=None, bg=None):
     return "\033[%sm%s\033[0m" % (";".join(color), string)
 
 def _underline(string, fg=None, bg=None):
-    print(_clr("".join(c + UNDERLINE for c in string), fg=fg, bg=bg), end="")
+    print(_clr(string, fg=fg, bg=bg), end="")
+    #print(_clr("".join(c + UNDERLINE for c in string), fg=fg, bg=bg), end="")
 
 class AsciiCalendar(object):
     def __init__(self):
@@ -82,9 +83,9 @@ class AsciiCalendar(object):
                 if description.endswith("!"):
                     description = description[:-1]
                     important = True
-                    fg = "%d;1" % (CLR if day == today else CLR_IMPORTANT)
+                    fg = "%d" % (CLR if day == today else CLR_IMPORTANT)
                 else:
-                    fg = "%d;1" % CLR_REGULAR
+                    fg = "%d" % CLR_REGULAR
                 if day == today:
                     fg = CLR_TODAY
                 days_until = (day - today).days
