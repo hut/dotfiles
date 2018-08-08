@@ -146,6 +146,7 @@ else
         filetype plugin indent on
         filetype plugin on
 
+        let g:vimwiki_list = [{'path': '~/sync/notes/vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
         let g:syntastic_python_pylint_args = '--rcfile=/home/hut/.pylintrc'
         "let g:syntastic_python_pylint_post_args = ['--version']
         let g:hutsnip_path = '/home/hut/sync/notes/quick/snippets'
@@ -200,11 +201,6 @@ else
 endif
 
 " Common Plugin settings
-let g:vimwiki_list = [{
-    \ 'path': '~/sync/notes/vimwiki/',
-    \ 'syntax': 'markdown',
-    \ 'ext': '.md',
-    \ }]
 let g:vimwiki_folding = 'expr'
 let g:vimwiki_hl_cb_checked = 2
 
