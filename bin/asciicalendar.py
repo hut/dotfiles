@@ -10,7 +10,7 @@ import sys
 import socket
 import dateutil.parser
 
-PLAN_PATH = os.environ.get("ASCIICALENDAR_PATH", "~/sync/notes/vimwiki/plan.md")
+PLAN_PATH = os.environ.get("ASCIICALENDAR_PATH", os.path.expanduser("~/sync/notes/vimwiki/plan.md"))
 MAX_WEEKS_TO_DISPLAY = int(sys.argv[1]) if len(sys.argv) > 1 else 4
 MAX_LOOKAHEAD_DAYS = MAX_WEEKS_TO_DISPLAY * 7
 COLUMN_WIDTH = 8
@@ -57,7 +57,7 @@ class AsciiCalendar(object):
 
     def read_file(self, filename):
         today = datetime.date.today()
-        with open(os.path.expanduser(filename), "r") as planfile:
+        with open(filename, "r") as planfile:
             plan = planfile.read().rstrip("\n").split("\n")
         self.items = items = dict()
         for item in plan:
