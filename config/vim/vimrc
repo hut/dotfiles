@@ -147,6 +147,7 @@ else
         filetype plugin on
 
         let g:vimwiki_list = [{'path': '~/sync/notes/vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
+        let g:vimwiki_hl_cb_checked = 2  " not for lemming, as it gets slow due to this...
         let g:syntastic_python_pylint_args = '--rcfile=/home/hut/.pylintrc'
         "let g:syntastic_python_pylint_post_args = ['--version']
         let g:hutsnip_path = '/home/hut/sync/notes/quick/snippets'
@@ -202,7 +203,6 @@ endif
 
 " Common Plugin settings
 let g:vimwiki_folding = 'expr'
-let g:vimwiki_hl_cb_checked = 2
 
 " Styling
 colorscheme jungle
