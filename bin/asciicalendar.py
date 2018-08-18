@@ -70,6 +70,11 @@ class AsciiCalendar(object):
                 items[date] = name
         self.dates = list(sorted(items))
 
+    def anything_to_display(self):
+        today = datetime.date.today()
+        finalday = today + datetime.timedelta(days=7 * MAX_WEEKS_TO_DISPLAY - today.weekday())
+        return any(today <= date <= finalday for date in self.items)
+
     def printweek(self, date):
         today = datetime.date.today()
         _underline('{:>2}'.format(date.day) + V, fg=CLR)
@@ -128,7 +133,8 @@ def main():
     if os.path.exists(PLAN_PATH):
         cal = AsciiCalendar()
         cal.read_file(PLAN_PATH)
-        cal.print()
+        if cal.anything_to_display():
+            cal.print()
 
 if __name__ == '__main__':
     main()
