@@ -59,7 +59,7 @@ case "$HOSTNAME" in
         source ~/repos/exobrain/bash_tab_completion.sh
         function e  { ~/repos/exobrain/exobrain.py "$@"; }
         function ee { ~/repos/exobrain/exobrain.py -e "$@"; }
-        function ea { echo "$(date +"%y-%m-%dT%H:%M")" "$@" >> "$EXOBRAIN_ROOT"/fino; }
+        function ea { echo "- $(date +"%Y-%m-%d"): $@" >> "$VIMWIKI_ROOT"/unfiled.md; }
 
         # Prompt
         if [ "$USER" != root ]; then
