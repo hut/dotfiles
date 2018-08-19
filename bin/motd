@@ -64,35 +64,6 @@ if CALENDAR:
     import asciicalendar
     asciicalendar.main()
 
-if MOTD:
-    lines = open(os.path.expanduser('~/sync/edge/quotes/motd'), "r").read().split("\n")
-    lines = "\n".join(l for l in lines if not l.startswith("#"))
-    quotes = lines.split("\n\n")
-    print(clr(random.choice(quotes).rstrip("\n"), fg=CLR_QUOTE))
-#else:
-    #print()
-
-if CRAP:
-    wcl = lambda f: open(os.path.expanduser("~/sync/edge/"+f), "r").read().count("\n")
-    sc, fl = wcl("recent_successes"), wcl("recent_failures")
-    limit, largest = 10, max(sc, fl)
-    if largest > limit:
-        sc *= limit / largest
-        fl *= limit / largest
-    print(clr("+" * math.ceil(sc), fg='2'))
-    print(clr("-" * math.ceil(fl), fg='1'))
-
-if CLOCK:
-    fg = 255 if socket.gethostname().startswith('lemming') else 76
-    def get_suffix(d):
-        return 'th' if 11<=d<=13 else {1:'st',2:'nd',3:'rd'}.get(d%10, 'th')
-    suffix = get_suffix(int(time.strftime('%d')))
-    free_mem = int(open("/proc/meminfo", "r").read().split("\n")[2].split()[1]) / 1024**2
-    load = open("/proc/loadavg", "r").read().split()[1]
-    date = time.strftime("%A, %B %d" + suffix + ", w=%W, d=%j, %s")
-    print(clr("{date} free={free_mem:.1f}G load={load}" \
-            .format(int(time.time()), **locals()), fg=fg))
-
 if TIMEZONES:
     fg = 255 if socket.gethostname().startswith('lemming') else 76
     output = []
@@ -110,7 +81,18 @@ if TIMEZONES:
     #hour = (float(time.strftime("%H")) + float(time.strftime("%M")) / 60)
     #output.append("+%.1f" % (sleephour(today.weekday()) - hour))
 
-    print(clr("  ".join(output), fg=fg))
+    print(clr(" ".join(output), fg=fg), end='')
+
+if CLOCK:
+    fg = 255 if socket.gethostname().startswith('lemming') else 76
+    def get_suffix(d):
+        return 'th' if 11<=d<=13 else {1:'st',2:'nd',3:'rd'}.get(d%10, 'th')
+    suffix = get_suffix(int(time.strftime('%d')))
+    free_mem = int(open("/proc/meminfo", "r").read().split("\n")[2].split()[1]) / 1024**2
+    load = open("/proc/loadavg", "r").read().split()[1]
+    date = time.strftime("w=%W")
+    print(clr(" {date} free={free_mem:.1f}G load={load}" \
+            .format(int(time.time()), **locals()), fg=fg))
 
 if os.path.exists(os.path.expanduser("~/bin/repeat")):
     try:
