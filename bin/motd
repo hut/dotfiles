@@ -110,8 +110,8 @@ if os.path.exists(os.path.expanduser("~/repos/dotfiles")):
         git log origin/master..master --oneline | cat;
     ''', shell=True)
 
-if os.path.exists(os.path.expanduser("~/me")):
-    subprocess.call('''
-        cd ~/me;
-        git -c color.status=always status -s | sed 's/^\(..[^ ]* \)/\\1~\/me\//';
-    ''', shell=True)
+#if os.path.exists(os.path.expanduser("~/me")):
+#    subprocess.call('''
+#        cd ~/me;
+#        git -c color.status=always status -s | sed 's/^\(..[^ ]* \)/\\1~\/me\//';
+#    ''', shell=True)

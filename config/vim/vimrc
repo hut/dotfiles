@@ -338,8 +338,8 @@ map ,g :GitGutterToggle<CR>
 map ,ts :SyntasticToggleMode<CR>
 map -S :set wrap!<CR>
 map -l :set list!<CR>
-map ,> :s/^\*/**/<CR>
-map ,< :s/^\*//<CR>
+map ,> :s/^\#/##/<CR>
+map ,< :s/^\#//<CR>
 
 map go :call NewHeader()<CR>kA
 
