@@ -41,8 +41,6 @@ if $HOSTNAME =~ "^lem"
 
     filetype plugin indent on
 
-    let g:bullets_enabled_file_types = ['markdown', 'text', 'gitcommit', 'dotoo', 'tex']
-
     let g:ctrlp_cmd = 'CtrlP /projects'
     let g:ctrlp_map = '<space>'
     let g:ctrlp_extensions = ['line', 'dir']
@@ -94,31 +92,7 @@ else
 
         call vundle#end()
 
-        " --- Settings for Plugin "dotoo" ---
         autocmd BufNewFile,BufRead editor-*.txt setf markdown
-        autocmd BufNewFile,BufRead *.org setf dotoo
-        hi clear dotoo_italic
-        let g:dotoo_todo_keyword_faces = [
-          \ ['TODO', [':foreground 160', ':weight bold']],
-          \ ['NEXT', [':foreground 27', ':weight bold']],
-          \ ['DONE', [':foreground 22', ':weight bold']],
-          \ ['WAITING', [':foreground 202', ':weight bold']],
-          \ ['IN-PROGRESS', [':foreground 155', ':weight bold']],
-          \ ['HOLD', [':foreground 53', ':weight bold']],
-          \ ['CANCELLED', [':foreground 22', ':weight bold']],
-          \ ]
-        let g:dotoo#parser#todo_keywords = [
-          \ 'TODO',
-          \ 'NEXT',
-          \ 'WAITING',
-          \ 'HOLD',
-          \ 'IN-PROGRESS',
-          \ '|',
-          \ 'CANCELLED',
-          \ 'DONE']
-
-        " --- Settings for Plugin "bullet.vim" ---
-        let g:bullets_enabled_file_types = ['markdown', 'text', 'gitcommit', 'dotoo', 'tex']
 
         "let g:ctrlp_map = 'B'
         map <A-`> :NERDTreeToggle<CR>
@@ -203,6 +177,31 @@ endif
 
 " Common Plugin settings
 let g:vimwiki_folding = 'expr'
+
+" --- Settings for Plugin "bullet.vim" ---
+let g:bullets_enabled_file_types = ['markdown', 'text', 'gitcommit', 'dotoo', 'tex']
+
+" --- Settings for Plugin "dotoo" ---
+autocmd BufNewFile,BufRead *.org setf dotoo
+hi clear dotoo_italic
+let g:dotoo_todo_keyword_faces = [
+  \ ['TODO', [':foreground 160', ':weight bold']],
+  \ ['NEXT', [':foreground 27', ':weight bold']],
+  \ ['DONE', [':foreground 22', ':weight bold']],
+  \ ['WAITING', [':foreground 202', ':weight bold']],
+  \ ['IN-PROGRESS', [':foreground 155', ':weight bold']],
+  \ ['HOLD', [':foreground 53', ':weight bold']],
+  \ ['CANCELLED', [':foreground 22', ':weight bold']],
+  \ ]
+let g:dotoo#parser#todo_keywords = [
+  \ 'TODO',
+  \ 'NEXT',
+  \ 'WAITING',
+  \ 'HOLD',
+  \ 'IN-PROGRESS',
+  \ '|',
+  \ 'CANCELLED',
+  \ 'DONE']
 
 " Styling
 colorscheme jungle
@@ -359,6 +358,7 @@ noremap <CR> :nohlsearch<CR><CR>
 
 " avoid typos
 map Q <ESC>
+map <M-Q> <ESC>
 map ; :
 "map <F1> <ESC>
 "imap <F1> <ESC>
