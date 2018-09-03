@@ -2,9 +2,9 @@
  ************** COMMON *************
  ***********************************/
 
-.bookmark-item .toolbarbutton-icon { /* Hide Bookmark Icons */
+/*.bookmark-item .toolbarbutton-icon { /* Hide Bookmark Icons
     display: none;
-}
+}*/
 /* Hide Bookmark icons */
 #star-button-box, #pageActionSeparator {
     display: none;

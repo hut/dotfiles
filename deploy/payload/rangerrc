@@ -26,4 +26,6 @@ map xd shell nvim -d %c %f
 pmap n move down=1
 pmap p move up=1
 
+set colorscheme hut
+
 cmap <F1> eval import time; fm.ui.keybuffer.clear(); fm.ui.handle_keys(*[ord(c) for c in time.strftime("%Y-%m-%d")])
