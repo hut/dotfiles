@@ -48,7 +48,7 @@ def _clr(string, fg=None, bg=None):
     return "\033[%sm%s\033[0m" % (";".join(color), string)
 
 def _underline(string, fg=None, bg=None):
-    print(_clr(string, fg=fg, bg=bg), end="")
+    sys.stdout.write(_clr(string, fg=fg, bg=bg))
     #print(_clr("".join(c + UNDERLINE for c in string), fg=fg, bg=bg), end="")
 
 class AsciiCalendar(object):
@@ -116,7 +116,7 @@ class AsciiCalendar(object):
             _underline(V, fg=separator_color)
         print("")
 
-    def print(self):
+    def printall(self):
         #print(TL + JT.join([H * COLUMN_WIDTH] * 7) + TR)
         today = datetime.date.today()
         date = today - datetime.timedelta(today.weekday())
@@ -134,7 +134,7 @@ def main():
         cal = AsciiCalendar()
         cal.read_file(PLAN_PATH)
         if cal.anything_to_display():
-            cal.print()
+            cal.printall()
 
 if __name__ == '__main__':
     main()

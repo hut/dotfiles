@@ -1,4 +1,5 @@
 #!/usr/bin/python
+from __future__ import print_function
 
 import math
 import os.path
@@ -81,7 +82,7 @@ if TIMEZONES:
     #hour = (float(time.strftime("%H")) + float(time.strftime("%M")) / 60)
     #output.append("+%.1f" % (sleephour(today.weekday()) - hour))
 
-    print(clr(" ".join(output), fg=fg), end='')
+    sys.stdout.write(clr(" ".join(output), fg=fg))
 
 if CLOCK:
     fg = 255 if socket.gethostname().startswith('lemming') else 76

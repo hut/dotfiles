@@ -29,15 +29,15 @@ case "$HOSTNAME" in
     fez)
         #export PATH="$BINDIR/fez:$BINDIR/games:$BINDIR:$BINDIR/scripts:$BINDIR/redirected:$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/games:/usr/games:/usr/bin/core_perl:$HOME/me/configs/bin/snes:/usr/bin/vendor_perl:/home/hut/.npm/bin:/usr/local/bin:/usr/local/sbin"
         export PATH
-        export VIMWIKI_ROOT="$HOME/sync/notes/vimwiki/"
-        export EXOBRAIN_ROOT=~/sync/notes/quick
+        export VIMWIKI_ROOT="$HOME/me/notes/wiki/"
+        export EXOBRAIN_ROOT=~/me/notes/quick
         export JAVAFX_HOME="/usr/lib/jvm/java-8-openjdk/jre/lib/ext/jfxrt.jar"
         export systemini=~/.config/system.ini
         export PYTHONPATH="$HOME/repos/dotfiles/pythonlib/importpath"
         export IPYTHONDIR="$HOME/.config/ipython"
         export WEECHAT_HOME="~/.config/weechat"
         export MAKEFLAGS='-j 8'
-        export PASSWORD_STORE_DIR="$HOME/sync/configs/password-store"
+        export PASSWORD_STORE_DIR="$HOME/me/configs/password-store"
         export PASSWORD_STORE_CLIP_TIME=10
         export QT_AUTO_SCREEN_SCALE_FACTOR=0
 
@@ -279,9 +279,9 @@ function lscd {
 }
 function tmux_session {
     if tmux has -t $1; then
-        tmux -f ~/.config/tmux.conf attach -t $1
+        tmux attach -t $1
     else
-        tmux -f ~/.config/tmux.conf new-session -s $1
+        tmux new-session -s $1
     fi
 }
 function ranger-cd {

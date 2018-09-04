@@ -1,7 +1,7 @@
 *.dpi: 90
 
 urxvt*lineSpace: 0
-#urxvt*letterSpace: -1
+!urxvt*letterSpace: -1
 urxvt*internalBorder: 2
 *titeInhibit: false
 *titeModes: 64
@@ -15,8 +15,8 @@ Xft.autohint: 0
 urxvt*urgentOnBell: true
 urxvt*utf8:1
 urxvt*scrollBar: false
-#urxvt*shading: 3
-#urxvt*transparent: true
+!urxvt*shading: 3
+!urxvt*transparent: true
 urxvt*savelines: 65536
 
 urxvt*perl-lib: /home/hut/.config/urxvt/
@@ -30,8 +30,8 @@ urxvt*keysym.Mod4-8: perl:font-size:reset
 urxvt*keysym.Mod4-9: perl:font-size:decrease
 urxvt*keysym.Mod4-0: perl:font-size:increase
 urxvt*keysym.Mod4-3: perl:font-size:reset
-#urxvt*keysym.Mod4-4: command:\033]710;xft:Monospace:pixelsize=12,xft:Meiryo:pixelsize=12\007\033]711;xft:Monospace:pixelsize=12:bold,xft:Meiryo:pixelsize=12:bold\007
-#urxvt*keysym.Mod4-5: command:\033]710;xft:Yelena:pixelsize=12, xft:Meiryo:pixelsize=12\007\033]711;xft:Yelena:pixelsize=12:bold, xft:Meiryo:pixelsize=12:bold\007
+!urxvt*keysym.Mod4-4: command:\033]710;xft:Monospace:pixelsize=12,xft:Meiryo:pixelsize=12\007\033]711;xft:Monospace:pixelsize=12:bold,xft:Meiryo:pixelsize=12:bold\007
+!urxvt*keysym.Mod4-5: command:\033]710;xft:Yelena:pixelsize=12, xft:Meiryo:pixelsize=12\007\033]711;xft:Yelena:pixelsize=12:bold, xft:Meiryo:pixelsize=12:bold\007
 
 urxvt*urlLauncher: x-www-browser
 urxvt*underlineURLs: true
@@ -42,8 +42,8 @@ urxvt*background: rgb:00/00/00
 
 urxvt*font:xft:Fira Mono:pixelsize=14
 urxvt*boldFont:xft:Fira Mono:pixelsize=14:bold
-#urxvt*font:xft:Monospace:pixelsize=16
-#urxvt*boldFont:xft:Monospace:pixelsize=16:bold
+!urxvt*font:xft:Monospace:pixelsize=16
+!urxvt*boldFont:xft:Monospace:pixelsize=16:bold
 
 xterm*background:white
 xterm*foreground:black
@@ -82,7 +82,7 @@ xterm*faceName:xft:Monospace:pixelsize=16
 !--Magenta--
 *color5:     rgb:96/3c/59
 *color13:    rgb:a9/7a/99
-#--Cyan--
+!--Cyan--
 *color6:     rgb:41/81/79
 *color14:    rgb:6b/a4/a4
 !--White--

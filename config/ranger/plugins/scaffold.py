@@ -17,18 +17,23 @@ import ranger.gui.widgets.browsercolumn
 from ranger.container.directory import Directory
 from ranger.api.commands import Command
 
-TARGET_PATH = os.path.expanduser("~/.hut/ranger_scaffold")
+TARGET_PATH = os.path.expanduser("~/.config/ranger/scaffolds")
 def set_scaffold_paths():
+    if not os.path.exists(TARGET_PATH):
+        open(TARGET_PATH, 'w').close()
     ranger.scaffold_paths = [line.rstrip('\n') for line in open(TARGET_PATH).readlines()]
 set_scaffold_paths()
 
 # Change sorting method so that scaffold files are displayed on top
 old_sort_method = Directory.sort_dict['natural']
 def sort_method(path):
-    key = old_sort_method(path)
-    if path.path in ranger.scaffold_paths:
-        key.insert(0, "0000")
-    return key
+    try:
+        key = old_sort_method(path)
+        if path.path in ranger.scaffold_paths:
+            key.insert(0, "0000")
+        return key
+    except:
+        return 0
 Directory.sort_dict['natural'] = sort_method
 
 # Extend colorscheme
@@ -77,7 +82,8 @@ class scaffold_remove(Command):
 # Bind those commands to keys
 old_hook_init = ranger.api.hook_init
 def hook_init(fm):
-    old_hook_init(fm)
+    if old_hook_init:
+        old_hook_init(fm)
     fm.execute_console("map ++ chain scaffold_add; reset")
     fm.execute_console("map -- chain scaffold_remove; reset")
 ranger.api.hook_init = hook_init

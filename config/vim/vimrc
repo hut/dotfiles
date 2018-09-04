@@ -120,7 +120,7 @@ else
         filetype plugin indent on
         filetype plugin on
 
-        let g:vimwiki_list = [{'path': '~/sync/notes/vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
+        let g:vimwiki_list = [{'path': '~/sync/notes/wiki/', 'syntax': 'markdown', 'ext': '.md'}]
         let g:vimwiki_hl_cb_checked = 2  " not for lemming, as it gets slow due to this...
         let g:syntastic_python_pylint_args = '--rcfile=/home/hut/.pylintrc'
         "let g:syntastic_python_pylint_post_args = ['--version']

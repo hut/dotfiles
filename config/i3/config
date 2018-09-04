@@ -5,6 +5,11 @@
 # this file and re-run i3-config-wizard(1).
 #
 
+# exec --no-startup-id mate-settings-daemon
+# exec --no-startup-id nm-applet
+# exec --no-startup-id mate-power-manager
+# exec --no-startup-id blueman-applet
+
 #smart_borders on
 #smart_gaps on
 #gaps inner 25
@@ -63,9 +68,10 @@ mouse_warping none
 default_orientation vertical
 workspace_layout stacked
 
-set $mod Mod4
+set $mod Mod1
+set $winkey Mod4
 
-bindsym Mod1+l      exec transparent_lock
+bindsym $winkey+l      exec slock
 #bindsym Mod1+F1     exec xdotool keyup Alt_L && sleep 0.2 && xdotool type --delay 2 "$(cat ~/sync/edge/aliases)" && xdotool key Return
 
 # Multimedia keys
@@ -81,8 +87,8 @@ bindsym Print  exec scrot -e 'mv $f ~/stuff/screenshots/'
 bindsym Pause  exec scrot -s -e 'copy_image $f'
 bindsym $mod+Shift+a exec mpv --softvol=yes --softvol-max=1000 "$(xclip -o)"
 
-bindsym $mod+grave       exec xdotool key --delay 1 --clearmodifiers alt+grave alt+grave
-bindsym $mod+Shift+grave exec xdotool key --delay 1 --clearmodifiers alt+shift+grave alt+shift+grave
+#bindsym $mod+grave       exec xdotool key --delay 1 --clearmodifiers alt+grave alt+grave
+#bindsym $mod+Shift+grave exec xdotool key --delay 1 --clearmodifiers alt+shift+grave alt+shift+grave
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -105,7 +111,7 @@ floating_modifier $mod
 
 # start a terminal
 bindsym $mod+Shift+f exec i3-sensible-terminal
-bindsym $mod+Shift+Return exec i3-sensible-terminal
+bindsym $mod+Shift+Return exec x-terminal-emulator
 bindsym $mod+Return exec i3-sensible-terminal; exec "sleep 0.3; i3-msg move right; i3-msg resize shrink width; i3-msg layout splitv"
 
 
@@ -151,13 +157,13 @@ bindsym Mod1+Ctrl+Shift+k move workspace to output up
 bindsym Mod1+Ctrl+Shift+j move workspace to output down
 bindsym Mod1+Ctrl+Shift+l move workspace to output right
 
-bindsym Mod1+Shift+h move container to output left
-bindsym Mod1+Shift+k move container to output up
-bindsym Mod1+Shift+j move container to output down
-bindsym Mod1+Shift+l move container to output right
+#bindsym Mod1+Shift+h move container to output left
+#bindsym Mod1+Shift+k move container to output up
+#bindsym Mod1+Shift+j move container to output down
+#bindsym Mod1+Shift+l move container to output right
 
-bindsym Mod1+c exec sleep 0.01 && xdotool key XF86Back
-bindsym Ctrl+Mod1+Tab exec sleep 0.01 && xdotool key XF86Forward
+#bindsym Mod1+c exec sleep 0.01 && xdotool key XF86Back
+#bindsym Ctrl+Mod1+Tab exec sleep 0.01 && xdotool key XF86Forward
 
 # resize focused window
 bindsym $mod+Ctrl+h resize shrink width 10 px or 2 ppt
@@ -187,16 +193,16 @@ bindsym $mod+o focus parent
 bindsym $mod+i focus child
 
 # Mark windows
-bindsym $mod+Ctrl+1 mark m1
-bindsym $mod+Ctrl+2 mark m2
-bindsym $mod+Ctrl+3 mark m3
-bindsym $mod+Ctrl+4 mark m4
-bindsym $mod+Ctrl+5 mark m5
-bindsym $mod+1 [con_mark="m1"] focus
-bindsym $mod+2 [con_mark="m2"] focus
-bindsym $mod+3 [con_mark="m3"] focus
-bindsym $mod+4 [con_mark="m4"] focus
-bindsym $mod+5 [con_mark="m5"] focus
+#bindsym $mod+Ctrl+1 mark m1
+#bindsym $mod+Ctrl+2 mark m2
+#bindsym $mod+Ctrl+3 mark m3
+#bindsym $mod+Ctrl+4 mark m4
+#bindsym $mod+Ctrl+5 mark m5
+#bindsym $mod+1 [con_mark="m1"] focus
+#bindsym $mod+2 [con_mark="m2"] focus
+#bindsym $mod+3 [con_mark="m3"] focus
+#bindsym $mod+4 [con_mark="m4"] focus
+#bindsym $mod+5 [con_mark="m5"] focus
 
 # switch to workspace
 bindsym $mod+Escape workspace back_and_forth
