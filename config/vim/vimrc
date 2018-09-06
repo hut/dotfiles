@@ -11,6 +11,7 @@ if $HOSTNAME =~ "^lem"
         let g:terminal_scrollback_buffer_size = 100000
         let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 0
     endif
+    autocmd BufRead,BufNewFile * setlocal signcolumn=no
 
     " Styling
     "colorscheme default
@@ -24,6 +25,7 @@ if $HOSTNAME =~ "^lem"
 
     call vundle#begin()
     Plugin 'VundleVim/Vundle.vim'
+    Plugin 'https://github.com/MattesGroeger/vim-bookmarks.git'
     Plugin 'https://github.com/vimwiki/vimwiki.git'
     Plugin 'https://github.com/majutsushi/tagbar.git'
     "Plugin 'https://github.com/ctrlpvim/ctrlp.vim.git'
@@ -44,6 +46,10 @@ if $HOSTNAME =~ "^lem"
     let g:ctrlp_cmd = 'CtrlP /projects'
     let g:ctrlp_map = '<space>'
     let g:ctrlp_extensions = ['line', 'dir']
+
+    let g:bookmark_auto_save = 1
+    let g:bookmark_auto_save_file = $HOME.'/hut/git/confs/vim/bookmarks'
+    let g:bookmark_auto_close = 1
 
     let g:jedi#use_tabs_not_buffers = 1
     let g:jedi#completions_enabled = 0
@@ -207,7 +213,7 @@ let g:dotoo#parser#todo_keywords = [
 colorscheme jungle
 set fillchars=vert:│,fold:\ 
 
-set viminfo='100,<0,s10,h
+set viminfo='100,<0,s10,h,f1
 set modeline
 
 set lcs=tab:^\ ,trail:'

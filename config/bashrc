@@ -217,6 +217,7 @@ alias kbrate='xset r rate 220 35'
 alias blk="lsblk -no NAME,SIZE,TYPE,FSTYPE,MOUNTPOINT"
 alias ssh-f="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
 alias sshfs-f="sshfs -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+alias hut3="ssh hut3@centaurus.uberspace.de -t tmux attach"
 alias wget-r='wget -r --no-parent --reject "index.html*"'
 # }}}
 

@@ -1,4 +1,4 @@
-" Vim color file
+" Jungle Vim Color Scheme
 " Maintainer:	Blabla
 " Last Change:  27.12.08
 " URL:		fofoofo
@@ -28,6 +28,7 @@ if &t_Co == 256
 	hi Folded		ctermfg=12 ctermbg=none
 	"hi FoldColumn	
 	hi LineNr		ctermfg=241 ctermbg=none
+	hi SignColumn	ctermfg=241 ctermbg=none
 	hi ModeMsg		ctermfg=white ctermbg=none cterm=none
 	"hi MoreMsg		
 	hi NonText		ctermfg=10 ctermbg=none cterm=none
