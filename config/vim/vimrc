@@ -324,6 +324,10 @@ map <C-n> :tabnew<cr>
 
 " bla
 map <F12> :TagbarToggle<CR>
+noremap <F2> "=strftime("%Y-%m-%d")<CR>P
+inoremap <F2> <C-R>=strftime("%Y-%m-%d")<CR>
+noremap <F3> "=strftime("[%Y-%m-%d %a] ")<CR>P
+inoremap <F3> <C-R>=strftime("[%Y-%m-%d %a] ")<CR>
 map ,m :silent !markdown % > %.html<CR>
 map ,p :set paste!<CR>:set ruler<CR>:echo "paste =" &paste<CR>
 map ,T :edit ~/me/notes/org/projects.org<CR>
