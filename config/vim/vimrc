@@ -183,6 +183,7 @@ endif
 
 " Common Plugin settings
 let g:vimwiki_folding = 'expr'
+let g:vimwiki_url_maxsave = 0
 
 " --- Settings for Plugin "bullet.vim" ---
 let g:bullets_enabled_file_types = ['markdown', 'text', 'gitcommit', 'dotoo', 'tex']
