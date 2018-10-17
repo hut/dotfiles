@@ -644,7 +644,7 @@ imap ,m \vec{\mathbf{
 imap ,v \vec{
 map \s :SnipMateOpenSnippetFiles<CR>
 
-map g/., :w ~/sync/ramblings/<C-R>=strftime("%Y-%m-%d_%H%M%S")<CR>_<C-r>=$USER<CR>_<C-r>=hostname()<CR>.txt<CR>ggdG:w<CR>
+map g/., :w ~/stuff/ramblings/<C-R>=strftime("%Y-%m-%d_%H%M%S")<CR>_<C-r>=$USER<CR>_<C-r>=hostname()<CR>.txt<CR>ggdG:w<CR>
 
 let g:hut_projectpath = '/home/hut/sync/notes/vimwiki/tasks/'
 let g:hut_indexpath = '/home/hut/sync/notes/vimwiki/tasks/tasks.md'

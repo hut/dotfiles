@@ -10,8 +10,8 @@ import sys
 import socket
 import dateutil.parser
 
-PLAN_PATH = os.environ.get("ASCIICALENDAR_PATH", os.path.expanduser("~/sync/notes/vimwiki/plan.md"))
-MAX_WEEKS_TO_DISPLAY = int(sys.argv[1]) if len(sys.argv) > 1 else 4
+PLAN_PATH = os.environ.get("ASCIICALENDAR_PATH", os.path.expanduser("~/sync/notes/wiki/notes/plan.md"))
+MAX_WEEKS_TO_DISPLAY = int(sys.argv[1]) if len(sys.argv) > 1 else 5
 MAX_LOOKAHEAD_DAYS = MAX_WEEKS_TO_DISPLAY * 7
 COLUMN_WIDTH = 8
 
