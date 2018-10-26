@@ -93,6 +93,7 @@ else
         Plugin 'dhruvasagar/vim-dotoo'
         "Plugin 'hut/vim-orgmode'
         Plugin 'dkarter/bullets.vim'
+        "Plugin 'freitass/todo.txt-vim'
         "Plugin 'Konfekt/FastFold'
         "Plugin 'vim-scripts/utl'
 
