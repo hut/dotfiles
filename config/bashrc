@@ -15,7 +15,7 @@ case "$HOSTNAME" in
         export TIGRC_USER=~/.config/tigrc
         export PROMPT_DIRTRIM=4
         export HISTCONTROL=ignoreboth  # ignore duplicates & lines starting with spaces
-        export BMDIR="$HOME/.hut/bookmarks"
+        export BMDIR="$HOME/me/bookmarks"
 
         shopt -s histappend
         shopt -s checkwinsize
