@@ -57,8 +57,8 @@ case "$HOSTNAME" in
         ;;&
     fez|lemming*)
         source ~/repos/exobrain/bash_tab_completion.sh
-        function e  { ~/repos/exobrain/exobrain.py "$@"; }
-        function ee { ~/repos/exobrain/exobrain.py -e "$@"; }
+        #function e  { ~/repos/exobrain/exobrain.py "$@"; }
+        #function ee { ~/repos/exobrain/exobrain.py -e "$@"; }
         function ea { echo "- $(date +"%Y-%m-%d"): $@" >> "$VIMWIKI_ROOT"/unfiled.md; }
 
         # Prompt
