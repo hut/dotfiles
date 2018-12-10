@@ -6,3 +6,4 @@ deploy/copied.tmp
 pythonlib/data
 taco
 config/vim/.netrwhist
+config/vim/spell
