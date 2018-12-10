@@ -251,7 +251,7 @@ if which nvim >& /dev/null; then
 fi
 alias am=alsamixer
 alias sd=systemctl
-alias e='exobrain -t'
+alias e='exobrain -pt'
 alias t='todo-txt -d ~/.config/todo-txt/config -t'
 alias ee='exobrain -e'
 alias plan="vim $VIMWIKI_ROOT/notes/plan.md"
