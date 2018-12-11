@@ -42,6 +42,7 @@ TIMEZONES = [
     #('CH', 'Asia/Hong_Kong'),
     #('JP', 'Asia/Tokyo'),
 ]
+REPOS = ["~/repos/dotfiles", "~/repos/reference"]
 
 TR = "\u2510"
 BR = "\u2518"
@@ -103,15 +104,10 @@ if os.path.exists(os.path.expanduser("~/bin/repeat")):
         sys.stdout.write(clr("---> ", fg=101) + tasks.decode('utf-8'))
         sys.stdout.flush()
 
-if os.path.exists(os.path.expanduser("~/repos/dotfiles")):
-    subprocess.call('''
-        cd ~/repos/dotfiles;
-        git -c color.status=always status -s | sed 's/^\(..[^ ]* \)/\\1~\/dot\//';
-        git log origin/master..master --oneline | cat;
-    ''', shell=True)
-
-#if os.path.exists(os.path.expanduser("~/me")):
-#    subprocess.call('''
-#        cd ~/me;
-#        git -c color.status=always status -s | sed 's/^\(..[^ ]* \)/\\1~\/me\//';
-#    ''', shell=True)
+for repo in REPOS:
+    if os.path.exists(os.path.expanduser(repo)):
+        subprocess.call('''
+            cd {repo};
+            git -c color.status=always status -s | sed 's:^\(..[^ ]* \):\\1{repo}/:';
+            #git log origin/master..master --oneline | cat;
+        '''.format(repo=repo), shell=True)
