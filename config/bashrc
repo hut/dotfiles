@@ -433,7 +433,9 @@ function push {
     if [ "$PWD" == "$HOME" ]; then
         case "$HOSTNAME" in
             lemming*|fez)
-                ( cd ~/repos/dotfiles; git push );;
+                ( cd ~/repos/dotfiles; git push )
+                ( cd ~/repos/reference; git push )
+                ;;
         esac
     elif [ "$HOSTNAME" == "fez" -a "$(basename "$(git rev-parse --show-toplevel)")" == ranger ]; then
         "$(git rev-parse --show-toplevel)"/stuff/push.sh
