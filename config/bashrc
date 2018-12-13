@@ -57,8 +57,6 @@ case "$HOSTNAME" in
         ;;&
     fez|lemming*)
         source ~/repos/exobrain/bash_tab_completion.sh
-        #function e  { ~/repos/exobrain/exobrain.py "$@"; }
-        #function ee { ~/repos/exobrain/exobrain.py -e "$@"; }
         function ea { echo "- $(date +"%Y-%m-%d"): $@" >> "$VIMWIKI_ROOT"/unfiled.md; }
 
         # Prompt
@@ -251,9 +249,10 @@ if which nvim >& /dev/null; then
 fi
 alias am=alsamixer
 alias sd=systemctl
-alias e='exobrain -pt'
 alias t='todo-txt -d ~/.config/todo-txt/config -t'
+alias e='exobrain -pt'
 alias ee='exobrain -e'
+__exobrain_complete e ee
 alias plan="vim $VIMWIKI_ROOT/notes/plan.md"
 function py {
     if [ -z "$1" ]; then
