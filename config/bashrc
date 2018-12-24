@@ -250,6 +250,7 @@ fi
 alias am=alsamixer
 alias sd=systemctl
 alias t='todo-txt -d ~/.config/todo-txt/config -t'
+alias cur='exobrain current'
 alias e='exobrain -pt'
 alias ee='exobrain -e'
 __exobrain_complete e ee
