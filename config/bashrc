@@ -347,6 +347,14 @@ function commit {
                     && if [ "$1" != '--local' ]; then
                         githut push
                     fi;
+                )
+                (
+                    cd ~/repos/reference;
+                    githut add -A;
+                    githut commit -a --verbose -e -m "minor change" \
+                    && if [ "$1" != '--local' ]; then
+                        githut push
+                    fi;
                 );;
         esac
     else
@@ -372,6 +380,7 @@ function u {
             lemming*|fez)
                 repeat --label pull --days 1  # regularily notify that I have to pull
                 ( cd ~/repos/dotfiles; git pull; )
+                ( cd ~/repos/reference; git pull; )
                 updateall.sh
                 ;;
         esac
