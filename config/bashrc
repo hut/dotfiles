@@ -156,6 +156,7 @@ case "$HOSTNAME" in
     lemming*) # {{{
         alias tactivate='source /tools/python/bin/activate'
         scan () { grep "$@" -nr --color=always -I *; }
+        source ~/repos/z/z.sh
         ;; # }}}
 esac
 
