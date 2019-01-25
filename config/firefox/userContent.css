@@ -72,7 +72,7 @@ h1, h2, h3, h4 { font-family: coda !important; font-weight: normal !important; }
 #mw-panel:hover a { color: #00f !important; font-size: 130% !important; }
 #mw-panel:hover { width: 10em !important; }
 
-#n-sitesupport, #n-shoplink, #t-upload, #t-cite, #n-mainpage-description, #n-contents, #n-featuredcontent, #n-currentevents, #n-randompage, #n-specialpages { display: none !important; }
+#n-sitesupport, #n-shoplink, #t-upload, #t-cite, #n-mainpage-description, #n-contents, #n-featuredcontent, #n-currentevents, #n-randompage, #n-specialpages, .uls-settings-trigger { display: none !important; }
 
 /* the permanent link */
 #t-permalink a { position: fixed; top: 0px; left: 0px; color: #fff !important; font-size: 130% !important; }
