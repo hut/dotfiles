@@ -1,6 +1,6 @@
 set nocompatible
 
-" Hostname-based settings
+" Hostname-based settings {{{
 if $HOSTNAME =~ "^lem"
     " Terminal-related
     if has('nvim')
@@ -180,9 +180,9 @@ else
       endif
     endfun
     au Filetype * call DecideIfShouldUseTab()
-endif
+endif " }}}
 
-" Common Plugin settings
+" Common Plugin settings {{{
 let g:vimwiki_folding = 'expr'
 let g:vimwiki_url_maxsave = 0
 
@@ -211,7 +211,9 @@ let g:dotoo#parser#todo_keywords = [
   \ 'CANCELLED',
   \ 'DONE']
 
-" Styling
+" }}}
+
+" Styling {{{
 colorscheme jungle
 set fillchars=vert:│,fold:\ 
 
@@ -256,6 +258,8 @@ if has("autocmd")
     "autocmd FileType python nnoremap <buffer> [[ ?^\*class\\|^\s*def<CR>
     "autocmd FileType python nnoremap <buffer> [[ /^\*class\\|^\s*def<CR>
 endif " has("autocmd"
+
+" }}}
 
 " Tabs / Spaces {{{
 map -<TAB>   :set sw=4 ts=4 sts=4 noexpandtab<CR>
