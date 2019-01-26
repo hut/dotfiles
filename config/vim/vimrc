@@ -222,6 +222,9 @@ set modeline
 
 set lcs=tab:^\ ,trail:'
 
+set colorcolumn=80
+" }}}
+
 set mouse=a
 set showcmd
 set ruler

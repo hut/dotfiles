@@ -94,6 +94,7 @@ if &t_Co == 256
 	hi SpellCap    cterm=none ctermfg=26 ctermbg=none
 	hi SpellRare   cterm=none ctermfg=148 ctermbg=none
 	hi SpellLocal  cterm=none ctermfg=148 ctermbg=none
+	hi ColorColumn ctermbg=233
 
 end
 "}}}
