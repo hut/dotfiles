@@ -28,7 +28,7 @@ if $HOSTNAME =~ "^lem"
     Plugin 'https://github.com/MattesGroeger/vim-bookmarks.git'
     Plugin 'https://github.com/vimwiki/vimwiki.git'
     Plugin 'https://github.com/majutsushi/tagbar.git'
-    "Plugin 'https://github.com/ctrlpvim/ctrlp.vim.git'
+    Plugin 'https://github.com/ctrlpvim/ctrlp.vim.git'
     "Plugin 'https://github.com/davidhalter/jedi-vim.git'
     Plugin 'https://github.com/MarcWeber/vim-addon-mw-utils.git'
     Plugin 'https://github.com/tomtom/tlib_vim.git'
@@ -44,8 +44,14 @@ if $HOSTNAME =~ "^lem"
     filetype plugin indent on
 
     let g:ctrlp_cmd = 'CtrlP /projects'
-    let g:ctrlp_map = '<space>'
+    let g:ctrlp_map = 'b'
+    let g:ctrlp_cmd = 'CtrlPMRU'
     let g:ctrlp_extensions = ['line', 'dir']
+    let g:ctrlp_switch_buffer = ''
+    let g:ctrlp_custom_ignore = {
+      \ 'dir':  '\v([\/]\.(git|hg|svn)$|projects/git|animalmaster/data|projects/backup)',
+      \ 'file': '\v\.(exe|so|dll|png|jpg)$',
+      \ }
 
     let g:bookmark_auto_save = 1
     let g:bookmark_auto_save_file = $HOME.'/hut/git/confs/vim/bookmarks'
