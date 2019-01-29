@@ -400,7 +400,7 @@ vnoremap > >gv
 map gV ggVG
 map s :s/
 map S :%s/
-map b :b 
+"map b :b 
 vmap S :s/
 inoremap <F9>  <C-R>=strftime("%Y/%m/%d %H:%M ")<CR>
 inoremap <F10> <C-R>=strftime("%s ")<CR>
