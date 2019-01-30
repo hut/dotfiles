@@ -32,12 +32,12 @@ def sleephour(weekday):
 CALENDAR = True
 MOTD = False
 CRAP = False
-CLOCK = True
+CLOCK = False
 TIMEZONES = [
-    ('LA', 'America/Los_Angeles'),
-    ('NY', 'America/New_York'),
-    ('UTC', 'Europe/Greenwich'),
-    ('\033[38;5;203mDE', 'Europe/Berlin'),
+    #('LA', 'America/Los_Angeles'),
+    #('NY', 'America/New_York'),
+    #('UTC', 'Europe/Greenwich'),
+    #('\033[38;5;203mDE', 'Europe/Berlin'),
     #('MOS', 'Europe/Moscow'),
     #('CH', 'Asia/Hong_Kong'),
     #('JP', 'Asia/Tokyo'),

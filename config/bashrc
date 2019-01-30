@@ -193,7 +193,8 @@ alias wlits=wlist
 
 
 # Fixed parameters {{{
-function sticky { tmux_session sticky; }
+function sticky { settitle sticky; tmux_session sticky; }
+function wing { settitle wing; tmux_session wing; }
 function cal { [ -z "$@" ] && command cal -3 -w || command cal "$@"; }
 function man {
     # Add some colors! <3

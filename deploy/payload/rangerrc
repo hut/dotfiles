@@ -1,6 +1,8 @@
 set preview_files false
 set padding_right false
 set unicode_ellipsis false
+set update_tmux_title false
+set update_title false
 
 copymap E e
 map gt cd /tmp
