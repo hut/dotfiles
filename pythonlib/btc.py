@@ -16,8 +16,11 @@ def btc2eur_uncached(btc, date=None):
         return float('nan')
     response_raw = request.read()
     response = json.loads(response_raw)
-    if date is None:
-        rate = response['bpi']['EUR']['rate_float']
+    if 'bpi' in response:
+        if date is None:
+            rate = response['bpi']['EUR']['rate_float']
+        else:
+            rate = response['bpi'][date]
     else:
-        rate = response['bpi'][date]
+        return float('nan')
     return btc * rate

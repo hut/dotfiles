@@ -259,8 +259,6 @@ set directory=~/.vim/swap,/var/tmp,/tmp
 "set foldmethod=indent
 set foldmethod=marker
 
-iab Zabc abcdefghijklmnopqrstuvwxyz
-
 if has("autocmd")
     autocmd FileType python set complete+=k~/.vim/complete-dict "isk+=.,(
     autocmd FileType org set ft=dotoo
