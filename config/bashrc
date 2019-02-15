@@ -266,6 +266,21 @@ function py {
         python "$@"
     fi
 }
+function pyprofile {
+    name="/tmp/profile-$(date +%Y-%m-%d-%H%M%S)"
+    if [ "$1" == '--grind' ]; then
+        grind=1
+        shift
+    fi
+    python -m cProfile -o "$name.pstats" "$@"
+    if [ -n "$grind" ]; then
+        pyprof2calltree -i "$name.pstats" -o "$name.calltree"
+        kcachegrind "$name.calltree"
+    else
+        gprof2dot -f pstats "$name.pstats" | dot -Tpng -o "$name.png"
+        feh "$name.png"
+    fi
+}
 
 function a {
     if [[ -z "$@" ]]; then
