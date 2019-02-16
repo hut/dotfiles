@@ -231,6 +231,13 @@ set lcs=tab:^\ ,trail:'
 set colorcolumn=80
 " }}}
 
+
+" Line breaks {
+set linebreak
+set breakindent
+map \b :let &showbreak='  '<CR>
+" }
+
 set mouse=a
 set showcmd
 set ruler
