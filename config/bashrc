@@ -57,7 +57,7 @@ case "$HOSTNAME" in
         ;;&
     fez|lemming*)
         source ~/repos/exobrain/bash_tab_completion.sh
-        function ea { echo "- $(date +"%Y-%m-%d"): $@" >> "$VIMWIKI_ROOT"/unfiled.md; }
+        function ea { echo "- $@" >> "$VIMWIKI_ROOT"/index.md; }
 
         # Prompt
         if [ "$USER" != root ]; then
