@@ -1,10 +1,26 @@
+[MASTER]
+
+;load-plugins=pylint_django
+
 [MESSAGES CONTROL]
-disable=bad-continuation,attribute-defined-outside-init,invalid-name,too-many-arguments,missing-docstring,too-many-instance-attributes,too-few-public-methods,bad-whitespace
+disable=attribute-defined-outside-init,
+        bad-continuation,
+        bad-whitespace,
+        invalid-name,
+        missing-docstring,
+        old-style-class,
+        too-few-public-methods,
+        too-many-arguments,
+        too-many-branches,
+        too-many-instance-attributes,
+        too-many-lines,
+        too-many-statements,
+        wrong-import-position
 
 [REPORTS]
 
-reports=yes
-score=yes
+;reports=yes
+;score=yes
 
 [BASIC]
 no-docstring-rgx=.*

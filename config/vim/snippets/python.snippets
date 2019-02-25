@@ -72,3 +72,10 @@ snippet md5
 snippet stack
 	import traceback, sys
 	traceback.print_stack(f=sys.stderr)
+snippet prof
+	import cProfile, time
+	pr = cProfile.Profile()
+	pr.enable()
+
+	pr.disable()
+	pr.dump_stats(time.strftime("/tmp/stat-%Y-%m-%d-%H%M%S.pstat"))

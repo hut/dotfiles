@@ -284,18 +284,40 @@ function py {
     fi
 }
 function pyprofile {
-    name="/tmp/profile-$(date +%Y-%m-%d-%H%M%S)"
-    if [ "$1" == '--grind' ]; then
-        grind=1
+    if [ "$1" == '-g' ]; then
+        mode=grind
         shift
+    elif [ "$1" == '-i' ]; then
+        mode=interactive
+        shift
+    elif [ "$1" == '-d' ]; then
+        mode=dump
+        shift
+    elif [ "$1" == '-dr' ]; then
+        mode=dump-reverse
+        shift
+    else
+        mode=graphviz
     fi
-    python -m cProfile -o "$name.pstats" "$@"
-    if [ -n "$grind" ]; then
+    if [[ "$1" == *.pstats ]]; then
+        name="${1%.pstats}"
+    else
+        name="/tmp/profile-$(date +%Y-%m-%d-%H%M%S)"
+        python -m cProfile -o "$name.pstats" "$@"
+    fi
+
+    if [ $mode == grind ]; then
         pyprof2calltree -i "$name.pstats" -o "$name.calltree"
         kcachegrind "$name.calltree"
-    else
+    elif [ $mode == graphviz ]; then
         gprof2dot -f pstats "$name.pstats" | dot -Tpng -o "$name.png"
         feh "$name.png"
+    elif [ $mode == interactive ]; then
+        ipython -i -c 'import pstats; p = pstats.Stats("'"$name.pstats"'")'
+    elif [ $mode == dump ]; then
+        python -c 'import pstats; p = pstats.Stats("'"$name.pstats"'"); p.sort_stats("cumulative").print_callees()' | less
+    elif [ $mode == dump-reverse ]; then
+        python -c 'import pstats; p = pstats.Stats("'"$name.pstats"'"); p.sort_stats("cumulative").print_callers()' | less
     fi
 }
 

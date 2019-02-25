@@ -27,6 +27,7 @@ if $HOSTNAME =~ "^lem"
     Plugin 'https://github.com/MattesGroeger/vim-bookmarks.git'
     Plugin 'https://github.com/vimwiki/vimwiki.git'
     Plugin 'https://github.com/majutsushi/tagbar.git'
+    Plugin 'https://github.com/scrooloose/syntastic.git'
     Plugin 'https://github.com/ctrlpvim/ctrlp.vim.git'
     "Plugin 'https://github.com/davidhalter/jedi-vim.git'
     Plugin 'https://github.com/MarcWeber/vim-addon-mw-utils.git'
@@ -113,9 +114,6 @@ else
         let g:NERDTreeDirArrowCollapsible = 'v'
         let NERDTreeIgnore=['\.pyc$', '\~$']
 
-        let g:syntastic_python_checkers = ['pylint']
-        "let g:syntastic_python_checkers = []
-
         let g:org_todo_keywords = ['TODO', 'NEXT', 'IN-PROGRESS', 'WAITING', '|', 'DONE']
         let g:org_agressive_conceal = 1
 
@@ -123,20 +121,11 @@ else
 
         let g:pydiction_location = '/home/hut/.config/nvim/bundle/pydiction/complete-dict'
         "let g:vimwiki_folding = 'list'
-        "set statusline+=%#warningmsg#
-        "set statusline+=%{SyntasticStatuslineFlag()}
-        "set statusline+=%*
-        ""let g:syntastic_always_populate_loc_list = 1
-        ""let g:syntastic_auto_loc_list = 1
-        "let g:syntastic_check_on_open = 1
-        "let g:syntastic_python_python_exec = '/usr/bin/python3'
         filetype plugin indent on
         filetype plugin on
 
         let g:vimwiki_list = [{'path': '~/sync/notes/wiki/', 'syntax': 'markdown', 'ext': '.md'}]
         let g:vimwiki_hl_cb_checked = 2  " not for lemming, as it gets slow due to this...
-        let g:syntastic_python_pylint_args = '--rcfile=/home/hut/.pylintrc'
-        "let g:syntastic_python_pylint_post_args = ['--version']
         let g:hutsnip_path = '/home/hut/sync/notes/quick/snippets'
 
         for f in split(glob(g:hutsnip_path . '/*'), '\n')
@@ -217,9 +206,25 @@ let g:dotoo#parser#todo_keywords = [
   \ 'CANCELLED',
   \ 'DONE']
 
+" --- Settings for Plugin "syntastic" ---
+let g:syntastic_python_checkers = ['pylint']
+let g:syntastic_python_pylint_args = '--rcfile=~/.pylintrc'
+let g:syntastic_mode = 'passive'
+"let g:syntastic_python_pylint_post_args = ['--version']
+"let g:syntastic_python_checkers = []
+""let g:syntastic_always_populate_loc_list = 1
+""let g:syntastic_auto_loc_list = 1
+"let g:syntastic_check_on_open = 1
+"let g:syntastic_python_python_exec = '/usr/bin/python3'
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
+map \c :SyntasticCheck<CR>
+
 " }}}
 
 " Styling {{{
+set colorcolumn=80
 colorscheme jungle
 set fillchars=vert:│,fold:\ 
 
@@ -228,7 +233,6 @@ set modeline
 
 set lcs=tab:^\ ,trail:'
 
-set colorcolumn=80
 " }}}
 
 
