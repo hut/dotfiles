@@ -83,6 +83,7 @@ else
         call vundle#begin()
 
         Plugin 'junegunn/goyo.vim'
+        Plugin 'rust-lang/rust.vim'
         Plugin 'majutsushi/tagbar'
         Plugin 'gmarik/Vundle.vim'
         Plugin 'MarcWeber/vim-addon-mw-utils'
