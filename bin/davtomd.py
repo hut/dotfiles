@@ -1,8 +1,9 @@
 #!/usr/bin/python
 
-import sys
 import os
 import re
+import socket
+import sys
 
 if socket.gethostname() == 'fez':
     root = '/home/hut/me/radicale/collections/collection-root/hut/'
