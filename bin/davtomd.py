@@ -50,6 +50,8 @@ class CalDavFile(object):
 
 concerts = []
 movies = []
+trips = []
+important = []
 
 for directory in directories:
     for f in os.listdir(directory):
@@ -67,8 +69,14 @@ for directory in directories:
         if 'movie' in summary:
             movies.append(cdf)
 
+        if 'travel' in summary:
+            trips.append(cdf)
+
+        if 'important' in summary:
+            important.append(cdf)
+
 with open(destination, 'w') as output:
-    for title, items in [('Concerts', concerts), ('Movies', movies)]:
+    for title, items in [('Important', important), ('Trips', trips), ('Concerts', concerts), ('Movies', movies)]:
         output.write("# %s\n\n" % title)
         items.sort(key=lambda cdf: cdf.date)
         for item in items:
