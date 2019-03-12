@@ -11,6 +11,8 @@ if socket.gethostname() == 'fez':
 else:
     root = '/home/hut/radicale/collections/collection-root/hut/'
     destination = '/home/hut/syncthing/notes/wiki/lists/auto.md'
+if len(sys.argv) > 1 and sys.argv[1] == '--debug':
+    destination = '/dev/stdout'
 
 directories = [
     root + 'Personal',
@@ -43,8 +45,8 @@ class CalDavFile(object):
 
     def markdownlist(self):
         if self.date:
-            return '- %s: %s' % (self.date, self.summary)
-        return '- %s' % self.summary
+            return '- %s: %s\n' % (self.date, self.summary)
+        return '- %s\n' % self.summary
 
 concerts = []
 movies = []
@@ -65,9 +67,10 @@ for directory in directories:
         if 'movie' in summary:
             movies.append(cdf)
 
-for title, items in [('Concerts', concerts), ('Movies', movies)]:
-    print("# %s\n" % title)
-    items.sort(key=lambda cdf: cdf.date)
-    for item in items:
-        print(item.markdownlist())
-    print("")
+with open(destination, 'w') as output:
+    for title, items in [('Concerts', concerts), ('Movies', movies)]:
+        output.write("# %s\n\n" % title)
+        items.sort(key=lambda cdf: cdf.date)
+        for item in items:
+            output.write(item.markdownlist())
+        output.write("\n")
