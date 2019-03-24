@@ -97,7 +97,7 @@ else
         Plugin 'airblade/vim-gitgutter'
         Plugin 'vimwiki/vimwiki'
         "Plugin 'kien/ctrlp.vim'
-        Plugin 'scrooloose/nerdtree'
+        "Plugin 'scrooloose/nerdtree'
         Plugin 'dhruvasagar/vim-dotoo'
         "Plugin 'hut/vim-orgmode'
         Plugin 'dkarter/bullets.vim'
@@ -110,10 +110,10 @@ else
         autocmd BufNewFile,BufRead editor-*.txt setf markdown
 
         "let g:ctrlp_map = 'B'
-        map <A-`> :NERDTreeToggle<CR>
-        let g:NERDTreeDirArrowExpandable = '>'
-        let g:NERDTreeDirArrowCollapsible = 'v'
-        let NERDTreeIgnore=['\.pyc$', '\~$']
+        "map <A-`> :NERDTreeToggle<CR>
+        "let g:NERDTreeDirArrowExpandable = '>'
+        "let g:NERDTreeDirArrowCollapsible = 'v'
+        "let NERDTreeIgnore=['\.pyc$', '\~$']
 
         let g:org_todo_keywords = ['TODO', 'NEXT', 'IN-PROGRESS', 'WAITING', '|', 'DONE']
         let g:org_agressive_conceal = 1
