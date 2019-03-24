@@ -185,6 +185,10 @@ esac
 # Generic tools {{{
 alias whatsmyip='dig +short myip.opendns.com \@resolver1.opendns.com'
 alias rot13='tr a-zA-Z n-za-mN-ZA-M'
+function weather {
+    city="${1:-cologne}"
+    curl wttr.in/"$city"
+}
 function dice {
     total=0
     for i in $(seq "$1"); do
