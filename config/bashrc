@@ -61,7 +61,7 @@ case "$HOSTNAME" in
 
         # Prompt
         if [ "$USER" != root ]; then
-            export PS1='\[\033[0;38;5;243m\]\w\[\033[1;38;5;202m\]$(test "$?" -eq 0 && echo ">" || echo "$?") \[\033[0m\]'
+            export PS1='\[\033[0;38;5;243m\]\w\[\033[1;38;5;202m\]$(_e="$?"; test "$_e" -eq 0 && echo ">" || echo "$_e") \[\033[0m\]'
             export PS1="$PS1$PROMPT_SUFFIX"
             if [ "$HOSTNAME" != fez ]; then
                 export PS1='\A '"$PS1"
