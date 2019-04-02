@@ -537,22 +537,28 @@ endfunction
 imap ,m \vec{\mathbf{
 imap ,v \vec{
 map \s :SnipMateOpenSnippetFiles<CR>
+ino <c-o> <c-r>=snipMate#TriggerSnippet()<cr>
+snor <c-o> <esc>i<right><c-r>=snipMate#TriggerSnippet()<cr>
 
 map g/., :w ~/stuff/ramblings/<C-R>=strftime("%Y-%m-%d_%H%M%S")<CR>_<C-r>=$USER<CR>_<C-r>=hostname()<CR>.txt<CR>ggdG:w<CR>
 
-let g:hut_projectpath = '/home/hut/sync/notes/vimwiki/tasks/'
-let g:hut_indexpath = '/home/hut/sync/notes/vimwiki/tasks/tasks.md'
+let g:hut_projectpath = '/home/hut/me/notes/vimwiki/projects/minor/'
+let g:hut_indexpath = '/home/hut/sync/notes/vimwiki/projects/minor/index.md'
 function! NewProject()
     call inputsave()
     let name = input('Task name: ')
     call inputrestore()
     if strlen(name) > 0
-        let fullname = strftime('%Y-%m-%d_').  name
-        execute "silent !echo '- [ ] [[" . substitute(fullname, "'", "'\\\\''", '') . "]]' >> '" . g:hut_indexpath . "'"
-        execute 'edit '.fnameescape(g:hut_projectpath . fullname . '.md')
+        let fullname = strftime('%Y-%m-%d_%H-%M_') . name
+    else
+        let fullname = strftime('%Y-%m-%d_%H-%M')
     endif
+
+    execute "silent !echo '- [ ] [[" . substitute(fullname, "'", "'\\\\''", '') . "]]' >> '" . g:hut_indexpath . "'"
+    execute 'edit '.fnameescape(g:hut_projectpath . fullname . '.md')
 endfun
 nmap \wc :call NewProject()<CR>
+nmap \we :execute 'edit '.fnameescape(g:hut_projectpath)<CR>
 
 if filereadable(glob("~/.vimrc.local"))
     source ~/.vimrc.local
