@@ -44,9 +44,11 @@ class CalDavFile(object):
         return self.summary
 
     def markdownlist(self):
+        summary = re.sub(r' #(\w+)', '', self.summary)
+        summary = summary.replace(r'\,', ',')
         if self.date:
-            return '- %s: %s\n' % (self.date, self.summary)
-        return '- %s\n' % self.summary
+            return '- %s: %s\n' % (self.date, summary)
+        return '- %s\n' % summary
 
 concerts = []
 movies = []
