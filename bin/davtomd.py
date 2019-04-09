@@ -71,14 +71,14 @@ for directory in directories:
         if 'movie' in summary:
             movies.append(cdf)
 
-        if 'travel' in summary:
+        if 'travel' in summary or '#trip' in summary:
             trips.append(cdf)
 
-        if 'important' in summary:
+        if 'important' in summary or '#mark' in summary:
             important.append(cdf)
 
 with open(destination, 'w') as output:
-    for title, items in [('Important', important), ('Trips', trips), ('Concerts', concerts), ('Movies', movies)]:
+    for title, items in [('Events', important), ('Trips', trips), ('Concerts', concerts), ('Movies', movies)]:
         output.write("# %s\n\n" % title)
         items.sort(key=lambda cdf: cdf.date)
         for item in items:
