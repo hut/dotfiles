@@ -74,7 +74,7 @@ for directory in directories:
         if 'travel' in summary or '#trip' in summary:
             trips.append(cdf)
 
-        if 'important' in summary or '#mark' in summary:
+        if 'important' in summary or '#mark' in summary or '#fun' in summary:
             important.append(cdf)
 
 with open(destination, 'w') as output:
