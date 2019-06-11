@@ -43,6 +43,7 @@ case "$HOSTNAME" in
 
         ;;&
     lemming*)
+        export EDITOR=nvim
         export VIMWIKI_ROOT="$HOME/hut/git/vimwiki/"
         export EXOBRAIN_ROOT="$HOME/hut/git/quicknotes"
         export EXOBRAIN_STATS_FILE=/dev/null

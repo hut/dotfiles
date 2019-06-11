@@ -227,7 +227,6 @@ map \c :SyntasticCheck<CR>
 " }}}
 
 " Styling {{{
-set colorcolumn=80
 colorscheme jungle
 set fillchars=vert:│,fold:\ 
 
