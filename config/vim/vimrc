@@ -24,6 +24,7 @@ if $HOSTNAME =~ "^lem"
 
     call vundle#begin()
     Plugin 'VundleVim/Vundle.vim'
+    Plugin 'https://github.com/gcmt/taboo.vim.git'
     Plugin 'https://github.com/MattesGroeger/vim-bookmarks.git'
     Plugin 'https://github.com/vimwiki/vimwiki.git'
     Plugin 'https://github.com/majutsushi/tagbar.git'
@@ -245,6 +246,7 @@ map \b :let &showbreak='  '<CR>
 " }
 
 set mouse=a
+set guicursor=  " Disable guicursor as long as https://github.com/neovim/neovim/issues/6798 persists
 set showcmd
 set ruler
 set hidden
