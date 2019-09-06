@@ -234,7 +234,7 @@ set fillchars=vert:│,fold:\
 set viminfo='100,<0,s10,h,f1
 set modeline
 
-set lcs=tab:^\ ,trail:'
+set lcs=tab:^\ ,trail:·
 
 " }}}
 
