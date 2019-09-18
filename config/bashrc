@@ -424,6 +424,8 @@ function commit {
                 if [ "$HOSTNAME" == "fez" -a "$(basename "$(git rev-parse --show-toplevel)")" == ranger ]; then
                     # Sign the commit when commiting for ranger:
                     git commit -S "$@"
+                elif [[ "$HOSTNAME" == ^lemming && "$(pwd)" =~ ^/(data/)?projects ]]; then
+                    git commit "$@"
                 else
                     githut commit "$@"
                 fi;;
