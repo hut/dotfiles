@@ -25,4 +25,7 @@ install:
 	@$(call link,config/Xdefaults,~/.Xdefaults)
 	@$(call link,config/Xmodmap,~/.Xmodmap)
 
+packages_termux:
+	pkg install ranger git openssh make vim perl tmux tig htop
+
 .PHONY: install
