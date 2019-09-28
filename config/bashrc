@@ -353,7 +353,7 @@ function ranger-cd {
     else
         ranger=ranger
     fi
-    tempfile='/tmp/chosendir'
+    tempfile="$(mktemp)"
     extra_args=
     if [ -n "$REMOTED" ]; then
         set -- "$@" "--cmd=chain map <enter> play_remote; map x shell killall mpv"
