@@ -1,3 +1,7 @@
+unmap o
+unmap O
+unmap b
+unmap B
 unmap x
 map D removeTab
 
@@ -6,8 +10,3 @@ map v goForward
 
 map <a-`> nextTab
 map <a-~> previousTab
-
-unmap o
-unmap O
-unmap b
-unmap B
