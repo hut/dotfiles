@@ -48,11 +48,17 @@ def main():
     for repo, directory in config['repos'].items():
         directory = os.path.expanduser(directory)
         git_dir = os.path.join(directory, '.git')
-        dirsize = Y(lambda recursive_fun: lambda path: \
-                (0 if os.path.islink(path) else \
-                os.path.getsize(path) if os.path.isfile(path) else \
-                sum(recursive_fun(os.path.join(path, f)) for f in os.listdir(path))))(git_dir)
-        print('%13s | %7.1fMB | %s' % (repo, dirsize/1024.0/1024, mgitstatus(directory, 1).strip()))
+        if os.path.exists(git_dir):
+            dirsize = Y(lambda recursive_fun: lambda path: \
+                    (0 if os.path.islink(path) else \
+                    os.path.getsize(path) if os.path.isfile(path) else \
+                    sum(recursive_fun(os.path.join(path, f)) for f in os.listdir(path))))(git_dir)
+            status = mgitstatus(directory, 1).strip()
+        else:
+            dirsize = 0
+            status = termcolor.colored('unavailable', 'red', attrs=['bold', 'reverse'])
+
+        print('%13s | %7.1fMB | %s' % (repo, dirsize/1024.0/1024, status))
 
 
 if __name__ == '__main__':
