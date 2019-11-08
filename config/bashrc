@@ -475,7 +475,9 @@ function tag {
     # The name "tag" derives from "tig --all" and has nothing to do with tagging
     if [ "$PWD" == "$HOME" ]; then
         case "$HOSTNAME" in
-            lemming*|fez)
+            lemming*)
+                ( cd /projects; tag );;
+            fez)
                 ( cd ~/repos/dotfiles; tag );;
         esac
     else
