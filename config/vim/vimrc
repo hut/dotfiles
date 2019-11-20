@@ -240,7 +240,7 @@ set lcs=tab:^\ ,trail:·
 
 
 " Line breaks {
-set linebreak
+"set linebreak
 set breakindent
 map \b :let &showbreak='  '<CR>
 " }
