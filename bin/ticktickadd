@@ -1,6 +1,6 @@
 #!/bin/sh
-text="$(dmenu < /dev/null)"
 addr="$(cat ~/.config/PERSONAL/ticktick_input_address)"
+text="$(dmenu < /dev/null)"
 if [ "$?" -eq 0 -a -n "$text" ]; then
     mail -s "$text" "$addr" < /dev/null
 fi

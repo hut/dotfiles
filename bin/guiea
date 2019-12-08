@@ -1,0 +1,11 @@
+#!/bin/sh -x
+src="$(tempfile)"
+dst="/home/hut/me/notes/wiki/add.md"
+urxvt -e vim -c startinsert $src
+text="$(cat $src)"
+
+if [ -n "$text" ]; then
+    printf "# %s\n\n%s\n\n" "$(date +'%Y-%m-%d %H%M%S')" "$text" >> "$dst"
+fi
+
+rm "$src"
