@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """poop"""
 
@@ -10,7 +10,7 @@ from subprocess import call
 
 
 DRY = bool(set(['-d', '--dry', 'dry']) & set(sys.argv[1:]))
-TARGET = "/home/hut/stuff/.autoclean"
+TARGET = "/home/hut/stuff/autoclean"
 RE = r".+\.%s(?:\.part|~|_)?$"
 
 def handle(directory, extensions):
@@ -38,5 +38,5 @@ handle("maxima", "wxmx")
 
 DIRS = [os.path.expanduser(d) for d in "~".split()]
 
-handle("work", "xcf,py,cpp,sh,scm,pl,html?,r,c,dia,ttf,rb,m")
-handle("notes", "notes?,mockup,idea,letter,protokoll,quotes,guide,overview,list,dream")
+handle("work", "xcf,py,cpp,sh,scm,pl,html?,r,c,dia,ttf,rb,m,xml,yml")
+handle("notes", "notes?,mockup,idea,letter,protokoll,quotes,guide,overview,list,dream,org,md,txt")
