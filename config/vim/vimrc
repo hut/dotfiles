@@ -67,6 +67,8 @@ if $HOSTNAME =~ "^lem"
 
     let g:vimwiki_folding = 'expr'
     let g:vimwiki_list = [{'path': '~/hut/git/vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
+
+    let g:gitgutter_enabled = 0
 else
     " Highlight long lines
     au Filetype * call SetOverLengthHighlight()
