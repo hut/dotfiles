@@ -132,6 +132,8 @@ else
         let g:vimwiki_hl_cb_checked = 2  " not for lemming, as it gets slow due to this...
         let g:hutsnip_path = '/home/hut/sync/notes/quick/snippets'
 
+        let g:gitgutter_enabled = 0
+
         for f in split(glob(g:hutsnip_path . '/*'), '\n')
             let basename = substitute(f, '.*/\([^/]*\)$', '\1', '')
             exec "map \\\\" . basename . " <ESC>:.-1r " . f . "<CR>i"
