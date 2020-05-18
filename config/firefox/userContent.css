@@ -51,8 +51,8 @@ body { font-family:tinos !important; font-size: 120% !important; }
 #mw-navigation { width: 100px !important; }
 #p-interaction, #p-coll-print_export { display: none; }
 #siteSub { display: none !important; }
-.interlanguage-link, .after-portlet, #p-lang-label, #p-tb-label, #p-Mitmachen-label { display: none; }
-.interwiki-de, .interwiki-en, .interwiki-fr, .interwiki-es, .interwiki-nl, .interwiki-ru { display: block !important; }
+.interlanguage-link, .after-portlet, #p-lang-label, #p-tb-label, #p-Mitmachen-label, .mw-interlanguage-selector { display: none; }
+.interwiki-de, .interwiki-en, .interwiki-fr, .interwiki-es, .interwiki-nl, .interwiki-ru, .interwiki-zh { display: block !important; }
 .portal .body { margin: 0 !important; padding: 0 !important; }
 .portal { padding: 0.25em; }
 #t-permalink a { font-weight: bold; }
