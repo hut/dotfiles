@@ -282,9 +282,9 @@ __exobrain_complete e ee
 alias plan="vim $ASCIICALENDAR_PATH"
 function py {
     if [ -z "$1" ]; then
-        ipython
+        ipython3
     elif [ -z "$2" ]; then
-        ipython -i "$1"
+        ipython3 -i "$1"
     else
         python "$@"
     fi
