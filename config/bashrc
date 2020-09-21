@@ -533,7 +533,7 @@ alias mt='githut mergetool --tool=vimdiff'
 
 
 # Tab completions for aliases {{{
-_completion_loader git
+#_completion_loader git
 __git_complete c _git_checkout
 __git_complete d _git_diff
 __git_complete b _git_branch
