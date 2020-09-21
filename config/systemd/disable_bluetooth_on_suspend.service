@@ -1,0 +1,10 @@
+[Unit]
+Description=Disable Bluetooth on suspend
+Before=suspend.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/rfkill block bluetooth
+
+[Install]
+WantedBy=suspend.target

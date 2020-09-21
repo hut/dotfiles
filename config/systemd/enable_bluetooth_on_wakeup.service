@@ -1,0 +1,10 @@
+[Unit]
+Description=Enable bluetooth on wakeup
+After=suspend.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/rfkill unblock bluetooth
+
+[Install]
+WantedBy=suspend.target
