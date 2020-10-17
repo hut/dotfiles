@@ -71,7 +71,7 @@ if &t_Co == 256
     hi PreCondit    ctermfg=32
 "    hi StorageClass    ctermfg=grey cterm=bold
     hi StorageClass    ctermfg=10 cterm=none
-    hi Special        ctermfg=210 cterm=none
+    "hi Special        ctermfg=210 cterm=none  " Disabled because it makes javascript pink
 
 "    hi TabLine        ctermfg=white ctermbg=80 cterm=none
 "    hi TabLineFill    ctermfg=80 cterm=reverse

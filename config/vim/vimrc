@@ -94,6 +94,7 @@ else
         Plugin 'garbas/vim-snipmate'
         "Plugin 'honza/vim-snippets'
         Plugin 'tikhomirov/vim-glsl'
+        "Plugin 'jelera/vim-javascript-syntax'
         Plugin 'mrk21/yaml-vim'
         "Plugin 'rkulla/pydiction'
         Plugin 'scrooloose/syntastic'
