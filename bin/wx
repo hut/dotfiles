@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python2
 """
 Run a script whenever a change in files is detected via inotify
 """

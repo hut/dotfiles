@@ -1,3 +1,8 @@
+/* Matrix / Element */
+@-moz-document domain(app.element.io) {
+    .mx_RoomView, .mx_RoomHeader, .mx_SenderProfile_hover, .mx_LeftPanel_roomListContainer, .mx_GroupFilterPanel_scroller { background: black !important; }
+}
+
 @-moz-document domain(twitter.com) {
     /*.content */.stream-item-footer, .tweet-stats-container {
         display: none !important;
